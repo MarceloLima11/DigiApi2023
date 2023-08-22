@@ -1,4 +1,5 @@
 using Core.Common;
+using Core.Entities.Digimon.Buff;
 using Core.Enums;
 
 namespace Core.Entities.Digimon
@@ -10,5 +11,11 @@ namespace Core.Entities.Digimon
         public int DSConsumed { get; set; }
         public int NecessarySkillPoint { get; set; }
         public float AnimationTime { get; set; }
+
+        public int DigimonId { get; set; }
+        public Digimon Digimon { get; set; }
+
+        public int? DigimonSkillBuffId { get; set; }
+        public DigimonSkillBuff DigimonSkillBuff { get; set; }
     }
 }
