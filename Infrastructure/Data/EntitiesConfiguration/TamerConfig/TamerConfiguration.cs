@@ -9,7 +9,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.TamerConfig
         public void Configure(EntityTypeBuilder<Tamer> builder)
         {
             builder.ToTable("tamer");
-            builder.HasKey(opt => opt.Id).HasName("id");
+            builder.HasKey(opt => opt.Id).HasName("id_tamer");
+
             builder.Property(x => x.Name).HasColumnName("name");
             builder.Property(x => x.Description).HasColumnName("description");
 
@@ -18,8 +19,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.TamerConfig
             builder.Property(x => x.DS).HasColumnName("ds");
             builder.Property(x => x.HP).HasColumnName("hp");
 
-            builder.HasOne(x => x.TamerSkill).WithOne(x => x.Tamer)
-            .HasForeignKey<TamerSkill>(x => x.TamerId).HasConstraintName("id_tamer");
+            // builder.HasOne(x => x.TamerSkill).WithOne(x => x.Tamer)
+            // .HasForeignKey<TamerSkill>(x => x.TamerId).HasConstraintName("id_tamer");
         }
     }
 }

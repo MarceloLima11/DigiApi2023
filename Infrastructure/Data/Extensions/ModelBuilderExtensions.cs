@@ -12,11 +12,20 @@ namespace Infrastructure.Data.Extensions
             DigimonSeed(builder);
         }
 
-        private static void TamerSeed(ModelBuilder builder)
+        private static void TamerSeed(this ModelBuilder builder)
         {
+            Tamer t1 = new Tamer(1, "Keenan Crier", "How opposed to the other members of DATS, Marcus Damon, Yoshino Fujieda, and Thomas H. Norstein, Keenan did not live in the human world, nor did he originally have a particular liking for it.", 10, 80, 90, 1, 1);
+
             builder.Entity<Tamer>().HasData(
-                new Tamer { Name = "Marcus Damon", Description = "MARCOOOOOOO!", AT = 10, HP = 90, DS = 80, DE = 2, }
+                t1
             );
+        }
+
+        private static void TamerSkillSeed(this ModelBuilder builder)
+        {
+            // builder.Entity<TamerSkill>().HasData(
+            //     new TamerSkill { Id = 1, Name = "Shock", Description = "Critical hit damage increase by 100% for 30 seconds.", CoolDown = 2, TamerSkillBuffId }
+            // );
         }
 
         private static void DigimonSeed(ModelBuilder builder)

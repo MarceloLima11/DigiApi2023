@@ -9,7 +9,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.DigimonConfig
         public void Configure(EntityTypeBuilder<DigimonSkill> builder)
         {
             builder.ToTable("digimon_skill");
-            builder.HasKey(x => x.Id).HasName("id");
+            builder.HasKey(x => x.Id).HasName("id_ds");
+
             builder.Property(x => x.Name).HasColumnName("name");
             builder.Property(x => x.Description).HasColumnName("description");
 
@@ -18,6 +19,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.DigimonConfig
             builder.Property(x => x.Attribute).HasColumnName("attribute");
             builder.Property(x => x.CoolDown).HasColumnName("cd");
             builder.Property(x => x.NecessarySkillPoint).HasColumnName("necessary_skill_point");
+
+            builder.HasOne(x => x.DigimonSkillBuff).WithMany().HasConstraintName("pk_digimon_skill_id");
         }
     }
 }

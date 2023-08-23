@@ -1,14 +1,15 @@
-using Application.Services;
+using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-    [Route("tamer/")]
+    [Route("tamer")]
+    [ApiController]
     public class TamerController : ControllerBase
     {
-        protected readonly TamerService _tamerService;
+        protected readonly ITamerService _tamerService;
 
-        public TamerController(TamerService tamerService)
+        public TamerController(ITamerService tamerService)
         { _tamerService = tamerService; }
 
         [HttpGet]

@@ -1,4 +1,6 @@
+using System.ComponentModel;
 using Core.Entities.Digimon;
+using Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,7 +11,7 @@ namespace Infrastructure.Data.EntitiesConfiguration.DigimonConfig
         public void Configure(EntityTypeBuilder<Digimon> builder)
         {
             builder.ToTable("digimon");
-            builder.HasKey(x => x.Id).HasName("id");
+            builder.HasKey(x => x.Id).HasName("id_digimon");
             builder.Property(x => x.Name).HasColumnName("name");
             builder.Property(x => x.Description).HasColumnName("description");
 
@@ -28,6 +30,11 @@ namespace Infrastructure.Data.EntitiesConfiguration.DigimonConfig
             builder.HasMany(x => x.Skills).WithOne(x => x.Digimon).HasConstraintName("id_digimon");
             builder.HasMany(d => d.Evolutions).WithMany()
             .UsingEntity(j => j.ToTable("digimon_evolution"));
+
+            // EnumConverter
+            builder.Property(x => x.Form).HasConversion<int>();
+            builder.Property(x => x.Attribute).HasConversion<int>();
+            builder.Property(x => x.ElementalAttribute).HasConversion<int>();
         }
     }
 }

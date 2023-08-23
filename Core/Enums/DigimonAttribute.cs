@@ -1,6 +1,6 @@
 namespace Core.Enums
 {
-    public enum Attribute
+    public enum DigimonAttribute
     {
         Data,
         Vaccine,

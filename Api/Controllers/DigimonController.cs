@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-    [Route("digimon/")]
+    [Route("digimon")]
+    [ApiController]
     public class DigimonController : ControllerBase
     {
         protected readonly IDigimonService _digimonService;

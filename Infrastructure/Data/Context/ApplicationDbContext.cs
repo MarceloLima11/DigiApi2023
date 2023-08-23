@@ -14,21 +14,21 @@ namespace Infrastructure.Data.Context
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
 
-        public virtual DbSet<Digimon> Digimon => Set<Digimon>();
-        public virtual DbSet<DigimonSkill> DigimonSkill => Set<DigimonSkill>();
-        public virtual DbSet<DigimonSkillBuff> DigimonSkillBuff => Set<DigimonSkillBuff>();
+        public DbSet<Digimon> Digimon => Set<Digimon>();
+        public DbSet<DigimonSkill> DigimonSkill => Set<DigimonSkill>();
+        public DbSet<DigimonSkillBuff> DigimonSkillBuff => Set<DigimonSkillBuff>();
 
-        public virtual DbSet<Tamer> Tamer => Set<Tamer>();
-        public virtual DbSet<TamerSkill> TamerSkill => Set<TamerSkill>();
-        public virtual DbSet<TamerSkillBuff> TamerSkillBuff => Set<TamerSkillBuff>();
+        public DbSet<Tamer> Tamer => Set<Tamer>();
+        public DbSet<TamerSkill> TamerSkill => Set<TamerSkill>();
+        public DbSet<TamerSkillBuff> TamerSkillBuff => Set<TamerSkillBuff>();
 
         // Intermediate
-        public virtual DbSet<DigimonFamilyIntermediate> DigimonFamilyIntermediate => Set<DigimonFamilyIntermediate>();
+        public DbSet<DigimonFamilyIntermediate> DigimonFamilyIntermediate => Set<DigimonFamilyIntermediate>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
             ModelBuilderExtensions.DataSeed(builder);
         }
