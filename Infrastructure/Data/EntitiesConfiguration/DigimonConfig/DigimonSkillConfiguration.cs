@@ -1,11 +1,12 @@
 using Core.Entities.Digimon;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.EntitiesConfiguration.DigimonConfig
 {
     public class DigimonSkillConfiguration : IEntityTypeConfiguration<DigimonSkill>
     {
-        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<DigimonSkill> builder)
+        public void Configure(EntityTypeBuilder<DigimonSkill> builder)
         {
             builder.ToTable("digimon_skill");
             builder.HasKey(x => x.Id).HasName("id");

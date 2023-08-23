@@ -1,6 +1,6 @@
 namespace Core.Enums
 {
-    public enum Evolution
+    public enum Form
     {
         Rookie,
         Champion,
