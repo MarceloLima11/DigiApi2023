@@ -3,6 +3,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -209,9 +211,33 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "digimon",
+                columns: new[] { "Id", "as", "at", "attribute", "ct", "de", "ds", "description", "ev", "elemental_attribute", "form", "hp", "ht", "name" },
+                values: new object[] { 1, 2.323f, 868, 1, "20.81%", 82, 1196, "Flamedramon is a Dragon Man Digimon Armor which evolved through the power of the Digi-Egg of Courage, whose names and design are derived from Flame Dramon.", "21%", 0, 5, 2651, 515, "Flamedramon" });
+
+            migrationBuilder.InsertData(
+                table: "digimon_skill_buff",
+                columns: new[] { "Id", "activation_percentage", "description", "name" },
+                values: new object[] { 1, "35%", "Inflicts extra damage 5 seconds after the skill (600 damage base + 200 damage per skill increase (4400 max at 20/20))", "Flame" });
+
+            migrationBuilder.InsertData(
+                table: "family",
+                columns: new[] { "Id", "Abbreviation", "description", "name" },
+                values: new object[,]
+                {
+                    { 1, "DS", "It is abbreviated as DS. Digimon who belong to this field are generally aquatic or polar Digimon, or those who dwell in marine areas.", "Deep Savers" },
+                    { 2, "DR", "It is abbreviated as DR. Digimon who belong to this field are generally Digimon of draconic descent, or those who dwell in volcanic areas.", "Dragon's Roar" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "tamer_skill_buff",
                 columns: new[] { "Id", "first_attribute", "name", "seccond_attribute" },
                 values: new object[] { 1, 1, "Rage of Keenan", 3 });
+
+            migrationBuilder.InsertData(
+                table: "digimon_skill",
+                columns: new[] { "Id", "animation_time", "attribute", "cd", "ds_consumed", "description", "DigimonId", "DigimonSkillBuffId", "name", "necessary_skill_point" },
+                values: new object[] { 1, 2.5f, 0, 4, 58, "Surrounds itself in fire and then charge towards its opponent.\n Target randomly gets additional fire damage.", 1, 1, "Fire Rocket", 2 });
 
             migrationBuilder.InsertData(
                 table: "tamer_skill",

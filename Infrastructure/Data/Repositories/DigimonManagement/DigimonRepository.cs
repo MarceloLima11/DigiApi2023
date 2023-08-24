@@ -1,10 +1,9 @@
-using Core.Interfaces;
 using Core.Entities.Digimon;
+using Core.Interfaces.DigimonManagement;
 using Infrastructure.Data.Context;
-using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data.Repositories.Base;
 
-namespace Infrastructure.Data.Repositories
+namespace Infrastructure.Data.Repositories.DigimonManagement
 {
     public class DigimonRepository : RepositoryBase<Digimon>, IDigimonRepository
     {

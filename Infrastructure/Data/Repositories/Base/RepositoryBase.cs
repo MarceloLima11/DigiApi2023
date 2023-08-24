@@ -31,7 +31,7 @@ namespace Infrastructure.Data.Repositories.Base
             return await _dbSet.FindAsync(id);
         }
 
-        public void Insert(X entity)
+        public void Add(X entity)
         {
             _dbSet.Add(entity);
         }

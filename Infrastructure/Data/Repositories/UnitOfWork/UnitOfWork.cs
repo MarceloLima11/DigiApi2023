@@ -1,6 +1,9 @@
-using Core.Interfaces;
+using Core.Interfaces.DigimonManagement;
+using Core.Interfaces.TamerManagement;
 using Core.Interfaces.UnitOfWork;
 using Infrastructure.Data.Context;
+using Infrastructure.Data.Repositories.DigimonManagement;
+using Infrastructure.Data.Repositories.TamerManagement;
 
 namespace Infrastructure.Data.Repositories.UnitOfWork
 {

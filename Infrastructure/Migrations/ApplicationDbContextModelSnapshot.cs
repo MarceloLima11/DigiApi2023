@@ -46,6 +46,15 @@ namespace Infrastructure.Migrations
                         .HasName("pk_digimonskilluff_id");
 
                     b.ToTable("digimon_skill_buff", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ActivationPercentage = "35%",
+                            Description = "Inflicts extra damage 5 seconds after the skill (600 damage base + 200 damage per skill increase (4400 max at 20/20))",
+                            Name = "Flame"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Digimon.Digimon", b =>
@@ -112,6 +121,25 @@ namespace Infrastructure.Migrations
                         .HasName("id_digimon");
 
                     b.ToTable("digimon", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AS = 2.323f,
+                            AT = 868,
+                            Attribute = 1,
+                            CT = "20.81%",
+                            DE = 82,
+                            DS = 1196,
+                            Description = "Flamedramon is a Dragon Man Digimon Armor which evolved through the power of the Digi-Egg of Courage, whose names and design are derived from Flame Dramon.",
+                            EV = "21%",
+                            ElementalAttribute = 0,
+                            Form = 5,
+                            HP = 2651,
+                            HT = 515,
+                            Name = "Flamedramon"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Digimon.DigimonSkill", b =>
@@ -165,6 +193,21 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("digimon_skill", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AnimationTime = 2.5f,
+                            Attribute = 0,
+                            CoolDown = 4,
+                            DSConsumed = 58,
+                            Description = "Surrounds itself in fire and then charge towards its opponent.\n Target randomly gets additional fire damage.",
+                            DigimonId = 1,
+                            DigimonSkillBuffId = 1,
+                            Name = "Fire Rocket",
+                            NecessarySkillPoint = 2
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Digimon.Family", b =>
@@ -190,6 +233,22 @@ namespace Infrastructure.Migrations
                         .HasName("id_family");
 
                     b.ToTable("family", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Abbreviation = "DS",
+                            Description = "It is abbreviated as DS. Digimon who belong to this field are generally aquatic or polar Digimon, or those who dwell in marine areas.",
+                            Name = "Deep Savers"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Abbreviation = "DR",
+                            Description = "It is abbreviated as DR. Digimon who belong to this field are generally Digimon of draconic descent, or those who dwell in volcanic areas.",
+                            Name = "Dragon's Roar"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Intermediate.DigimonFamilyIntermediate", b =>

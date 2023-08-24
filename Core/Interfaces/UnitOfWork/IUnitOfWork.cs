@@ -1,3 +1,6 @@
+using Core.Interfaces.DigimonManagement;
+using Core.Interfaces.TamerManagement;
+
 namespace Core.Interfaces.UnitOfWork
 {
     public interface IUnitOfWork
@@ -11,7 +14,6 @@ namespace Core.Interfaces.UnitOfWork
         ITamerRepository TamerRepository { get; }
         ITamerSkillRepository TamerSkillRepository { get; }
         ITamerSkillBuffRepository TamerSkillBuffRepository { get; }
-
         Task Commit();
     }
 }

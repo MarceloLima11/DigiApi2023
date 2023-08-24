@@ -1,7 +1,8 @@
 using Core.Entities.Tamer;
 using Application.Interfaces;
 using Core.Interfaces.UnitOfWork;
-using Application.DTOs;
+using Application.DTOs.TamerManagement;
+using Core.Entities.Tamer.Buff;
 
 namespace Application.Services
 {
@@ -48,6 +49,30 @@ namespace Application.Services
                 };
 
                 return response;
+            }
+            catch
+            { throw; }
+        }
+
+        public async Task<string> CreateTamer(CreateTamerDTO tamerDTO)
+        {
+            try
+            {
+                var buffDTO = tamerDTO.Skill.Buff;
+                var buff = new TamerSkillBuff(buffDTO.Name, buffDTO.FirstBuffAttribute, buffDTO.SeccondBuffAttribute);
+                _unit.TamerSkillBuffRepository.Add(buff);
+                await _unit.Commit();
+
+                var skillDTO = tamerDTO.Skill;
+                var skill = new TamerSkill(skillDTO.Name, skillDTO.Description, skillDTO.CoolDown, buff.Id);
+                _unit.TamerSkillRepository.Add(skill);
+                await _unit.Commit();
+
+                var tamer = new Tamer(tamerDTO.Name, tamerDTO.Description, tamerDTO.AT, tamerDTO.DE, tamerDTO.DS, tamerDTO.HP, skill.Id);
+                _unit.TamerRepository.Add(tamer);
+                await _unit.Commit();
+
+                return "Sucesso!";
             }
             catch
             { throw; }

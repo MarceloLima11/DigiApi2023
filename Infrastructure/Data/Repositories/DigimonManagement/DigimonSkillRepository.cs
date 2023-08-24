@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Core.Entities.Digimon;
-using Core.Interfaces;
+using Core.Interfaces.DigimonManagement;
 using Infrastructure.Data.Context;
 using Infrastructure.Data.Repositories.Base;
 
-namespace Infrastructure.Data.Repositories
+namespace Infrastructure.Data.Repositories.DigimonManagement
 {
     public class DigimonSkillRepository : RepositoryBase<DigimonSkill>, IDigimonSkillRepository
     {

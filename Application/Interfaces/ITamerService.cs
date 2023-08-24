@@ -1,5 +1,5 @@
-using Application.DTOs;
 using Core.Entities.Tamer;
+using Application.DTOs.TamerManagement;
 
 namespace Application.Interfaces
 {
@@ -8,5 +8,6 @@ namespace Application.Interfaces
         Task<Tamer> GetTamer(int id);
         Task<IEnumerable<Tamer>> GetTamers();
         Task<TamerWithSkillAndBuffDTO> GetTamerWithSkillAndBuff(int id);
+        Task<string> CreateTamer(CreateTamerDTO tamerDTO);
     }
 }

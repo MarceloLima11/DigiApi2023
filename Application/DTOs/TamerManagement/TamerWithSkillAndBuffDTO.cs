@@ -1,8 +1,6 @@
-using Core.Entities.Tamer;
-using Core.Entities.Tamer.Buff;
 using Core.Enums;
 
-namespace Application.DTOs
+namespace Application.DTOs.TamerManagement
 {
     public class TamerWithSkillAndBuffDTO
     {

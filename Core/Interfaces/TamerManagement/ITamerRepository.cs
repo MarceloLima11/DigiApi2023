@@ -1,8 +1,7 @@
 using Core.Entities.Tamer;
-using Core.Entities.Tamer.Buff;
 using Core.Interfaces.Base;
 
-namespace Core.Interfaces
+namespace Core.Interfaces.TamerManagement
 {
     public interface ITamerRepository : IRepositoryBase<Tamer>
     {

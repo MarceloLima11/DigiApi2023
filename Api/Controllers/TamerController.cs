@@ -1,5 +1,7 @@
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Application.DTOs.TamerManagement;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Api.Controllers
 {
@@ -46,6 +48,20 @@ namespace Api.Controllers
             try
             {
                 var result = await _tamerService.GetTamerWithSkillAndBuff(id);
+                return Ok(result);
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTamer([FromBody] CreateTamerDTO tamerDTO)
+        {
+            try
+            {
+                var result = await _tamerService.CreateTamer(tamerDTO);
                 return Ok(result);
             }
             catch (Exception err)

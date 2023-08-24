@@ -1,9 +1,9 @@
-using Core.Interfaces;
-using Core.Interfaces.Base;
+using Core.Interfaces.DigimonManagement;
+using Core.Interfaces.TamerManagement;
 using Core.Interfaces.UnitOfWork;
 using Infrastructure.Data.Context;
-using Infrastructure.Data.Repositories;
-using Infrastructure.Data.Repositories.Base;
+using Infrastructure.Data.Repositories.DigimonManagement;
+using Infrastructure.Data.Repositories.TamerManagement;
 using Infrastructure.Data.Repositories.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

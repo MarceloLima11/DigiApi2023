@@ -13,6 +13,7 @@ namespace Core.Enums
         [EnumDataType(typeof(int))]
         Mega,
         [EnumDataType(typeof(int))]
-        BurstMode
+        BurstMode,
+        Armor
     }
 }
