@@ -1,5 +1,7 @@
 using Core.Entities.Digimon;
 using Core.Entities.Tamer;
+using Core.Entities.Tamer.Buff;
+using Core.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Extensions
@@ -8,8 +10,24 @@ namespace Infrastructure.Data.Extensions
     {
         public static void DataSeed(this ModelBuilder builder)
         {
+            TamerSkillBuffSeed(builder);
+            TamerSkillSeed(builder);
             TamerSeed(builder);
             DigimonSeed(builder);
+        }
+
+        private static void TamerSkillBuffSeed(this ModelBuilder builder)
+        {
+            TamerSkillBuff tsb1 = new TamerSkillBuff(1, "Rage of Keenan", DigimonAttribute.Vaccine, DigimonAttribute.No);
+
+            builder.Entity<TamerSkillBuff>().HasData(tsb1);
+        }
+
+        private static void TamerSkillSeed(this ModelBuilder builder)
+        {
+            TamerSkill ts1 = new TamerSkill(1, "Shock", "Critical hit damage increase by 100% for 30 seconds.", 2, 1);
+
+            builder.Entity<TamerSkill>().HasData(ts1);
         }
 
         private static void TamerSeed(this ModelBuilder builder)
@@ -19,13 +37,6 @@ namespace Infrastructure.Data.Extensions
             builder.Entity<Tamer>().HasData(
                 t1
             );
-        }
-
-        private static void TamerSkillSeed(this ModelBuilder builder)
-        {
-            // builder.Entity<TamerSkill>().HasData(
-            //     new TamerSkill { Id = 1, Name = "Shock", Description = "Critical hit damage increase by 100% for 30 seconds.", CoolDown = 2, TamerSkillBuffId }
-            // );
         }
 
         private static void DigimonSeed(ModelBuilder builder)

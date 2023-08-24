@@ -11,9 +11,5 @@ namespace Application.Services
         public DigimonService(IDigimonRepository digimonRepository)
         { _digimonRepository = digimonRepository; }
 
-        public async Task<List<Digimon>> GetDigimons()
-        {
-            return await _digimonRepository.GetDigimons();
-        }
     }
 }

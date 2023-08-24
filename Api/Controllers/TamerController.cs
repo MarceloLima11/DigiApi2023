@@ -25,5 +25,33 @@ namespace Api.Controllers
                 return BadRequest(err.Message);
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTamer(int id)
+        {
+            try
+            {
+                var result = await _tamerService.GetTamer(id);
+                return Ok(result);
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
+
+        [HttpGet("skill/buff/{id}")]
+        public async Task<IActionResult> GetTamerWithSkillAndBuff(int id)
+        {
+            try
+            {
+                var result = await _tamerService.GetTamerWithSkillAndBuff(id);
+                return Ok(result);
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
     }
 }

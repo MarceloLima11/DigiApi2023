@@ -18,14 +18,14 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     @as = table.Column<float>(name: "as", type: "real", nullable: false),
-                    ct = table.Column<string>(type: "text", nullable: false),
+                    ct = table.Column<string>(type: "text", nullable: true),
                     ht = table.Column<int>(type: "integer", nullable: false),
-                    ev = table.Column<string>(type: "text", nullable: false),
+                    ev = table.Column<string>(type: "text", nullable: true),
                     form = table.Column<int>(type: "integer", nullable: false),
                     attribute = table.Column<int>(type: "integer", nullable: false),
                     elemental_attribute = table.Column<int>(type: "integer", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    description = table.Column<string>(type: "text", nullable: true),
                     hp = table.Column<int>(type: "integer", nullable: false),
                     ds = table.Column<int>(type: "integer", nullable: false),
                     de = table.Column<int>(type: "integer", nullable: false),
@@ -42,9 +42,9 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    activation_percentage = table.Column<string>(type: "text", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false)
+                    activation_percentage = table.Column<string>(type: "text", nullable: true),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,32 +57,13 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Abbreviation = table.Column<string>(type: "text", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false)
+                    Abbreviation = table.Column<string>(type: "text", nullable: true),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("id_family", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tamer",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TamerSkillId = table.Column<int>(type: "integer", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false),
-                    hp = table.Column<int>(type: "integer", nullable: false),
-                    ds = table.Column<int>(type: "integer", nullable: false),
-                    de = table.Column<int>(type: "integer", nullable: false),
-                    at = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("id_tamer", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,7 +72,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: true),
                     first_attribute = table.Column<int>(type: "integer", nullable: false),
                     seccond_attribute = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -136,9 +117,9 @@ namespace Infrastructure.Migrations
                     necessary_skill_point = table.Column<int>(type: "integer", nullable: false),
                     animation_time = table.Column<float>(type: "real", nullable: false),
                     DigimonId = table.Column<int>(type: "integer", nullable: false),
-                    DigimonSkillBuffId = table.Column<int>(type: "integer", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false)
+                    DigimonSkillBuffId = table.Column<int>(type: "integer", nullable: true),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -153,8 +134,7 @@ namespace Infrastructure.Migrations
                         name: "pk_digimon_skill_id",
                         column: x => x.DigimonSkillBuffId,
                         principalTable: "digimon_skill_buff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -188,20 +168,13 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     cd = table.Column<int>(type: "integer", nullable: false),
-                    TamerId = table.Column<int>(type: "integer", nullable: false),
                     TamerSkillBuffId = table.Column<int>(type: "integer", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "text", nullable: true),
+                    description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("id_ts", x => x.Id);
-                    table.ForeignKey(
-                        name: "id_tamer",
-                        column: x => x.TamerId,
-                        principalTable: "tamer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "id_tamer_skill_buff",
                         column: x => x.TamerSkillBuffId,
@@ -210,10 +183,45 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "tamer",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TamerSkillId = table.Column<int>(type: "integer", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    description = table.Column<string>(type: "text", nullable: true),
+                    hp = table.Column<int>(type: "integer", nullable: false),
+                    ds = table.Column<int>(type: "integer", nullable: false),
+                    de = table.Column<int>(type: "integer", nullable: false),
+                    at = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("id_tamer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tamer_tamer_skill_TamerSkillId",
+                        column: x => x.TamerSkillId,
+                        principalTable: "tamer_skill",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "tamer_skill_buff",
+                columns: new[] { "Id", "first_attribute", "name", "seccond_attribute" },
+                values: new object[] { 1, 1, "Rage of Keenan", 3 });
+
+            migrationBuilder.InsertData(
+                table: "tamer_skill",
+                columns: new[] { "Id", "cd", "description", "name", "TamerSkillBuffId" },
+                values: new object[] { 1, 2, "Critical hit damage increase by 100% for 30 seconds.", "Shock", 1 });
+
             migrationBuilder.InsertData(
                 table: "tamer",
                 columns: new[] { "Id", "at", "de", "ds", "description", "hp", "name", "TamerSkillId" },
-                values: new object[] { 1, 10, 2, 80, "MARCOOOOOOO!", 90, "Marcus Damon", 0 });
+                values: new object[] { 1, 1, 90, 80, "How opposed to the other members of DATS, Marcus Damon, Yoshino Fujieda, and Thomas H. Norstein, Keenan did not live in the human world, nor did he originally have a particular liking for it.", 10, "Keenan Crier", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_digimon_evolution_EvolutionsId",
@@ -233,12 +241,13 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_digimon_skill_DigimonSkillBuffId",
                 table: "digimon_skill",
-                column: "DigimonSkillBuffId");
+                column: "DigimonSkillBuffId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_tamer_skill_TamerId",
-                table: "tamer_skill",
-                column: "TamerId",
+                name: "IX_tamer_TamerSkillId",
+                table: "tamer",
+                column: "TamerSkillId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -260,7 +269,7 @@ namespace Infrastructure.Migrations
                 name: "digimon_skill");
 
             migrationBuilder.DropTable(
-                name: "tamer_skill");
+                name: "tamer");
 
             migrationBuilder.DropTable(
                 name: "family");
@@ -272,7 +281,7 @@ namespace Infrastructure.Migrations
                 name: "digimon_skill_buff");
 
             migrationBuilder.DropTable(
-                name: "tamer");
+                name: "tamer_skill");
 
             migrationBuilder.DropTable(
                 name: "tamer_skill_buff");

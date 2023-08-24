@@ -7,6 +7,8 @@ namespace Core.Entities.Digimon
 {
     public sealed class Digimon : CharacterEntity
     {
+        public Digimon() { }
+
         public Digimon(string name, string description, int hp, int ds, int de, int at, float attackSpeed,
         string ct, int ht, string ev, Form form, DigimonAttribute attribute, ElementalAttribute elementalAttribute)
         {

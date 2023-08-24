@@ -7,6 +7,8 @@ namespace Core.Entities.Digimon
 {
     public class DigimonSkill : BaseEntity
     {
+        public DigimonSkill() { }
+
         public DigimonSkill(int id, string name, string description, ElementalAttribute attribute, int cd, int dsConsumed, int necessarySkillPoint, float animationTime, int digimonId, int digimonSkillBuffId)
         {
             DomainException.When(id < 0, "Valor de id inválido.");

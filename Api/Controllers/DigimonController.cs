@@ -12,18 +12,18 @@ namespace Api.Controllers
         public DigimonController(IDigimonService digimonService)
         { _digimonService = digimonService; }
 
-        [HttpGet]
-        public async Task<IActionResult> GetDigimons()
-        {
-            try
-            {
-                var result = await _digimonService.GetDigimons();
-                return Ok(result);
-            }
-            catch (Exception err)
-            {
-                return BadRequest(err.Message);
-            }
-        }
+        // [HttpGet]
+        // public async Task<IActionResult> GetDigimons()
+        // {
+        //     try
+        //     {
+        //         var result = await _digimonService.GetDigimons();
+        //         return Ok(result);
+        //     }
+        //     catch (Exception err)
+        //     {
+        //         return BadRequest(err.Message);
+        //     }
+        // }
     }
 }

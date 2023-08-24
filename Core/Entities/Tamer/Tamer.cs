@@ -5,10 +5,13 @@ namespace Core.Entities.Tamer
 {
     public sealed class Tamer : CharacterEntity
     {
+        public Tamer() { }
+
         public Tamer(string name, string description, int hp, int ds, int de, int at, int idSkill)
         {
             ValidateTamer(name, description, hp, ds, de, at, idSkill);
         }
+
         public Tamer(int id, string name, string description, int hp, int ds, int de, int at, int idSkill)
         {
             DomainException.When(id < 0, "Valor de id inválido.");

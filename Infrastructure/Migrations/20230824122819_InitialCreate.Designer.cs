@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230823144147_InitialCreate")]
+    [Migration("20230824122819_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,17 +34,14 @@ namespace Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ActivationPercentage")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("activation_percentage");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
@@ -75,7 +72,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("attribute");
 
                     b.Property<string>("CT")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ct");
 
@@ -88,12 +84,10 @@ namespace Infrastructure.Migrations
                         .HasColumnName("ds");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<string>("EV")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ev");
 
@@ -114,7 +108,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("ht");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
@@ -149,7 +142,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("ds_consumed");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
@@ -157,11 +149,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("DigimonSkillBuffId")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
@@ -174,7 +164,8 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("DigimonId");
 
-                    b.HasIndex("DigimonSkillBuffId");
+                    b.HasIndex("DigimonSkillBuffId")
+                        .IsUnique();
 
                     b.ToTable("digimon_skill", (string)null);
                 });
@@ -188,16 +179,13 @@ namespace Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Abbreviation")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
@@ -235,7 +223,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("first_attribute");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
@@ -247,6 +234,15 @@ namespace Infrastructure.Migrations
                         .HasName("id_tsb");
 
                     b.ToTable("tamer_skill_buff", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FirstBuffAttribute = 1,
+                            Name = "Rage of Keenan",
+                            SeccondBuffAttribute = 3
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Tamer.Tamer", b =>
@@ -270,7 +266,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("ds");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
@@ -279,7 +274,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("hp");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
@@ -289,19 +283,22 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("id_tamer");
 
+                    b.HasIndex("TamerSkillId")
+                        .IsUnique();
+
                     b.ToTable("tamer", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            AT = 10,
-                            DE = 2,
+                            AT = 1,
+                            DE = 90,
                             DS = 80,
-                            Description = "MARCOOOOOOO!",
-                            HP = 90,
-                            Name = "Marcus Damon",
-                            TamerSkillId = 0
+                            Description = "How opposed to the other members of DATS, Marcus Damon, Yoshino Fujieda, and Thomas H. Norstein, Keenan did not live in the human world, nor did he originally have a particular liking for it.",
+                            HP = 10,
+                            Name = "Keenan Crier",
+                            TamerSkillId = 1
                         });
                 });
 
@@ -318,17 +315,12 @@ namespace Infrastructure.Migrations
                         .HasColumnName("cd");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
-
-                    b.Property<int>("TamerId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("TamerSkillBuffId")
                         .HasColumnType("integer");
@@ -336,12 +328,19 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("id_ts");
 
-                    b.HasIndex("TamerId")
-                        .IsUnique();
-
                     b.HasIndex("TamerSkillBuffId");
 
                     b.ToTable("tamer_skill", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CoolDown = 2,
+                            Description = "Critical hit damage increase by 100% for 30 seconds.",
+                            Name = "Shock",
+                            TamerSkillBuffId = 1
+                        });
                 });
 
             modelBuilder.Entity("DigimonDigimon", b =>
@@ -369,10 +368,8 @@ namespace Infrastructure.Migrations
                         .HasConstraintName("id_digimon");
 
                     b.HasOne("Core.Entities.Digimon.Buff.DigimonSkillBuff", "DigimonSkillBuff")
-                        .WithMany()
-                        .HasForeignKey("DigimonSkillBuffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
+                        .WithOne()
+                        .HasForeignKey("Core.Entities.Digimon.DigimonSkill", "DigimonSkillBuffId")
                         .HasConstraintName("pk_digimon_skill_id");
 
                     b.Navigation("Digimon");
@@ -399,23 +396,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("Family");
                 });
 
+            modelBuilder.Entity("Core.Entities.Tamer.Tamer", b =>
+                {
+                    b.HasOne("Core.Entities.Tamer.TamerSkill", "TamerSkill")
+                        .WithOne()
+                        .HasForeignKey("Core.Entities.Tamer.Tamer", "TamerSkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TamerSkill");
+                });
+
             modelBuilder.Entity("Core.Entities.Tamer.TamerSkill", b =>
                 {
-                    b.HasOne("Core.Entities.Tamer.Tamer", "Tamer")
-                        .WithOne("TamerSkill")
-                        .HasForeignKey("Core.Entities.Tamer.TamerSkill", "TamerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("id_tamer");
-
                     b.HasOne("Core.Entities.Tamer.Buff.TamerSkillBuff", "TamerSkillBuff")
                         .WithMany("TamerSkills")
                         .HasForeignKey("TamerSkillBuffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("id_tamer_skill_buff");
-
-                    b.Navigation("Tamer");
 
                     b.Navigation("TamerSkillBuff");
                 });
@@ -450,12 +449,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.Tamer.Buff.TamerSkillBuff", b =>
                 {
                     b.Navigation("TamerSkills");
-                });
-
-            modelBuilder.Entity("Core.Entities.Tamer.Tamer", b =>
-                {
-                    b.Navigation("TamerSkill")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -6,6 +6,8 @@ namespace Core.Entities.Tamer
 {
     public sealed class TamerSkill : BaseEntity
     {
+        public TamerSkill() { }
+
         public TamerSkill(string name, string description, int cd, int buffId)
         {
             ValidateTamerSkill(name, description, cd, buffId);

@@ -1,20 +1,21 @@
 using Core.Entities.Tamer;
+using Core.Entities.Tamer.Buff;
 using Core.Interfaces;
 using Infrastructure.Data.Context;
+using Infrastructure.Data.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories
 {
-    public class TamerRepository : ITamerRepository
+    public class TamerRepository : RepositoryBase<Tamer>, ITamerRepository
     {
-        protected readonly ApplicationDbContext _context;
+        public TamerRepository(ApplicationDbContext _context) : base(_context)
+        { }
 
-        public TamerRepository(ApplicationDbContext context)
-        { _context = context; }
-
-        public async Task<List<Tamer>> GetTamers()
+        public async Task<Tamer> GetTamerAndSkill(int id)
         {
-            return await _context.Tamer.ToListAsync();
+            return await _dbSet.Include(x => x.TamerSkill)
+            .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

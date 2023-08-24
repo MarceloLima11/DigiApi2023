@@ -4,6 +4,6 @@ namespace Application.Interfaces
 {
     public interface IDigimonService
     {
-        Task<List<Digimon>> GetDigimons();
+        //Task<List<Digimon>> GetDigimons();
     }
 }

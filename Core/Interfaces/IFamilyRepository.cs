@@ -3,7 +3,6 @@ using Core.Interfaces.Base;
 
 namespace Core.Interfaces
 {
-    public interface IDigimonRepository : IRepositoryBase<Digimon>
-    {
-    }
+    public interface IFamilyRepository : IRepositoryBase<Family>
+    { }
 }

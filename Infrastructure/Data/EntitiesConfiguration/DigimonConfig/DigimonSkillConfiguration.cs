@@ -20,7 +20,11 @@ namespace Infrastructure.Data.EntitiesConfiguration.DigimonConfig
             builder.Property(x => x.CoolDown).HasColumnName("cd");
             builder.Property(x => x.NecessarySkillPoint).HasColumnName("necessary_skill_point");
 
-            builder.HasOne(x => x.DigimonSkillBuff).WithMany().HasConstraintName("pk_digimon_skill_id");
+
+
+            builder.HasOne(x => x.DigimonSkillBuff).WithOne().HasForeignKey<DigimonSkill>().HasConstraintName("pk_digimon_skill_id");
+
+            builder.Property(x => x.Attribute).HasConversion<int>();
         }
     }
 }

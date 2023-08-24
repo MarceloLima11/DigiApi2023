@@ -1,5 +1,6 @@
 using Application.Interfaces;
 using Application.Services;
+using Core.Interfaces.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions

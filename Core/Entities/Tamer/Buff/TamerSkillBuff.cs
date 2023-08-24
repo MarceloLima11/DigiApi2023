@@ -5,6 +5,8 @@ namespace Core.Entities.Tamer.Buff
 {
     public class TamerSkillBuff
     {
+        public TamerSkillBuff() { }
+
         public TamerSkillBuff(string name, DigimonAttribute firstBuff, DigimonAttribute seccondBuff)
         {
             ValidateTamerSkillBuff(name, firstBuff, seccondBuff);

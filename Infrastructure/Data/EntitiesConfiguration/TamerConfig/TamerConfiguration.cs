@@ -19,8 +19,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.TamerConfig
             builder.Property(x => x.DS).HasColumnName("ds");
             builder.Property(x => x.HP).HasColumnName("hp");
 
-            // builder.HasOne(x => x.TamerSkill).WithOne(x => x.Tamer)
-            // .HasForeignKey<TamerSkill>(x => x.TamerId).HasConstraintName("id_tamer");
+            builder.HasOne(x => x.TamerSkill).WithOne()
+            .HasForeignKey<Tamer>(x => x.TamerSkillId);
         }
     }
 }
