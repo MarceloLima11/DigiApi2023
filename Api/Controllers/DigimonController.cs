@@ -1,3 +1,4 @@
+using Application.DTOs.DigimonManagement;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,17 +27,46 @@ namespace Api.Controllers
             }
         }
 
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> GetDigimon(int id)
-        // {
-        //     try
-        //     {
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDigimon(int id)
+        {
+            try
+            {
+                var result = await _digimonService.GetDigimon(id);
+                return Ok(result);
+            }
+            catch (Exception err)
+            {
+                return NotFound(err.Message);
+            }
+        }
 
-        //     }
-        //     catch (Exception err)
-        //     {
-        //         return BadRequest(err.Message);
-        //     }
-        // }
+        [HttpGet("skill/buff/family/{id}")]
+        public async Task<IActionResult> GetDigimonWithSkillBuffAndFamily(int id)
+        {
+            try
+            {
+                var result = await _digimonService.GetDigimonWithSkillBuffAndFamily(id);
+                return Ok(result);
+            }
+            catch (Exception err)
+            {
+                return NotFound(err.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateDigimon([FromBody] CreateDigimonDTO digimonDTO)
+        {
+            try
+            {
+                var result = await _digimonService.CreateDigimon(digimonDTO);
+                return Ok(result);
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace Core.Interfaces.UnitOfWork
         IDigimonSkillBuffRepository DigimonSkillBuffRepository { get; }
         IFamilyRepository FamilyRepository { get; }
 
+        IDigimonFamilyRepository DigimonFamilyRepository { get; }
 
         ITamerRepository TamerRepository { get; }
         ITamerSkillRepository TamerSkillRepository { get; }

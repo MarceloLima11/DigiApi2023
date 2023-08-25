@@ -14,7 +14,7 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private TamerRepository tamerRepository;
         private TamerSkillRepository tamerSkillRepository;
         private TamerSkillBuffRepository tamerSkillBuffRepository;
-
+        private DigimonFamilyRepository digimonFamilyRepository;
         private DigimonRepository digimonRepository;
         private DigimonSkillBuffRepository digimonSkillBuffRepository;
         private DigimonSkillRepository digimonSkillRepository;
@@ -53,6 +53,14 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             }
         }
 
+        public IDigimonFamilyRepository DigimonFamilyRepository
+        {
+            get
+            {
+                if (digimonFamilyRepository == null) return new DigimonFamilyRepository(context);
+                return digimonFamilyRepository;
+            }
+        }
 
         public IDigimonRepository DigimonRepository
         {

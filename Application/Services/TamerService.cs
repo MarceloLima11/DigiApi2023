@@ -15,14 +15,41 @@ namespace Application.Services
             _unit = unit;
         }
 
-        public async Task<IEnumerable<Tamer>> GetTamers()
+        public async Task<IEnumerable<TamerDTO>> GetTamers()
         {
-            return await _unit.TamerRepository.GetAll();
+            var tamersDTO = new List<TamerDTO>();
+            var tamers = await _unit.TamerRepository.GetAll();
+
+            foreach (Tamer tamer in tamers)
+            {
+                tamersDTO.Add(new TamerDTO
+                {
+                    Name = tamer.Name,
+                    Description = tamer.Description,
+                    AT = tamer.AT,
+                    DE = tamer.DE,
+                    DS = tamer.DS,
+                    HP = tamer.HP
+                });
+            }
+
+            return tamersDTO;
         }
 
-        public async Task<Tamer> GetTamer(int id)
+        public async Task<TamerDTO> GetTamer(int id)
         {
-            return await _unit.TamerRepository.GetById(id);
+            Tamer tamer = await _unit.TamerRepository.GetById(id);
+            TamerDTO tamerDTO = new()
+            {
+                Name = tamer.Name,
+                Description = tamer.Description,
+                AT = tamer.AT,
+                DE = tamer.DE,
+                DS = tamer.DS,
+                HP = tamer.HP
+            };
+
+            return tamerDTO;
         }
 
         public async Task<TamerWithSkillAndBuffDTO> GetTamerWithSkillAndBuff(int id)
