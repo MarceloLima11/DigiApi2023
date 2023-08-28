@@ -7,6 +7,7 @@ namespace Api.Controllers
 {
     [Route("tamer")]
     [ApiController]
+    [DisableCors]
     public class TamerController : ControllerBase
     {
         protected readonly ITamerService _tamerService;

@@ -1,5 +1,6 @@
 using Application.Extensions;
 using Infrastructure.Data.Extensions;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,16 @@ builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = "Bearer";
     opt.DefaultChallengeScheme = "Bearer";
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllRequest", x =>
+    {
+        x.AllowAnyOrigin();
+        x.AllowAnyHeader();
+        x.AllowAnyMethod();
+    });
 });
 
 builder.Services.AddControllers();
