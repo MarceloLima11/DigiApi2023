@@ -1,12 +1,10 @@
 using Application.Interfaces;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [ApiController]
     [Route("auth")]
-    [DisableCors]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

@@ -2,13 +2,11 @@ using Api.Attributes;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Application.DTOs.DigimonManagement;
-using Microsoft.AspNetCore.Cors;
 
 namespace Api.Controllers
 {
     [Route("digimon")]
     [ApiController]
-    [DisableCors]
     public class DigimonController : ControllerBase
     {
         protected readonly IDigimonService _digimonService;
