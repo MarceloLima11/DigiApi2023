@@ -30,7 +30,7 @@ namespace Infrastructure.Data.Extensions
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("ServerConnection");
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
