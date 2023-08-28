@@ -1,10 +1,12 @@
-using Core.Entities.Digimon;
+using Application.DTOs.DigimonManagement;
 
 namespace Application.Interfaces
 {
     public interface IDigimonService
     {
-        Task<IEnumerable<Digimon>> GetDigimons();
-        Task<Digimon> GetDigimon(int id);
+        Task<DigimonDTO> GetDigimon(int id);
+        Task<IEnumerable<DigimonDTO>> GetDigimons();
+        Task<DigimonWithSkillBuffAndFamilyDTO> GetDigimonWithSkillBuffAndFamily(int id);
+        Task<string> CreateDigimon(CreateDigimonDTO digimonDTO);
     }
 }

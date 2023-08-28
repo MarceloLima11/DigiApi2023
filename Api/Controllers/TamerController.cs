@@ -1,7 +1,7 @@
+using Api.Attributes;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Application.DTOs.TamerManagement;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Api.Controllers
 {
@@ -38,7 +38,7 @@ namespace Api.Controllers
             }
             catch (Exception err)
             {
-                return BadRequest(err.Message);
+                return NotFound(err.Message);
             }
         }
 
@@ -52,11 +52,12 @@ namespace Api.Controllers
             }
             catch (Exception err)
             {
-                return BadRequest(err.Message);
+                return NotFound(err.Message);
             }
         }
 
         [HttpPost]
+        [AuthorizeDeveloper]
         public async Task<IActionResult> CreateTamer([FromBody] CreateTamerDTO tamerDTO)
         {
             try

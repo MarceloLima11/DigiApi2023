@@ -2,6 +2,7 @@ using Core.Entities.Digimon;
 using Core.Interfaces.DigimonManagement;
 using Infrastructure.Data.Context;
 using Infrastructure.Data.Repositories.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories.DigimonManagement
 {
@@ -9,5 +10,10 @@ namespace Infrastructure.Data.Repositories.DigimonManagement
     {
         public DigimonSkillRepository(ApplicationDbContext context) : base(context)
         { }
+
+        public async Task<DigimonSkill> GetSkillByDigimon(int id)
+        {
+            return await _dbSet.FirstOrDefaultAsync(x => x.DigimonId == id);
+        }
     }
 }

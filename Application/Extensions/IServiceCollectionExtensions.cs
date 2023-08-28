@@ -1,6 +1,6 @@
-using Application.Interfaces;
 using Application.Services;
-using Core.Interfaces.UnitOfWork;
+using Application.Interfaces;
+using Application.Services.Auth;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions
@@ -14,6 +14,8 @@ namespace Application.Extensions
 
         private static void AddServices(this IServiceCollection services)
         {
+            services.AddSingleton<IAuthService, AuthService>();
+
             services.AddTransient<ITamerService, TamerService>();
             services.AddTransient<IDigimonService, DigimonService>();
         }

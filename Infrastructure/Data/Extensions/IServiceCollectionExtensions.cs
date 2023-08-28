@@ -1,13 +1,22 @@
-using Core.Interfaces.DigimonManagement;
-using Core.Interfaces.TamerManagement;
+using Core.Interfaces.Auth;
+
+
+using Infrastructure.Data.Auth;
 using Core.Interfaces.UnitOfWork;
 using Infrastructure.Data.Context;
+
+using Microsoft.EntityFrameworkCore;
+
+
+using Core.Interfaces.TamerManagement;
+
+using Core.Interfaces.DigimonManagement;
+using Microsoft.Extensions.Configuration;
+
+using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Data.Repositories.UnitOfWork;
 using Infrastructure.Data.Repositories.DigimonManagement;
 using Infrastructure.Data.Repositories.TamerManagement;
-using Infrastructure.Data.Repositories.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Data.Extensions
 {
@@ -21,17 +30,20 @@ namespace Infrastructure.Data.Extensions
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("ServerConnection");
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseNpgsql(connectionString);
+                //options.EnableSensitiveDataLogging();
+                //options.LogTo(Console.WriteLine);
             });
         }
 
         public static void AddRepository(this IServiceCollection services)
         {
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IAuthenticateUser, AuthenticateUser>();
 
             services.AddTransient<ITamerRepository, TamerRepository>();
             services.AddTransient<ITamerSkillRepository, TamerSkillRepository>();
