@@ -1,3 +1,4 @@
+using Core.Entities.Auth;
 using Core.Entities.Digimon;
 using Core.Entities.Digimon.Buff;
 using Core.Entities.Intermediate;
@@ -23,6 +24,9 @@ namespace Infrastructure.Data.Context
 
         // Intermediate
         public DbSet<DigimonFamilyIntermediate> DigimonFamilyIntermediate => Set<DigimonFamilyIntermediate>();
+
+        // Auth
+        public DbSet<AuthorizedDevelopers> AuthorizedDevelopers => Set<AuthorizedDevelopers>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -7,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddApplicationLayer();
-//ModelBuilderExtensions.DataSeed();
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = "Bearer";
+    opt.DefaultChallengeScheme = "Bearer";
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -25,6 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,3 +1,4 @@
+using Api.Attributes;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Application.DTOs.TamerManagement;
@@ -56,6 +57,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
+        [AuthorizeDeveloper]
         public async Task<IActionResult> CreateTamer([FromBody] CreateTamerDTO tamerDTO)
         {
             try

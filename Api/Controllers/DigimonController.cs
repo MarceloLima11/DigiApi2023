@@ -1,6 +1,7 @@
-using Application.DTOs.DigimonManagement;
+using Api.Attributes;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Application.DTOs.DigimonManagement;
 
 namespace Api.Controllers
 {
@@ -56,6 +57,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
+        [AuthorizeDeveloper]
         public async Task<IActionResult> CreateDigimon([FromBody] CreateDigimonDTO digimonDTO)
         {
             try
