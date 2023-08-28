@@ -2,6 +2,7 @@ using Api.Attributes;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Application.DTOs.TamerManagement;
+using Microsoft.AspNetCore.Cors;
 
 namespace Api.Controllers
 {
