@@ -7,6 +7,5 @@ namespace Application.Interfaces
         Task<TamerDTO> GetTamer(int id);
         Task<IEnumerable<TamerDTO>> GetTamers();
         Task<string> CreateTamer(CreateTamerDTO tamerDTO);
-        Task<TamerWithSkillAndBuffDTO> GetTamerWithSkillAndBuff(int id);
     }
 }

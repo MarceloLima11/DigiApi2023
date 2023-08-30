@@ -14,6 +14,7 @@ namespace Infrastructure.Data.Context
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
 
+        public DbSet<Riding> Riding => Set<Riding>();
         public DbSet<Digimon> Digimon => Set<Digimon>();
         public DbSet<DigimonSkill> DigimonSkill => Set<DigimonSkill>();
         public DbSet<DigimonSkillBuff> DigimonSkillBuff => Set<DigimonSkillBuff>();
@@ -24,6 +25,7 @@ namespace Infrastructure.Data.Context
 
         // Intermediate
         public DbSet<DigimonFamilyIntermediate> DigimonFamilyIntermediate => Set<DigimonFamilyIntermediate>();
+        public DbSet<DigimonRidingIntermediate> DigimonRidingIntermediate => Set<DigimonRidingIntermediate>();
 
         // Auth
         public DbSet<AuthorizedDevelopers> AuthorizedDevelopers => Set<AuthorizedDevelopers>();

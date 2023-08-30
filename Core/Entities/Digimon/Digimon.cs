@@ -33,6 +33,7 @@ namespace Core.Entities.Digimon
         public ICollection<Digimon> Evolutions { get; set; }
         public ICollection<DigimonFamilyIntermediate> Families { get; set; }
         public ICollection<DigimonSkill> Skills { get; set; }
+        public ICollection<DigimonRidingIntermediate> Ridings { get; set; }
 
         private void ValidateDigimon(string name, string description, int hp, int ds, int de, int at, float attackSpeed,
         string ct, int ht, string ev, Form form, DigimonAttribute attribute, ElementalAttribute elementalAttribute)
