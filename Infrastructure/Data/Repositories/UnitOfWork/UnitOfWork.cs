@@ -21,6 +21,8 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private FamilyRepository familyRepository;
         private DigimonRidingRepository digimonRidingRepository;
         private RidingRepository ridingRepository;
+        private EvolutionItemRepository evolutionItemRepository;
+        private DigimonEvolutionItemRepository digimonEvolutionItemRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -115,6 +117,24 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (ridingRepository == null) return new RidingRepository(context);
                 return ridingRepository;
+            }
+        }
+
+        public IEvolutionItemRepository EvolutionItemRepository
+        {
+            get
+            {
+                if (evolutionItemRepository == null) return new EvolutionItemRepository(context);
+                return evolutionItemRepository;
+            }
+        }
+
+        public IDigimonEvolutionItemRepository DigimonEvolutionItemRepository
+        {
+            get
+            {
+                if (digimonEvolutionItemRepository == null) return new DigimonEvolutionItemRepository(context);
+                return digimonEvolutionItemRepository;
             }
         }
 

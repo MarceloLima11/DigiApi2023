@@ -21,5 +21,6 @@ namespace Application.DTOs.DigimonManagement
         public List<RidingDTO> Ridings { get; set; }
         public SkillDTO Skill { get; set; }
         public List<FamilyDTO> Families { get; set; }
+        public List<EvolutionItemDTO> EvolutionItens { get; set; }
     }
 }

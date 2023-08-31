@@ -240,15 +240,26 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Drop")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
 
-                    b.ToTable("EvolutionItem");
+                    b.HasKey("Id")
+                        .HasName("id");
+
+                    b.ToTable("evolution_item", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Digi-Egg of Courage",
+                            Quantity = 1
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Digimon.Family", b =>
@@ -309,9 +320,39 @@ namespace Infrastructure.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id")
-                        .HasName("id");
+                        .HasName("id_riding");
 
                     b.ToTable("riding", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "TESTEEEEEEE",
+                            Name = "ModeSelector"
+                        });
+                });
+
+            modelBuilder.Entity("Core.Entities.Intermediate.DigimonEvolutionItemIntermediate", b =>
+                {
+                    b.Property<int>("DigimonId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EvolutionItemId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("DigimonId", "EvolutionItemId");
+
+                    b.HasIndex("EvolutionItemId");
+
+                    b.ToTable("digimon_evolutionitem", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            DigimonId = 1,
+                            EvolutionItemId = 1
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Intermediate.DigimonFamilyIntermediate", b =>
@@ -327,6 +368,18 @@ namespace Infrastructure.Migrations
                     b.HasIndex("FamilyId");
 
                     b.ToTable("digimon_family", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            DigimonId = 1,
+                            FamilyId = 1
+                        },
+                        new
+                        {
+                            DigimonId = 1,
+                            FamilyId = 2
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Intermediate.DigimonRidingIntermediate", b =>
@@ -346,6 +399,14 @@ namespace Infrastructure.Migrations
                     b.HasIndex("RidingId");
 
                     b.ToTable("digimon_riding", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            DigimonId = 1,
+                            RidingId = 1,
+                            Quantity = 5
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Tamer.Buff.TamerSkillBuff", b =>
@@ -515,6 +576,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("DigimonSkillBuff");
                 });
 
+            modelBuilder.Entity("Core.Entities.Intermediate.DigimonEvolutionItemIntermediate", b =>
+                {
+                    b.HasOne("Core.Entities.Digimon.Digimon", "Digimon")
+                        .WithMany("EvolutionItens")
+                        .HasForeignKey("DigimonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Digimon.EvolutionItem", "EvolutionItem")
+                        .WithMany("Digimons")
+                        .HasForeignKey("EvolutionItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Digimon");
+
+                    b.Navigation("EvolutionItem");
+                });
+
             modelBuilder.Entity("Core.Entities.Intermediate.DigimonFamilyIntermediate", b =>
                 {
                     b.HasOne("Core.Entities.Digimon.Digimon", "Digimon")
@@ -593,11 +673,18 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Digimon.Digimon", b =>
                 {
+                    b.Navigation("EvolutionItens");
+
                     b.Navigation("Families");
 
                     b.Navigation("Ridings");
 
                     b.Navigation("Skills");
+                });
+
+            modelBuilder.Entity("Core.Entities.Digimon.EvolutionItem", b =>
+                {
+                    b.Navigation("Digimons");
                 });
 
             modelBuilder.Entity("Core.Entities.Digimon.Family", b =>

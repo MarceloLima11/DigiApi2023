@@ -55,7 +55,6 @@ namespace Infrastructure.Data.Extensions
             services.AddTransient<IDigimonRidingRepository, DigimonRidingRepository>();
             services.AddTransient<IFamilyRepository, FamilyRepository>();
             services.AddTransient<IRidingRepository, RidingRepository>();
-
         }
     }
 }

@@ -24,8 +24,50 @@ namespace Application.Services
 
                 foreach (Digimon digimon in digimons)
                 {
-                    digimonsDTO.Add(new DigimonDTO
+                    DigimonSkill skill = await _unit.DigimonSkillRepository.GetSkillByDigimon(digimon.Id);
+                    BuffDTO buffDTO = null;
+                    DigimonSkillBuff buff = null;
+                    if (skill.DigimonSkillBuffId != null)
                     {
+                        buff = await _unit.DigimonSkillBuffRepository.GetById((int)skill.DigimonSkillBuffId);
+
+                        buffDTO = new BuffDTO()
+                        {
+                            Name = buff.Name,
+                            Description = buff.Description,
+                            ActivationPercentage = buff.ActivationPercentage
+                        };
+                    }
+
+                    var skillDTO = new SkillDTO()
+                    {
+                        Name = skill.Name,
+                        Description = skill.Description,
+                        AnimationTime = skill.AnimationTime,
+                        Attribute = skill.Attribute,
+                        CoolDown = skill.CoolDown,
+                        DSConsumed = skill.DSConsumed,
+                        NecessarySkillPoint = skill.NecessarySkillPoint,
+                        Buff = buffDTO
+                    };
+
+                    var familiesDTO = new List<FamilyDTO>();
+                    var digimonFamiliesIntermediate = await _unit.DigimonFamilyRepository.GetDigimonFamilyIntermediatesByDigimon(digimon.Id);
+                    foreach (var intermediate in digimonFamiliesIntermediate)
+                    {
+                        Family family = await _unit.FamilyRepository.GetById(intermediate.FamilyId);
+
+                        familiesDTO.Add(new FamilyDTO
+                        {
+                            Name = family.Name,
+                            Description = family.Description,
+                            Abbreviation = family.Abbreviation
+                        });
+                    }
+
+                    DigimonDTO digimonDTO = new()
+                    {
+                        Id = digimon.Id,
                         Name = digimon.Name,
                         Description = digimon.Description,
                         AS = digimon.AS,
@@ -38,8 +80,45 @@ namespace Application.Services
                         EV = digimon.EV,
                         Form = digimon.Form,
                         HP = digimon.HP,
-                        HT = digimon.HT
-                    });
+                        HT = digimon.HT,
+                        Skill = skillDTO,
+                        Families = familiesDTO
+                    };
+
+                    if (digimon.CanBeRiding)
+                    {
+                        var ridingsDTO = new List<RidingDTO>();
+                        var digimonRidingsIntermediate = await _unit.DigimonRidingRepository.GetDigimonRidingIntermediatesByDigimon(digimon.Id);
+                        foreach (var dri in digimonRidingsIntermediate)
+                        {
+                            Riding riding = await _unit.RidingRepository.GetById(dri.RidingId);
+                            ridingsDTO.Add(new RidingDTO
+                            {
+                                Item = riding.Name,
+                                Quantity = dri.Quantity
+                            });
+                        }
+
+                        digimonDTO.Ridings = ridingsDTO;
+                    }
+                    else
+                        digimonDTO.Ridings = null;
+
+                    var evolutionItensDTO = new List<EvolutionItemDTO>();
+                    var evolutionItensIntermediate = await _unit.DigimonEvolutionItemRepository
+                        .GetDigimonEvolutionItemIntermediatesByDigimon(digimon.Id);
+                    foreach (var evoItem in evolutionItensIntermediate)
+                    {
+                        EvolutionItem evolutionItem = await _unit.EvolutionItemRepository.GetById(evoItem.EvolutionItemId);
+                        evolutionItensDTO.Add(new EvolutionItemDTO
+                        {
+                            Name = evolutionItem.Name,
+                            Quantity = evolutionItem.Quantity
+                        });
+                    }
+                    digimonDTO.EvolutionItens = evolutionItensDTO;
+
+                    digimonsDTO.Add(digimonDTO);
                 }
 
                 return digimonsDTO;
@@ -135,6 +214,20 @@ namespace Application.Services
                 else
                     digimonDTO.Ridings = null;
 
+                var evolutionItensDTO = new List<EvolutionItemDTO>();
+                var evolutionItensIntermediate = await _unit.DigimonEvolutionItemRepository
+                    .GetDigimonEvolutionItemIntermediatesByDigimon(id);
+                foreach (var evoItem in evolutionItensIntermediate)
+                {
+                    EvolutionItem evolutionItem = await _unit.EvolutionItemRepository.GetById(evoItem.EvolutionItemId);
+                    evolutionItensDTO.Add(new EvolutionItemDTO
+                    {
+                        Name = evolutionItem.Name,
+                        Quantity = evolutionItem.Quantity
+                    });
+                }
+                digimonDTO.EvolutionItens = evolutionItensDTO;
+
                 return digimonDTO;
             }
             catch
@@ -164,12 +257,12 @@ namespace Application.Services
                     await _unit.Commit();
                 }
 
-                Digimon digimon = new Digimon(digimonDTO.Name, digimonDTO.Description, digimonDTO.HP, digimonDTO.DS, digimonDTO.DE, digimonDTO.AT, digimonDTO.AS, digimonDTO.CT, digimonDTO.HT, digimonDTO.EV, digimonDTO.Form, digimonDTO.Attribute, digimonDTO.ElementalAttribute, digimonDTO.CanBeRiding);
+                Digimon digimon = new(digimonDTO.Name, digimonDTO.Description, digimonDTO.HP, digimonDTO.DS, digimonDTO.DE, digimonDTO.AT, digimonDTO.AS, digimonDTO.CT, digimonDTO.HT, digimonDTO.EV, digimonDTO.Form, digimonDTO.Attribute, digimonDTO.ElementalAttribute, digimonDTO.CanBeRiding);
                 _unit.DigimonRepository.Add(digimon);
                 await _unit.Commit();
 
                 SkillDTO skillDTO = digimonDTO.Skill;
-                DigimonSkill skill = new DigimonSkill(skillDTO.Name, skillDTO.Description, skillDTO.Attribute, skillDTO.CoolDown, skillDTO.DSConsumed,
+                DigimonSkill skill = new(skillDTO.Name, skillDTO.Description, skillDTO.Attribute, skillDTO.CoolDown, skillDTO.DSConsumed,
                 skillDTO.NecessarySkillPoint, skillDTO.AnimationTime, digimon.Id, buff.Id);
                 _unit.DigimonSkillRepository.Add(skill);
                 await _unit.Commit();
@@ -187,16 +280,28 @@ namespace Application.Services
 
                 if (digimonDTO.CanBeRiding)
                 {
-                    foreach (int ridingId in digimonDTO.Ridings)
+                    foreach (var digimonRidingDTO in digimonDTO.Ridings)
                     {
                         var intermediate = new DigimonRidingIntermediate()
                         {
                             DigimonId = digimon.Id,
-                            RidingId = ridingId
+                            RidingId = digimonRidingDTO.RidingId,
+                            Quantity = digimonRidingDTO.Quantity
                         };
                         _unit.DigimonRidingRepository.Add(intermediate);
                         await _unit.Commit();
                     }
+                }
+
+                foreach (int evoItemId in digimonDTO.EvolutionItens)
+                {
+                    var intermediate = new DigimonEvolutionItemIntermediate()
+                    {
+                        DigimonId = digimon.Id,
+                        EvolutionItemId = evoItemId
+                    };
+                    _unit.DigimonEvolutionItemRepository.Add(intermediate);
+                    await _unit.Commit();
                 }
 
                 return "Sucesso!";

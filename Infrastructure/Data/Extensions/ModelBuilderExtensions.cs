@@ -1,9 +1,9 @@
+using Core.Enums;
+using Core.Entities.Tamer;
 using Core.Entities.Digimon;
+using Core.Entities.Tamer.Buff;
 using Core.Entities.Digimon.Buff;
 using Core.Entities.Intermediate;
-using Core.Entities.Tamer;
-using Core.Entities.Tamer.Buff;
-using Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,6 +23,10 @@ namespace Infrastructure.Data.Extensions
             DigimonSkillSeed(builder.Entity<DigimonSkill>());
             RidingSeed(builder.Entity<Riding>());
             DigimonRidingSeed(builder.Entity<DigimonRidingIntermediate>());
+            EvolutionItemSeed(builder.Entity<EvolutionItem>());
+            DigimonFamilySeed(builder.Entity<DigimonFamilyIntermediate>());
+            DigimonEvolutionItemSeed(builder.Entity<DigimonEvolutionItemIntermediate>());
+
         }
 
         private static void TamerSkillBuffSeed(EntityTypeBuilder<TamerSkillBuff> builder)
@@ -76,6 +80,14 @@ namespace Infrastructure.Data.Extensions
             builder.HasData(d1);
         }
 
+        private static void DigimonFamilySeed(EntityTypeBuilder<DigimonFamilyIntermediate> builder)
+        {
+            DigimonFamilyIntermediate dfi1 = new() { DigimonId = 1, FamilyId = 1 };
+            DigimonFamilyIntermediate dfi2 = new() { DigimonId = 1, FamilyId = 2 };
+
+            builder.HasData(dfi1, dfi2);
+        }
+
         private static void RidingSeed(EntityTypeBuilder<Riding> builder)
         {
             Riding r1 = new(1, "ModeSelector", "TESTEEEEEEE");
@@ -92,6 +104,24 @@ namespace Infrastructure.Data.Extensions
             };
 
             builder.HasData(dri1);
+        }
+
+        private static void EvolutionItemSeed(EntityTypeBuilder<EvolutionItem> builder)
+        {
+            EvolutionItem ei1 = new(1, "Digi-Egg of Courage", 1);
+
+            builder.HasData(ei1);
+        }
+
+        private static void DigimonEvolutionItemSeed(EntityTypeBuilder<DigimonEvolutionItemIntermediate> builder)
+        {
+            DigimonEvolutionItemIntermediate dei1 = new()
+            {
+                DigimonId = 1,
+                EvolutionItemId = 1
+            };
+
+            builder.HasData(dei1);
         }
     }
 }

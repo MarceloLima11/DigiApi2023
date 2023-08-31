@@ -8,6 +8,8 @@ namespace Core.Interfaces.UnitOfWork
         IDigimonRepository DigimonRepository { get; }
         IDigimonSkillRepository DigimonSkillRepository { get; }
         IDigimonSkillBuffRepository DigimonSkillBuffRepository { get; }
+        IEvolutionItemRepository EvolutionItemRepository { get; }
+        IDigimonEvolutionItemRepository DigimonEvolutionItemRepository { get; }
         IFamilyRepository FamilyRepository { get; }
         IRidingRepository RidingRepository { get; }
 

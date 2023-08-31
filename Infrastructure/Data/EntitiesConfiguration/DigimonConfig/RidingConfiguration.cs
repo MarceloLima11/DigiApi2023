@@ -9,7 +9,7 @@ namespace Infrastructure.Data.EntitiesConfiguration.DigimonConfig
         public void Configure(EntityTypeBuilder<Riding> builder)
         {
             builder.ToTable("riding");
-            builder.HasKey(x => x.Id).HasName("id");
+            builder.HasKey(x => x.Id).HasName("id_riding");
 
             builder.Property(x => x.Name).HasColumnName("name");
             builder.Property(x => x.Description).HasColumnName("description");
