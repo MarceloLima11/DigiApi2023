@@ -42,20 +42,6 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("skill/buff/family/{id}")]
-        public async Task<IActionResult> GetDigimonWithSkillBuffAndFamily(int id)
-        {
-            try
-            {
-                var result = await _digimonService.GetDigimonWithSkillBuffAndFamily(id);
-                return Ok(result);
-            }
-            catch (Exception err)
-            {
-                return NotFound(err.Message);
-            }
-        }
-
         [HttpPost]
         [AuthorizeDeveloper]
         public async Task<IActionResult> CreateDigimon([FromBody] CreateDigimonDTO digimonDTO)

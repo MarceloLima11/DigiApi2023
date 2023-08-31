@@ -1,7 +1,7 @@
-using Core.Interfaces.DigimonManagement;
-using Core.Interfaces.TamerManagement;
 using Core.Interfaces.UnitOfWork;
 using Infrastructure.Data.Context;
+using Core.Interfaces.TamerManagement;
+using Core.Interfaces.DigimonManagement;
 using Infrastructure.Data.Repositories.DigimonManagement;
 using Infrastructure.Data.Repositories.TamerManagement;
 
@@ -19,6 +19,8 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private DigimonSkillBuffRepository digimonSkillBuffRepository;
         private DigimonSkillRepository digimonSkillRepository;
         private FamilyRepository familyRepository;
+        private DigimonRidingRepository digimonRidingRepository;
+        private RidingRepository ridingRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -95,6 +97,24 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (familyRepository == null) return new FamilyRepository(context);
                 return familyRepository;
+            }
+        }
+
+        public IDigimonRidingRepository DigimonRidingRepository
+        {
+            get
+            {
+                if (digimonRidingRepository == null) return new DigimonRidingRepository(context);
+                return digimonRidingRepository;
+            }
+        }
+
+        public IRidingRepository RidingRepository
+        {
+            get
+            {
+                if (ridingRepository == null) return new RidingRepository(context);
+                return ridingRepository;
             }
         }
 

@@ -19,5 +19,7 @@ namespace Application.DTOs.DigimonManagement
         public ElementalAttribute ElementalAttribute { get; set; }
         public IEnumerable<int> Families { get; set; }
         public SkillDTO Skill { get; set; }
+        public bool CanBeRiding { get; set; }
+        public IEnumerable<int> Ridings { get; set; }
     }
 }

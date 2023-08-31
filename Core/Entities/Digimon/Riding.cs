@@ -1,10 +1,9 @@
-using Core.Common;
-using Core.Entities.Intermediate;
 using Core.Validations;
+using Core.Entities.Intermediate;
 
 namespace Core.Entities.Digimon
 {
-    public class Riding : BaseEntity
+    public class Riding
     {
         public Riding(int id, string name, string description)
         {
@@ -19,6 +18,10 @@ namespace Core.Entities.Digimon
             ValidateRiding(name, description);
         }
 
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+
         public ICollection<DigimonRidingIntermediate> Digimons { get; set; }
 
         private void ValidateRiding(string name, string description)
@@ -27,8 +30,8 @@ namespace Core.Entities.Digimon
 
             DomainException.When(String.IsNullOrEmpty(description), "Descrição inválido.");
 
-            name = Name;
-            description = Description;
+            Name = name;
+            Description = description;
         }
     }
 }

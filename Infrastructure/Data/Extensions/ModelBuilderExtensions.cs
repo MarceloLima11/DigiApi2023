@@ -1,5 +1,6 @@
 using Core.Entities.Digimon;
 using Core.Entities.Digimon.Buff;
+using Core.Entities.Intermediate;
 using Core.Entities.Tamer;
 using Core.Entities.Tamer.Buff;
 using Core.Enums;
@@ -20,6 +21,8 @@ namespace Infrastructure.Data.Extensions
             DigimonSkillBuffSeed(builder.Entity<DigimonSkillBuff>());
             DigimonSeed(builder.Entity<Digimon>());
             DigimonSkillSeed(builder.Entity<DigimonSkill>());
+            RidingSeed(builder.Entity<Riding>());
+            DigimonRidingSeed(builder.Entity<DigimonRidingIntermediate>());
         }
 
         private static void TamerSkillBuffSeed(EntityTypeBuilder<TamerSkillBuff> builder)
@@ -68,9 +71,27 @@ namespace Infrastructure.Data.Extensions
 
         private static void DigimonSeed(EntityTypeBuilder<Digimon> builder)
         {
-            Digimon d1 = new(1, "Flamedramon", "Flamedramon is a Dragon Man Digimon Armor which evolved through the power of the Digi-Egg of Courage, whose names and design are derived from Flame Dramon.", 2651, 1196, 82, 868, 2.323f, "20.81%", 515, "21%", Form.Armor, DigimonAttribute.Vaccine, ElementalAttribute.Fire);
+            Digimon d1 = new(1, "Flamedramon", "Flamedramon is a Dragon Man Digimon Armor which evolved through the power of the Digi-Egg of Courage, whose names and design are derived from Flame Dramon.", 2651, 1196, 82, 868, 2.323f, "20.81%", 515, "21%", Form.Armor, DigimonAttribute.Vaccine, ElementalAttribute.Fire, true);
 
             builder.HasData(d1);
+        }
+
+        private static void RidingSeed(EntityTypeBuilder<Riding> builder)
+        {
+            Riding r1 = new(1, "ModeSelector", "TESTEEEEEEE");
+            builder.HasData(r1);
+        }
+
+        private static void DigimonRidingSeed(EntityTypeBuilder<DigimonRidingIntermediate> builder)
+        {
+            DigimonRidingIntermediate dri1 = new()
+            {
+                DigimonId = 1,
+                RidingId = 1,
+                Quantity = 5
+            };
+
+            builder.HasData(dri1);
         }
     }
 }

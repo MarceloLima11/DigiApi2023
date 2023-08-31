@@ -4,6 +4,7 @@ namespace Application.DTOs.DigimonManagement
 {
     public class DigimonDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int HP { get; set; }
@@ -17,6 +18,8 @@ namespace Application.DTOs.DigimonManagement
         public Form Form { get; set; }
         public DigimonAttribute Attribute { get; set; }
         public ElementalAttribute ElementalAttribute { get; set; }
+        public List<RidingDTO> Ridings { get; set; }
         public SkillDTO Skill { get; set; }
+        public List<FamilyDTO> Families { get; set; }
     }
 }

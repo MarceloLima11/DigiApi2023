@@ -17,6 +17,7 @@ namespace Infrastructure.Data.Context
         public DbSet<Riding> Riding => Set<Riding>();
         public DbSet<Digimon> Digimon => Set<Digimon>();
         public DbSet<DigimonSkill> DigimonSkill => Set<DigimonSkill>();
+        public DbSet<EvolutionItem> EvolutionItem => Set<EvolutionItem>();
         public DbSet<DigimonSkillBuff> DigimonSkillBuff => Set<DigimonSkillBuff>();
 
         public DbSet<Tamer> Tamer => Set<Tamer>();

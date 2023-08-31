@@ -25,6 +25,7 @@ namespace Infrastructure.Data.EntitiesConfiguration.DigimonConfig
             builder.Property(x => x.HT).HasColumnName("ht");
             builder.Property(x => x.Form).HasColumnName("form");
             builder.Property(x => x.Attribute).HasColumnName("attribute");
+            builder.Property(x => x.CanBeRiding).HasColumnName("can_riding");
             builder.Property(x => x.ElementalAttribute).HasColumnName("elemental_attribute");
 
             builder.HasMany(x => x.Skills).WithOne(x => x.Digimon).HasConstraintName("id_digimon");

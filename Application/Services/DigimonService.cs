@@ -1,10 +1,10 @@
+using Core.Enums;
 using Core.Entities.Digimon;
 using Application.Interfaces;
 using Core.Entities.Digimon.Buff;
 using Core.Interfaces.UnitOfWork;
-using Application.DTOs.DigimonManagement;
-using Core.Enums;
 using Core.Entities.Intermediate;
+using Application.DTOs.DigimonManagement;
 
 namespace Application.Services
 {
@@ -52,46 +52,13 @@ namespace Application.Services
         {
             try
             {
-                var digimon = await _unit.DigimonRepository.GetById(id);
-                if (digimon is null)
-                    throw new NullReferenceException("Digimon não encontrado.");
-
-                DigimonDTO digimonDTO = new()
-                {
-                    Name = digimon.Name,
-                    Description = digimon.Description,
-                    AS = digimon.AS,
-                    AT = digimon.AT,
-                    Attribute = digimon.Attribute,
-                    CT = digimon.CT,
-                    DE = digimon.DE,
-                    DS = digimon.DS,
-                    ElementalAttribute = digimon.ElementalAttribute,
-                    EV = digimon.EV,
-                    Form = digimon.Form,
-                    HP = digimon.HP,
-                    HT = digimon.HT
-                };
-
-                return digimonDTO;
-            }
-            catch
-            { throw; }
-        }
-
-        public async Task<DigimonWithSkillBuffAndFamilyDTO> GetDigimonWithSkillBuffAndFamily(int id)
-        {
-            try
-            {
-                Digimon digimon = await _unit.DigimonRepository.GetById(id);
-                if (digimon is null)
-                    throw new Exception("Digimon não encontrado.");
+                var digimon = await _unit.DigimonRepository.GetById(id)
+                    ?? throw new NullReferenceException("Digimon não encontrado.");
 
                 DigimonSkill skill = await _unit.DigimonSkillRepository.GetSkillByDigimon(id);
-
                 BuffDTO buffDTO = null;
                 DigimonSkillBuff buff = null;
-                if (skill?.DigimonSkillBuffId != null)
+                if (skill.DigimonSkillBuffId != null)
                 {
                     buff = await _unit.DigimonSkillBuffRepository.GetById((int)skill.DigimonSkillBuffId);
 
@@ -129,8 +96,9 @@ namespace Application.Services
                     });
                 }
 
-                var digimonDTO = new DigimonWithSkillBuffAndFamilyDTO()
+                DigimonDTO digimonDTO = new()
                 {
+                    Id = digimon.Id,
                     Name = digimon.Name,
                     Description = digimon.Description,
                     AS = digimon.AS,
@@ -147,6 +115,25 @@ namespace Application.Services
                     Skill = skillDTO,
                     Families = familiesDTO
                 };
+
+                if (digimon.CanBeRiding)
+                {
+                    var ridingsDTO = new List<RidingDTO>();
+                    var digimonRidingsIntermediate = await _unit.DigimonRidingRepository.GetDigimonRidingIntermediatesByDigimon(id);
+                    foreach (var dri in digimonRidingsIntermediate)
+                    {
+                        Riding riding = await _unit.RidingRepository.GetById(dri.RidingId);
+                        ridingsDTO.Add(new RidingDTO
+                        {
+                            Item = riding.Name,
+                            Quantity = dri.Quantity
+                        });
+                    }
+
+                    digimonDTO.Ridings = ridingsDTO;
+                }
+                else
+                    digimonDTO.Ridings = null;
 
                 return digimonDTO;
             }
@@ -177,7 +164,7 @@ namespace Application.Services
                     await _unit.Commit();
                 }
 
-                Digimon digimon = new Digimon(digimonDTO.Name, digimonDTO.Description, digimonDTO.HP, digimonDTO.DS, digimonDTO.DE, digimonDTO.AT, digimonDTO.AS, digimonDTO.CT, digimonDTO.HT, digimonDTO.EV, digimonDTO.Form, digimonDTO.Attribute, digimonDTO.ElementalAttribute);
+                Digimon digimon = new Digimon(digimonDTO.Name, digimonDTO.Description, digimonDTO.HP, digimonDTO.DS, digimonDTO.DE, digimonDTO.AT, digimonDTO.AS, digimonDTO.CT, digimonDTO.HT, digimonDTO.EV, digimonDTO.Form, digimonDTO.Attribute, digimonDTO.ElementalAttribute, digimonDTO.CanBeRiding);
                 _unit.DigimonRepository.Add(digimon);
                 await _unit.Commit();
 
@@ -196,6 +183,20 @@ namespace Application.Services
                     };
                     _unit.DigimonFamilyRepository.Add(intermediate);
                     await _unit.Commit();
+                }
+
+                if (digimonDTO.CanBeRiding)
+                {
+                    foreach (int ridingId in digimonDTO.Ridings)
+                    {
+                        var intermediate = new DigimonRidingIntermediate()
+                        {
+                            DigimonId = digimon.Id,
+                            RidingId = ridingId
+                        };
+                        _unit.DigimonRidingRepository.Add(intermediate);
+                        await _unit.Commit();
+                    }
                 }
 
                 return "Sucesso!";
