@@ -20,5 +20,6 @@ namespace Application.DTOs.DigimonManagement
         public ElementalAttribute ElementalAttribute { get; set; }
         public SkillDTO Skill { get; set; }
         public List<FamilyDTO> Families { get; set; }
+        public List<ItemDTO> Itens { get; set; }
     }
 }

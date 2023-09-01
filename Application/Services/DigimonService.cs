@@ -5,6 +5,8 @@ using Core.Entities.Digimon.Buff;
 using Core.Interfaces.UnitOfWork;
 using Core.Entities.Intermediate;
 using Application.DTOs.DigimonManagement;
+using Core.Entities.Item;
+using Core.Entities.Item.Category;
 
 namespace Application.Services
 {
@@ -161,6 +163,25 @@ namespace Application.Services
                     Skill = skillDTO,
                     Families = familiesDTO
                 };
+
+                var digimonItemIntermediates = await _unit.DigimonItemRepository.GetDigimonItemIntermediatesByDigimon(id);
+                foreach (var digimonItem in digimonItemIntermediates)
+                {
+                    List<ItemDTO> itemDTOs = new();
+
+                    Item item = await _unit.ItemRepository.GetById(digimonItem.ItemId);
+                    ItemType itemType = await _unit.ItemTypeRepository.GetById(item.ItemTypeId);
+
+                    itemDTOs.Add(new ItemDTO()
+                    {
+                        Name = item.Name,
+                        Description = item.Description,
+                        Type = itemType.Description,
+                        Quantity = digimonItem.Quantity
+                    });
+
+                    digimonDTO.Itens = itemDTOs;
+                }
 
                 return digimonDTO;
             }

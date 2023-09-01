@@ -29,6 +29,7 @@ namespace Infrastructure.Data.Context
 
         // Intermediate
         public DbSet<DigimonFamilyIntermediate> DigimonFamilyIntermediate => Set<DigimonFamilyIntermediate>();
+        public DbSet<DigimonItemIntermediate> DigimonItemIntermediate => Set<DigimonItemIntermediate>();
 
         // Auth
         public DbSet<AuthorizedDevelopers> AuthorizedDevelopers => Set<AuthorizedDevelopers>();

@@ -23,6 +23,7 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private FamilyRepository familyRepository;
         private ItemRepository itemRepository;
         private ItemTypeRepository itemTypeRepository;
+        private IDigimonItemRepository digimonItemRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -117,6 +118,15 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (itemTypeRepository == null) return new ItemTypeRepository(context);
                 return itemTypeRepository;
+            }
+        }
+
+        public IDigimonItemRepository DigimonItemRepository
+        {
+            get
+            {
+                if (digimonItemRepository == null) return new DigimonItemRepository(context);
+                return digimonItemRepository;
             }
         }
 

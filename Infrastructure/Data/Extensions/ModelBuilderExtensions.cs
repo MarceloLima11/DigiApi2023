@@ -27,6 +27,7 @@ namespace Infrastructure.Data.Extensions
 
             ItemTypeSeed(builder.Entity<ItemType>());
             ItemSeed(builder.Entity<Item>());
+            DigimonItemSeed(builder.Entity<DigimonItemIntermediate>());
         }
 
         private static void TamerSkillBuffSeed(EntityTypeBuilder<TamerSkillBuff> builder)
@@ -98,10 +99,19 @@ namespace Infrastructure.Data.Extensions
 
         private static void ItemSeed(EntityTypeBuilder<Item> builder)
         {
-            Item i1 = new(1, "Modo Seletor", "Prolongue a evolução do modo montaria", ClassItem.Crown, 1);
-            Item i2 = new(2, "Evoluter", "Forçar a expansão do slot de evolução do Digimon", ClassItem.Crown, 2);
+            Item i1 = new(1, "Modo Seletor", "Prolongue a evolução do modo montaria", 1);
+            Item i2 = new(2, "Evoluter", "Forçar a expansão do slot de evolução do Digimon", 2);
+            Item i3 = new(3, "Digi-Egg of Courage", "teste", 2);
 
             builder.HasData(i1, i2);
+        }
+
+        private static void DigimonItemSeed(EntityTypeBuilder<DigimonItemIntermediate> builder)
+        {
+            DigimonItemIntermediate dii1 = new() { DigimonId = 1, ItemId = 1, Quantity = 1 };
+            DigimonItemIntermediate dii2 = new() { DigimonId = 1, ItemId = 2, Quantity = 3 };
+
+            builder.HasData(dii1, dii2);
         }
     }
 }
