@@ -1,9 +1,11 @@
-using Core.Interfaces.DigimonManagement;
-using Core.Interfaces.TamerManagement;
 using Core.Interfaces.UnitOfWork;
 using Infrastructure.Data.Context;
-using Infrastructure.Data.Repositories.DigimonManagement;
+using Core.Interfaces.TamerManagement;
+using Core.Interfaces.DigimonManagement;
+using Infrastructure.Data.Repositories.ItemManagement;
 using Infrastructure.Data.Repositories.TamerManagement;
+using Infrastructure.Data.Repositories.DigimonManagement;
+using Core.Interfaces.ItemManagement;
 
 namespace Infrastructure.Data.Repositories.UnitOfWork
 {
@@ -19,6 +21,9 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private DigimonSkillBuffRepository digimonSkillBuffRepository;
         private DigimonSkillRepository digimonSkillRepository;
         private FamilyRepository familyRepository;
+        private ItemRepository itemRepository;
+        private ItemTypeRepository itemTypeRepository;
+        private IDigimonItemRepository digimonItemRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -95,6 +100,33 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (familyRepository == null) return new FamilyRepository(context);
                 return familyRepository;
+            }
+        }
+
+        public IItemRepository ItemRepository
+        {
+            get
+            {
+                if (itemRepository == null) return new ItemRepository(context);
+                return itemRepository;
+            }
+        }
+
+        public IItemTypeRepository ItemTypeRepository
+        {
+            get
+            {
+                if (itemTypeRepository == null) return new ItemTypeRepository(context);
+                return itemTypeRepository;
+            }
+        }
+
+        public IDigimonItemRepository DigimonItemRepository
+        {
+            get
+            {
+                if (digimonItemRepository == null) return new DigimonItemRepository(context);
+                return digimonItemRepository;
             }
         }
 

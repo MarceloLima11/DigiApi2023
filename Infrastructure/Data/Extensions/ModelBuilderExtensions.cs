@@ -1,8 +1,11 @@
-using Core.Entities.Digimon;
-using Core.Entities.Digimon.Buff;
-using Core.Entities.Tamer;
-using Core.Entities.Tamer.Buff;
 using Core.Enums;
+using Core.Entities.Item;
+using Core.Entities.Tamer;
+using Core.Entities.Digimon;
+using Core.Entities.Tamer.Buff;
+using Core.Entities.Digimon.Buff;
+using Core.Entities.Intermediate;
+using Core.Entities.Item.Category;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,6 +23,11 @@ namespace Infrastructure.Data.Extensions
             DigimonSkillBuffSeed(builder.Entity<DigimonSkillBuff>());
             DigimonSeed(builder.Entity<Digimon>());
             DigimonSkillSeed(builder.Entity<DigimonSkill>());
+            DigimonFamilySeed(builder.Entity<DigimonFamilyIntermediate>());
+
+            ItemTypeSeed(builder.Entity<ItemType>());
+            ItemSeed(builder.Entity<Item>());
+            DigimonItemSeed(builder.Entity<DigimonItemIntermediate>());
         }
 
         private static void TamerSkillBuffSeed(EntityTypeBuilder<TamerSkillBuff> builder)
@@ -68,9 +76,42 @@ namespace Infrastructure.Data.Extensions
 
         private static void DigimonSeed(EntityTypeBuilder<Digimon> builder)
         {
-            Digimon d1 = new(1, "Flamedramon", "Flamedramon is a Dragon Man Digimon Armor which evolved through the power of the Digi-Egg of Courage, whose names and design are derived from Flame Dramon.", 2651, 1196, 82, 868, 2.323f, "20.81%", 515, "21%", Form.Armor, DigimonAttribute.Vaccine, ElementalAttribute.Fire);
+            Digimon d1 = new(1, "Flamedramon", "Flamedramon is a Dragon Man Digimon Armor which evolved through the power of the Digi-Egg of Courage, whose names and design are derived from Flame Dramon.", 2651, 1196, 82, 868, 2.323f, "20.81%", 515, "21%", Form.Armor, DigimonAttribute.Vaccine, ElementalAttribute.Fire, true);
 
             builder.HasData(d1);
+        }
+
+        private static void DigimonFamilySeed(EntityTypeBuilder<DigimonFamilyIntermediate> builder)
+        {
+            DigimonFamilyIntermediate dfi1 = new() { DigimonId = 1, FamilyId = 1 };
+            DigimonFamilyIntermediate dfi2 = new() { DigimonId = 1, FamilyId = 2 };
+
+            builder.HasData(dfi1, dfi2);
+        }
+
+        private static void ItemTypeSeed(EntityTypeBuilder<ItemType> builder)
+        {
+            ItemType it1 = new(1, "Digivolução", "Montaria");
+            ItemType it2 = new(2, "Digivolução", "Evolução");
+
+            builder.HasData(it1, it2);
+        }
+
+        private static void ItemSeed(EntityTypeBuilder<Item> builder)
+        {
+            Item i1 = new(1, "Modo Seletor", "Prolongue a evolução do modo montaria", 1);
+            Item i2 = new(2, "Evoluter", "Forçar a expansão do slot de evolução do Digimon", 2);
+            Item i3 = new(3, "Digi-Egg of Courage", "teste", 2);
+
+            builder.HasData(i1, i2);
+        }
+
+        private static void DigimonItemSeed(EntityTypeBuilder<DigimonItemIntermediate> builder)
+        {
+            DigimonItemIntermediate dii1 = new() { DigimonId = 1, ItemId = 1, Quantity = 1 };
+            DigimonItemIntermediate dii2 = new() { DigimonId = 1, ItemId = 2, Quantity = 3 };
+
+            builder.HasData(dii1, dii2);
         }
     }
 }

@@ -42,20 +42,6 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("skill/buff/{id}")]
-        public async Task<IActionResult> GetTamerWithSkillAndBuff(int id)
-        {
-            try
-            {
-                var result = await _tamerService.GetTamerWithSkillAndBuff(id);
-                return Ok(result);
-            }
-            catch (Exception err)
-            {
-                return NotFound(err.Message);
-            }
-        }
-
         [HttpPost]
         [AuthorizeDeveloper]
         public async Task<IActionResult> CreateTamer([FromBody] CreateTamerDTO tamerDTO)

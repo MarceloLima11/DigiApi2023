@@ -2,7 +2,7 @@ using Core.Enums;
 
 namespace Application.DTOs.TamerManagement
 {
-    public class CreateBuffDTO
+    public class TamerBuffDTO
     {
         public string Name { get; set; }
         public DigimonAttribute FirstBuffAttribute { get; set; }

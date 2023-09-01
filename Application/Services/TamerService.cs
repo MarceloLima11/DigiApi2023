@@ -1,8 +1,8 @@
 using Core.Entities.Tamer;
 using Application.Interfaces;
+using Core.Entities.Tamer.Buff;
 using Core.Interfaces.UnitOfWork;
 using Application.DTOs.TamerManagement;
-using Core.Entities.Tamer.Buff;
 
 namespace Application.Services
 {
@@ -11,18 +11,79 @@ namespace Application.Services
         protected readonly IUnitOfWork _unit;
 
         public TamerService(IUnitOfWork unit)
-        {
-            _unit = unit;
-        }
+        { _unit = unit; }
 
         public async Task<IEnumerable<TamerDTO>> GetTamers()
         {
-            var tamersDTO = new List<TamerDTO>();
-            var tamers = await _unit.TamerRepository.GetAll();
-
-            foreach (Tamer tamer in tamers)
+            try
             {
-                tamersDTO.Add(new TamerDTO
+                var tamersDTO = new List<TamerDTO>();
+                var tamers = await _unit.TamerRepository.GetAll();
+
+                foreach (Tamer tamer in tamers)
+                {
+                    var skill = await _unit.TamerSkillRepository.GetById(tamer.TamerSkillId);
+                    var buff = await _unit.TamerSkillBuffRepository.GetById(skill.TamerSkillBuffId);
+
+                    TamerBuffDTO buffDTO = new()
+                    {
+                        Name = buff.Name,
+                        FirstBuffAttribute = buff.FirstBuffAttribute,
+                        SeccondBuffAttribute = buff.SeccondBuffAttribute
+                    };
+
+                    TamerSkillDTO skillDTO = new()
+                    {
+                        Name = skill.Name,
+                        Description = skill.Description,
+                        CoolDown = skill.CoolDown,
+                        Buff = buffDTO
+                    };
+
+                    tamersDTO.Add(new TamerDTO
+                    {
+                        Name = tamer.Name,
+                        Description = tamer.Description,
+                        AT = tamer.AT,
+                        DE = tamer.DE,
+                        DS = tamer.DS,
+                        HP = tamer.HP,
+                        Skill = skillDTO
+                    });
+                }
+
+                return tamersDTO;
+            }
+            catch
+            { throw; }
+        }
+
+        public async Task<TamerDTO> GetTamer(int id)
+        {
+            try
+            {
+                Tamer tamer = await _unit.TamerRepository.GetById(id);
+                var skill = await _unit.TamerSkillRepository.GetById(tamer.TamerSkillId);
+                var buff = await _unit.TamerSkillBuffRepository.GetById(skill.TamerSkillBuffId);
+
+
+                TamerBuffDTO buffDTO = new()
+                {
+                    Name = buff.Name,
+                    FirstBuffAttribute = buff.FirstBuffAttribute,
+                    SeccondBuffAttribute = buff.SeccondBuffAttribute
+                };
+
+                TamerSkillDTO skillDTO = new()
+                {
+                    Name = skill.Name,
+                    Description = skill.Description,
+                    CoolDown = skill.CoolDown,
+                    Buff = buffDTO
+                };
+
+
+                TamerDTO tamerDTO = new()
                 {
                     Name = tamer.Name,
                     Description = tamer.Description,
@@ -30,52 +91,9 @@ namespace Application.Services
                     DE = tamer.DE,
                     DS = tamer.DS,
                     HP = tamer.HP
-                });
-            }
-
-            return tamersDTO;
-        }
-
-        public async Task<TamerDTO> GetTamer(int id)
-        {
-            Tamer tamer = await _unit.TamerRepository.GetById(id);
-            TamerDTO tamerDTO = new()
-            {
-                Name = tamer.Name,
-                Description = tamer.Description,
-                AT = tamer.AT,
-                DE = tamer.DE,
-                DS = tamer.DS,
-                HP = tamer.HP
-            };
-
-            return tamerDTO;
-        }
-
-        public async Task<TamerWithSkillAndBuffDTO> GetTamerWithSkillAndBuff(int id)
-        {
-            try
-            {
-                Tamer tamer = await _unit.TamerRepository.GetTamerAndSkill(id);
-                var buff = await _unit.TamerSkillBuffRepository.GetById(tamer.TamerSkill.TamerSkillBuffId);
-
-                var response = new TamerWithSkillAndBuffDTO
-                {
-                    TamerName = tamer.Name,
-                    TamerDescription = tamer.Description,
-                    AT = tamer.AT,
-                    DE = tamer.DE,
-                    DS = tamer.DS,
-                    HP = tamer.HP,
-                    SkillName = tamer.TamerSkill.Name,
-                    SkillDescription = tamer.TamerSkill.Description,
-                    SkillCoolDown = tamer.TamerSkill.CoolDown,
-                    BuffName = buff.Name,
-                    FirstAttribute = buff.FirstBuffAttribute,
-                    SeccondAttribute = buff.SeccondBuffAttribute
                 };
 
-                return response;
+                return tamerDTO;
             }
             catch
             { throw; }

@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230831145427_EvolutionItemAndRiding")]
+    partial class EvolutionItemAndRiding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,6 +235,36 @@ namespace Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Entities.Digimon.EvolutionItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.HasKey("Id")
+                        .HasName("id");
+
+                    b.ToTable("evolution_item", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Digi-Egg of Courage",
+                            Quantity = 1
+                        });
+                });
+
             modelBuilder.Entity("Core.Entities.Digimon.Family", b =>
                 {
                     b.Property<int>("Id")
@@ -273,6 +306,58 @@ namespace Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Entities.Digimon.Riding", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("id_riding");
+
+                    b.ToTable("riding", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "TESTEEEEEEE",
+                            Name = "ModeSelector"
+                        });
+                });
+
+            modelBuilder.Entity("Core.Entities.Intermediate.DigimonEvolutionItemIntermediate", b =>
+                {
+                    b.Property<int>("DigimonId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EvolutionItemId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("DigimonId", "EvolutionItemId");
+
+                    b.HasIndex("EvolutionItemId");
+
+                    b.ToTable("digimon_evolutionitem", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            DigimonId = 1,
+                            EvolutionItemId = 1
+                        });
+                });
+
             modelBuilder.Entity("Core.Entities.Intermediate.DigimonFamilyIntermediate", b =>
                 {
                     b.Property<int>("DigimonId")
@@ -300,115 +385,30 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Core.Entities.Intermediate.DigimonItemIntermediate", b =>
+            modelBuilder.Entity("Core.Entities.Intermediate.DigimonRidingIntermediate", b =>
                 {
                     b.Property<int>("DigimonId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ItemId")
+                    b.Property<int>("RidingId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer")
                         .HasColumnName("quantity");
 
-                    b.HasKey("DigimonId", "ItemId");
+                    b.HasKey("DigimonId", "RidingId");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("RidingId");
 
-                    b.ToTable("digimon_item", (string)null);
+                    b.ToTable("digimon_riding", (string)null);
 
                     b.HasData(
                         new
                         {
                             DigimonId = 1,
-                            ItemId = 1,
-                            Quantity = 1
-                        },
-                        new
-                        {
-                            DigimonId = 1,
-                            ItemId = 2,
-                            Quantity = 3
-                        });
-                });
-
-            modelBuilder.Entity("Core.Entities.Item.Category.ItemType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id")
-                        .HasName("id");
-
-                    b.ToTable("item_type", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Montaria",
-                            Name = "Digivolução"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Evolução",
-                            Name = "Digivolução"
-                        });
-                });
-
-            modelBuilder.Entity("Core.Entities.Item.Item", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<int>("ItemTypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id")
-                        .HasName("id_item");
-
-                    b.HasIndex("ItemTypeId");
-
-                    b.ToTable("item", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Prolongue a evolução do modo montaria",
-                            ItemTypeId = 1,
-                            Name = "Modo Seletor"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Forçar a expansão do slot de evolução do Digimon",
-                            ItemTypeId = 2,
-                            Name = "Evoluter"
+                            RidingId = 1,
+                            Quantity = 5
                         });
                 });
 
@@ -579,6 +579,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("DigimonSkillBuff");
                 });
 
+            modelBuilder.Entity("Core.Entities.Intermediate.DigimonEvolutionItemIntermediate", b =>
+                {
+                    b.HasOne("Core.Entities.Digimon.Digimon", "Digimon")
+                        .WithMany("EvolutionItens")
+                        .HasForeignKey("DigimonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Digimon.EvolutionItem", "EvolutionItem")
+                        .WithMany("Digimons")
+                        .HasForeignKey("EvolutionItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Digimon");
+
+                    b.Navigation("EvolutionItem");
+                });
+
             modelBuilder.Entity("Core.Entities.Intermediate.DigimonFamilyIntermediate", b =>
                 {
                     b.HasOne("Core.Entities.Digimon.Digimon", "Digimon")
@@ -598,34 +617,23 @@ namespace Infrastructure.Migrations
                     b.Navigation("Family");
                 });
 
-            modelBuilder.Entity("Core.Entities.Intermediate.DigimonItemIntermediate", b =>
+            modelBuilder.Entity("Core.Entities.Intermediate.DigimonRidingIntermediate", b =>
                 {
                     b.HasOne("Core.Entities.Digimon.Digimon", "Digimon")
-                        .WithMany("Itens")
+                        .WithMany("Ridings")
                         .HasForeignKey("DigimonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.Item.Item", "Item")
+                    b.HasOne("Core.Entities.Digimon.Riding", "Riding")
                         .WithMany("Digimons")
-                        .HasForeignKey("ItemId")
+                        .HasForeignKey("RidingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Digimon");
 
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Core.Entities.Item.Item", b =>
-                {
-                    b.HasOne("Core.Entities.Item.Category.ItemType", "ItemType")
-                        .WithMany()
-                        .HasForeignKey("ItemTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ItemType");
+                    b.Navigation("Riding");
                 });
 
             modelBuilder.Entity("Core.Entities.Tamer.Tamer", b =>
@@ -668,11 +676,18 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Digimon.Digimon", b =>
                 {
+                    b.Navigation("EvolutionItens");
+
                     b.Navigation("Families");
 
-                    b.Navigation("Itens");
+                    b.Navigation("Ridings");
 
                     b.Navigation("Skills");
+                });
+
+            modelBuilder.Entity("Core.Entities.Digimon.EvolutionItem", b =>
+                {
+                    b.Navigation("Digimons");
                 });
 
             modelBuilder.Entity("Core.Entities.Digimon.Family", b =>
@@ -680,7 +695,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("Digimons");
                 });
 
-            modelBuilder.Entity("Core.Entities.Item.Item", b =>
+            modelBuilder.Entity("Core.Entities.Digimon.Riding", b =>
                 {
                     b.Navigation("Digimons");
                 });

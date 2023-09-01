@@ -1,7 +1,7 @@
-﻿using Core.Common;
-using Core.Entities.Intermediate;
-using Core.Enums;
+﻿using Core.Enums;
+using Core.Common;
 using Core.Validations;
+using Core.Entities.Intermediate;
 
 namespace Core.Entities.Digimon
 {
@@ -10,17 +10,17 @@ namespace Core.Entities.Digimon
         public Digimon() { }
 
         public Digimon(string name, string description, int hp, int ds, int de, int at, float attackSpeed,
-        string ct, int ht, string ev, Form form, DigimonAttribute attribute, ElementalAttribute elementalAttribute)
+        string ct, int ht, string ev, Form form, DigimonAttribute attribute, ElementalAttribute elementalAttribute, bool canBeRiding)
         {
-            ValidateDigimon(name, description, hp, ds, de, at, attackSpeed, ct, ht, ev, form, attribute, elementalAttribute);
+            ValidateDigimon(name, description, hp, ds, de, at, attackSpeed, ct, ht, ev, form, attribute, elementalAttribute, canBeRiding);
         }
 
         public Digimon(int id, string name, string description, int hp, int ds, int de, int at, float attackSpeed,
-        string ct, int ht, string ev, Form form, DigimonAttribute attribute, ElementalAttribute elementalAttribute)
+        string ct, int ht, string ev, Form form, DigimonAttribute attribute, ElementalAttribute elementalAttribute, bool canBeRiding)
         {
             DomainException.When(id < 0, "Valor de id inválido.");
             Id = id;
-            ValidateDigimon(name, description, hp, ds, de, at, attackSpeed, ct, ht, ev, form, attribute, elementalAttribute);
+            ValidateDigimon(name, description, hp, ds, de, at, attackSpeed, ct, ht, ev, form, attribute, elementalAttribute, canBeRiding);
         }
 
         public float AS { get; set; }
@@ -28,14 +28,16 @@ namespace Core.Entities.Digimon
         public int HT { get; set; }
         public string EV { get; set; }
         public Form Form { get; set; }
+        public bool CanBeRiding { get; set; }
         public DigimonAttribute Attribute { get; set; }
         public ElementalAttribute ElementalAttribute { get; set; }
         public ICollection<Digimon> Evolutions { get; set; }
         public ICollection<DigimonFamilyIntermediate> Families { get; set; }
         public ICollection<DigimonSkill> Skills { get; set; }
+        public ICollection<DigimonItemIntermediate> Itens { get; set; }
 
         private void ValidateDigimon(string name, string description, int hp, int ds, int de, int at, float attackSpeed,
-        string ct, int ht, string ev, Form form, DigimonAttribute attribute, ElementalAttribute elementalAttribute)
+        string ct, int ht, string ev, Form form, DigimonAttribute attribute, ElementalAttribute elementalAttribute, bool canBeRiding)
         {
             DomainException.When(String.IsNullOrEmpty(name), "Nome inválido.");
 
@@ -69,6 +71,7 @@ namespace Core.Entities.Digimon
             AS = attackSpeed;
             Attribute = attribute;
             Description = description;
+            CanBeRiding = canBeRiding;
             ElementalAttribute = elementalAttribute;
         }
     }

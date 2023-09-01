@@ -1,4 +1,5 @@
 using Core.Enums;
+using Application.DTOs.Shared;
 
 namespace Application.DTOs.DigimonManagement
 {
@@ -18,6 +19,8 @@ namespace Application.DTOs.DigimonManagement
         public DigimonAttribute Attribute { get; set; }
         public ElementalAttribute ElementalAttribute { get; set; }
         public IEnumerable<int> Families { get; set; }
-        public SkillDTO Skill { get; set; }
+        public DigimonSkillDTO Skill { get; set; }
+        public bool CanBeRiding { get; set; }
+        public IEnumerable<EntityIdValue> Itens { get; set; }
     }
 }
