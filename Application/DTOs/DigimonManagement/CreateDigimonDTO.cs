@@ -20,7 +20,6 @@ namespace Application.DTOs.DigimonManagement
         public IEnumerable<int> Families { get; set; }
         public SkillDTO Skill { get; set; }
         public bool CanBeRiding { get; set; }
-        public IEnumerable<DigimonRidingDTO> Ridings { get; set; }
         public IEnumerable<int> EvolutionItens { get; set; }
     }
 }

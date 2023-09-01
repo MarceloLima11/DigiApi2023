@@ -85,39 +85,6 @@ namespace Application.Services
                         Families = familiesDTO
                     };
 
-                    if (digimon.CanBeRiding)
-                    {
-                        var ridingsDTO = new List<RidingDTO>();
-                        var digimonRidingsIntermediate = await _unit.DigimonRidingRepository.GetDigimonRidingIntermediatesByDigimon(digimon.Id);
-                        foreach (var dri in digimonRidingsIntermediate)
-                        {
-                            Riding riding = await _unit.RidingRepository.GetById(dri.RidingId);
-                            ridingsDTO.Add(new RidingDTO
-                            {
-                                Item = riding.Name,
-                                Quantity = dri.Quantity
-                            });
-                        }
-
-                        digimonDTO.Ridings = ridingsDTO;
-                    }
-                    else
-                        digimonDTO.Ridings = null;
-
-                    var evolutionItensDTO = new List<EvolutionItemDTO>();
-                    var evolutionItensIntermediate = await _unit.DigimonEvolutionItemRepository
-                        .GetDigimonEvolutionItemIntermediatesByDigimon(digimon.Id);
-                    foreach (var evoItem in evolutionItensIntermediate)
-                    {
-                        EvolutionItem evolutionItem = await _unit.EvolutionItemRepository.GetById(evoItem.EvolutionItemId);
-                        evolutionItensDTO.Add(new EvolutionItemDTO
-                        {
-                            Name = evolutionItem.Name,
-                            Quantity = evolutionItem.Quantity
-                        });
-                    }
-                    digimonDTO.EvolutionItens = evolutionItensDTO;
-
                     digimonsDTO.Add(digimonDTO);
                 }
 
@@ -195,39 +162,6 @@ namespace Application.Services
                     Families = familiesDTO
                 };
 
-                if (digimon.CanBeRiding)
-                {
-                    var ridingsDTO = new List<RidingDTO>();
-                    var digimonRidingsIntermediate = await _unit.DigimonRidingRepository.GetDigimonRidingIntermediatesByDigimon(id);
-                    foreach (var dri in digimonRidingsIntermediate)
-                    {
-                        Riding riding = await _unit.RidingRepository.GetById(dri.RidingId);
-                        ridingsDTO.Add(new RidingDTO
-                        {
-                            Item = riding.Name,
-                            Quantity = dri.Quantity
-                        });
-                    }
-
-                    digimonDTO.Ridings = ridingsDTO;
-                }
-                else
-                    digimonDTO.Ridings = null;
-
-                var evolutionItensDTO = new List<EvolutionItemDTO>();
-                var evolutionItensIntermediate = await _unit.DigimonEvolutionItemRepository
-                    .GetDigimonEvolutionItemIntermediatesByDigimon(id);
-                foreach (var evoItem in evolutionItensIntermediate)
-                {
-                    EvolutionItem evolutionItem = await _unit.EvolutionItemRepository.GetById(evoItem.EvolutionItemId);
-                    evolutionItensDTO.Add(new EvolutionItemDTO
-                    {
-                        Name = evolutionItem.Name,
-                        Quantity = evolutionItem.Quantity
-                    });
-                }
-                digimonDTO.EvolutionItens = evolutionItensDTO;
-
                 return digimonDTO;
             }
             catch
@@ -275,32 +209,6 @@ namespace Application.Services
                         FamilyId = familyId
                     };
                     _unit.DigimonFamilyRepository.Add(intermediate);
-                    await _unit.Commit();
-                }
-
-                if (digimonDTO.CanBeRiding)
-                {
-                    foreach (var digimonRidingDTO in digimonDTO.Ridings)
-                    {
-                        var intermediate = new DigimonRidingIntermediate()
-                        {
-                            DigimonId = digimon.Id,
-                            RidingId = digimonRidingDTO.RidingId,
-                            Quantity = digimonRidingDTO.Quantity
-                        };
-                        _unit.DigimonRidingRepository.Add(intermediate);
-                        await _unit.Commit();
-                    }
-                }
-
-                foreach (int evoItemId in digimonDTO.EvolutionItens)
-                {
-                    var intermediate = new DigimonEvolutionItemIntermediate()
-                    {
-                        DigimonId = digimon.Id,
-                        EvolutionItemId = evoItemId
-                    };
-                    _unit.DigimonEvolutionItemRepository.Add(intermediate);
                     await _unit.Commit();
                 }
 

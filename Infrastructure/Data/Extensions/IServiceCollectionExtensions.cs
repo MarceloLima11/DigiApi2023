@@ -52,9 +52,7 @@ namespace Infrastructure.Data.Extensions
             services.AddTransient<IDigimonRepository, DigimonRepository>();
             services.AddTransient<IDigimonSkillRepository, DigimonSkillRepository>();
             services.AddTransient<IDigimonSkillBuffRepository, DigimonSkillBuffRepository>();
-            services.AddTransient<IDigimonRidingRepository, DigimonRidingRepository>();
             services.AddTransient<IFamilyRepository, FamilyRepository>();
-            services.AddTransient<IRidingRepository, RidingRepository>();
         }
     }
 }

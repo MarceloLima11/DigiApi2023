@@ -2,8 +2,10 @@ using Core.Interfaces.UnitOfWork;
 using Infrastructure.Data.Context;
 using Core.Interfaces.TamerManagement;
 using Core.Interfaces.DigimonManagement;
-using Infrastructure.Data.Repositories.DigimonManagement;
+using Infrastructure.Data.Repositories.ItemManagement;
 using Infrastructure.Data.Repositories.TamerManagement;
+using Infrastructure.Data.Repositories.DigimonManagement;
+using Core.Interfaces.ItemManagement;
 
 namespace Infrastructure.Data.Repositories.UnitOfWork
 {
@@ -19,10 +21,8 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private DigimonSkillBuffRepository digimonSkillBuffRepository;
         private DigimonSkillRepository digimonSkillRepository;
         private FamilyRepository familyRepository;
-        private DigimonRidingRepository digimonRidingRepository;
-        private RidingRepository ridingRepository;
-        private EvolutionItemRepository evolutionItemRepository;
-        private DigimonEvolutionItemRepository digimonEvolutionItemRepository;
+        private ItemRepository itemRepository;
+        private ItemTypeRepository itemTypeRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -102,39 +102,21 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             }
         }
 
-        public IDigimonRidingRepository DigimonRidingRepository
+        public IItemRepository ItemRepository
         {
             get
             {
-                if (digimonRidingRepository == null) return new DigimonRidingRepository(context);
-                return digimonRidingRepository;
+                if (itemRepository == null) return new ItemRepository(context);
+                return itemRepository;
             }
         }
 
-        public IRidingRepository RidingRepository
+        public IItemTypeRepository ItemTypeRepository
         {
             get
             {
-                if (ridingRepository == null) return new RidingRepository(context);
-                return ridingRepository;
-            }
-        }
-
-        public IEvolutionItemRepository EvolutionItemRepository
-        {
-            get
-            {
-                if (evolutionItemRepository == null) return new EvolutionItemRepository(context);
-                return evolutionItemRepository;
-            }
-        }
-
-        public IDigimonEvolutionItemRepository DigimonEvolutionItemRepository
-        {
-            get
-            {
-                if (digimonEvolutionItemRepository == null) return new DigimonEvolutionItemRepository(context);
-                return digimonEvolutionItemRepository;
+                if (itemTypeRepository == null) return new ItemTypeRepository(context);
+                return itemTypeRepository;
             }
         }
 
