@@ -7,6 +7,7 @@ using Core.Entities.Intermediate;
 using Application.DTOs.DigimonManagement;
 using Core.Entities.Item;
 using Core.Entities.Item.Category;
+using Application.DTOs.Shared;
 
 namespace Application.Services
 {
@@ -27,13 +28,13 @@ namespace Application.Services
                 foreach (Digimon digimon in digimons)
                 {
                     DigimonSkill skill = await _unit.DigimonSkillRepository.GetSkillByDigimon(digimon.Id);
-                    BuffDTO buffDTO = null;
+                    DigimonBuffDTO buffDTO = null;
                     DigimonSkillBuff buff = null;
                     if (skill.DigimonSkillBuffId != null)
                     {
                         buff = await _unit.DigimonSkillBuffRepository.GetById((int)skill.DigimonSkillBuffId);
 
-                        buffDTO = new BuffDTO()
+                        buffDTO = new DigimonBuffDTO()
                         {
                             Name = buff.Name,
                             Description = buff.Description,
@@ -41,7 +42,7 @@ namespace Application.Services
                         };
                     }
 
-                    var skillDTO = new SkillDTO()
+                    var skillDTO = new DigimonSkillDTO()
                     {
                         Name = skill.Name,
                         Description = skill.Description,
@@ -87,6 +88,24 @@ namespace Application.Services
                         Families = familiesDTO
                     };
 
+                    List<ItemDTO> itemDTOs = new();
+                    var digimonItemIntermediates = await _unit.DigimonItemRepository.GetDigimonItemIntermediatesByDigimon(digimon.Id);
+                    foreach (var digimonItem in digimonItemIntermediates)
+                    {
+                        Item item = await _unit.ItemRepository.GetById(digimonItem.ItemId);
+                        ItemType itemType = await _unit.ItemTypeRepository.GetById(item.ItemTypeId);
+
+                        itemDTOs.Add(new ItemDTO()
+                        {
+                            Name = item.Name,
+                            Description = item.Description,
+                            Type = itemType.Description,
+                            Quantity = digimonItem.Quantity
+                        });
+
+                        digimonDTO.Itens = itemDTOs;
+                    }
+
                     digimonsDTO.Add(digimonDTO);
                 }
 
@@ -104,13 +123,13 @@ namespace Application.Services
                     ?? throw new NullReferenceException("Digimon não encontrado.");
 
                 DigimonSkill skill = await _unit.DigimonSkillRepository.GetSkillByDigimon(id);
-                BuffDTO buffDTO = null;
+                DigimonBuffDTO buffDTO = null;
                 DigimonSkillBuff buff = null;
                 if (skill.DigimonSkillBuffId != null)
                 {
                     buff = await _unit.DigimonSkillBuffRepository.GetById((int)skill.DigimonSkillBuffId);
 
-                    buffDTO = new BuffDTO()
+                    buffDTO = new DigimonBuffDTO()
                     {
                         Name = buff.Name,
                         Description = buff.Description,
@@ -118,7 +137,7 @@ namespace Application.Services
                     };
                 }
 
-                var skillDTO = new SkillDTO()
+                var skillDTO = new DigimonSkillDTO()
                 {
                     Name = skill.Name,
                     Description = skill.Description,
@@ -164,11 +183,10 @@ namespace Application.Services
                     Families = familiesDTO
                 };
 
+                List<ItemDTO> itemDTOs = new();
                 var digimonItemIntermediates = await _unit.DigimonItemRepository.GetDigimonItemIntermediatesByDigimon(id);
                 foreach (var digimonItem in digimonItemIntermediates)
                 {
-                    List<ItemDTO> itemDTOs = new();
-
                     Item item = await _unit.ItemRepository.GetById(digimonItem.ItemId);
                     ItemType itemType = await _unit.ItemTypeRepository.GetById(item.ItemTypeId);
 
@@ -203,7 +221,7 @@ namespace Application.Services
                 }
 
                 DigimonSkillBuff buff = null;
-                BuffDTO buffDTO = null;
+                DigimonBuffDTO buffDTO = null;
                 if (digimonDTO.Skill.Buff != null)
                 {
                     buffDTO = digimonDTO.Skill.Buff;
@@ -216,7 +234,7 @@ namespace Application.Services
                 _unit.DigimonRepository.Add(digimon);
                 await _unit.Commit();
 
-                SkillDTO skillDTO = digimonDTO.Skill;
+                DigimonSkillDTO skillDTO = digimonDTO.Skill;
                 DigimonSkill skill = new(skillDTO.Name, skillDTO.Description, skillDTO.Attribute, skillDTO.CoolDown, skillDTO.DSConsumed,
                 skillDTO.NecessarySkillPoint, skillDTO.AnimationTime, digimon.Id, buff.Id);
                 _unit.DigimonSkillRepository.Add(skill);
@@ -233,6 +251,17 @@ namespace Application.Services
                     await _unit.Commit();
                 }
 
+                foreach (EntityIdValue item in digimonDTO.Itens)
+                {
+                    var intermediate = new DigimonItemIntermediate()
+                    {
+                        DigimonId = digimon.Id,
+                        ItemId = item.Id,
+                        Quantity = item.Value
+                    };
+                    _unit.DigimonItemRepository.Add(intermediate);
+                    await _unit.Commit();
+                }
                 return "Sucesso!";
             }
             catch

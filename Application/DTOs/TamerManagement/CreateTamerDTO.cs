@@ -8,6 +8,6 @@ namespace Application.DTOs.TamerManagement
         public int DS { get; set; }
         public int DE { get; set; }
         public int AT { get; set; }
-        public CreateSkillDTO Skill { get; set; }
+        public TamerSkillDTO Skill { get; set; }
     }
 }

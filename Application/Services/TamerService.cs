@@ -11,9 +11,7 @@ namespace Application.Services
         protected readonly IUnitOfWork _unit;
 
         public TamerService(IUnitOfWork unit)
-        {
-            _unit = unit;
-        }
+        { _unit = unit; }
 
         public async Task<IEnumerable<TamerDTO>> GetTamers()
         {
@@ -27,14 +25,14 @@ namespace Application.Services
                     var skill = await _unit.TamerSkillRepository.GetById(tamer.TamerSkillId);
                     var buff = await _unit.TamerSkillBuffRepository.GetById(skill.TamerSkillBuffId);
 
-                    BuffDTO buffDTO = new()
+                    TamerBuffDTO buffDTO = new()
                     {
                         Name = buff.Name,
                         FirstBuffAttribute = buff.FirstBuffAttribute,
                         SeccondBuffAttribute = buff.SeccondBuffAttribute
                     };
 
-                    SkillDTO skillDTO = new()
+                    TamerSkillDTO skillDTO = new()
                     {
                         Name = skill.Name,
                         Description = skill.Description,
@@ -69,14 +67,14 @@ namespace Application.Services
                 var buff = await _unit.TamerSkillBuffRepository.GetById(skill.TamerSkillBuffId);
 
 
-                BuffDTO buffDTO = new()
+                TamerBuffDTO buffDTO = new()
                 {
                     Name = buff.Name,
                     FirstBuffAttribute = buff.FirstBuffAttribute,
                     SeccondBuffAttribute = buff.SeccondBuffAttribute
                 };
 
-                SkillDTO skillDTO = new()
+                TamerSkillDTO skillDTO = new()
                 {
                     Name = skill.Name,
                     Description = skill.Description,
