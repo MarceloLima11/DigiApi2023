@@ -1,9 +1,12 @@
 using Core.Enums;
+using Core.Entities.Item;
 using Core.Entities.Digimon;
 using Application.Interfaces;
+using Application.DTOs.Shared;
 using Core.Entities.Digimon.Buff;
 using Core.Interfaces.UnitOfWork;
 using Core.Entities.Intermediate;
+using Core.Entities.Item.Category;
 using Application.DTOs.DigimonManagement;
 
 namespace Application.Services
@@ -25,13 +28,13 @@ namespace Application.Services
                 foreach (Digimon digimon in digimons)
                 {
                     DigimonSkill skill = await _unit.DigimonSkillRepository.GetSkillByDigimon(digimon.Id);
-                    BuffDTO buffDTO = null;
+                    DigimonBuffDTO buffDTO = null;
                     DigimonSkillBuff buff = null;
                     if (skill.DigimonSkillBuffId != null)
                     {
                         buff = await _unit.DigimonSkillBuffRepository.GetById((int)skill.DigimonSkillBuffId);
 
-                        buffDTO = new BuffDTO()
+                        buffDTO = new DigimonBuffDTO()
                         {
                             Name = buff.Name,
                             Description = buff.Description,
@@ -39,7 +42,7 @@ namespace Application.Services
                         };
                     }
 
-                    var skillDTO = new SkillDTO()
+                    var skillDTO = new DigimonSkillDTO()
                     {
                         Name = skill.Name,
                         Description = skill.Description,
@@ -85,38 +88,23 @@ namespace Application.Services
                         Families = familiesDTO
                     };
 
-                    if (digimon.CanBeRiding)
+                    List<ItemDTO> itemDTOs = new();
+                    var digimonItemIntermediates = await _unit.DigimonItemRepository.GetDigimonItemIntermediatesByDigimon(digimon.Id);
+                    foreach (var digimonItem in digimonItemIntermediates)
                     {
-                        var ridingsDTO = new List<RidingDTO>();
-                        var digimonRidingsIntermediate = await _unit.DigimonRidingRepository.GetDigimonRidingIntermediatesByDigimon(digimon.Id);
-                        foreach (var dri in digimonRidingsIntermediate)
-                        {
-                            Riding riding = await _unit.RidingRepository.GetById(dri.RidingId);
-                            ridingsDTO.Add(new RidingDTO
-                            {
-                                Item = riding.Name,
-                                Quantity = dri.Quantity
-                            });
-                        }
+                        Item item = await _unit.ItemRepository.GetById(digimonItem.ItemId);
+                        ItemType itemType = await _unit.ItemTypeRepository.GetById(item.ItemTypeId);
 
-                        digimonDTO.Ridings = ridingsDTO;
-                    }
-                    else
-                        digimonDTO.Ridings = null;
-
-                    var evolutionItensDTO = new List<EvolutionItemDTO>();
-                    var evolutionItensIntermediate = await _unit.DigimonEvolutionItemRepository
-                        .GetDigimonEvolutionItemIntermediatesByDigimon(digimon.Id);
-                    foreach (var evoItem in evolutionItensIntermediate)
-                    {
-                        EvolutionItem evolutionItem = await _unit.EvolutionItemRepository.GetById(evoItem.EvolutionItemId);
-                        evolutionItensDTO.Add(new EvolutionItemDTO
+                        itemDTOs.Add(new ItemDTO()
                         {
-                            Name = evolutionItem.Name,
-                            Quantity = evolutionItem.Quantity
+                            Name = item.Name,
+                            Description = item.Description,
+                            Type = itemType.Description,
+                            Quantity = digimonItem.Quantity
                         });
+
+                        digimonDTO.Itens = itemDTOs;
                     }
-                    digimonDTO.EvolutionItens = evolutionItensDTO;
 
                     digimonsDTO.Add(digimonDTO);
                 }
@@ -135,13 +123,13 @@ namespace Application.Services
                     ?? throw new NullReferenceException("Digimon não encontrado.");
 
                 DigimonSkill skill = await _unit.DigimonSkillRepository.GetSkillByDigimon(id);
-                BuffDTO buffDTO = null;
+                DigimonBuffDTO buffDTO = null;
                 DigimonSkillBuff buff = null;
                 if (skill.DigimonSkillBuffId != null)
                 {
                     buff = await _unit.DigimonSkillBuffRepository.GetById((int)skill.DigimonSkillBuffId);
 
-                    buffDTO = new BuffDTO()
+                    buffDTO = new DigimonBuffDTO()
                     {
                         Name = buff.Name,
                         Description = buff.Description,
@@ -149,11 +137,12 @@ namespace Application.Services
                     };
                 }
 
-                var skillDTO = new SkillDTO()
+                var skillDTO = new DigimonSkillDTO()
                 {
                     Name = skill.Name,
                     Description = skill.Description,
                     AnimationTime = skill.AnimationTime,
+                    ASB = skill.ASB,
                     Attribute = skill.Attribute,
                     CoolDown = skill.CoolDown,
                     DSConsumed = skill.DSConsumed,
@@ -195,38 +184,23 @@ namespace Application.Services
                     Families = familiesDTO
                 };
 
-                if (digimon.CanBeRiding)
+                List<ItemDTO> itemDTOs = new();
+                var digimonItemIntermediates = await _unit.DigimonItemRepository.GetDigimonItemIntermediatesByDigimon(id);
+                foreach (var digimonItem in digimonItemIntermediates)
                 {
-                    var ridingsDTO = new List<RidingDTO>();
-                    var digimonRidingsIntermediate = await _unit.DigimonRidingRepository.GetDigimonRidingIntermediatesByDigimon(id);
-                    foreach (var dri in digimonRidingsIntermediate)
-                    {
-                        Riding riding = await _unit.RidingRepository.GetById(dri.RidingId);
-                        ridingsDTO.Add(new RidingDTO
-                        {
-                            Item = riding.Name,
-                            Quantity = dri.Quantity
-                        });
-                    }
+                    Item item = await _unit.ItemRepository.GetById(digimonItem.ItemId);
+                    ItemType itemType = await _unit.ItemTypeRepository.GetById(item.ItemTypeId);
 
-                    digimonDTO.Ridings = ridingsDTO;
-                }
-                else
-                    digimonDTO.Ridings = null;
-
-                var evolutionItensDTO = new List<EvolutionItemDTO>();
-                var evolutionItensIntermediate = await _unit.DigimonEvolutionItemRepository
-                    .GetDigimonEvolutionItemIntermediatesByDigimon(id);
-                foreach (var evoItem in evolutionItensIntermediate)
-                {
-                    EvolutionItem evolutionItem = await _unit.EvolutionItemRepository.GetById(evoItem.EvolutionItemId);
-                    evolutionItensDTO.Add(new EvolutionItemDTO
+                    itemDTOs.Add(new ItemDTO()
                     {
-                        Name = evolutionItem.Name,
-                        Quantity = evolutionItem.Quantity
+                        Name = item.Name,
+                        Description = item.Description,
+                        Type = itemType.Description,
+                        Quantity = digimonItem.Quantity
                     });
+
+                    digimonDTO.Itens = itemDTOs;
                 }
-                digimonDTO.EvolutionItens = evolutionItensDTO;
 
                 return digimonDTO;
             }
@@ -248,7 +222,7 @@ namespace Application.Services
                 }
 
                 DigimonSkillBuff buff = null;
-                BuffDTO buffDTO = null;
+                DigimonBuffDTO buffDTO = null;
                 if (digimonDTO.Skill.Buff != null)
                 {
                     buffDTO = digimonDTO.Skill.Buff;
@@ -261,9 +235,9 @@ namespace Application.Services
                 _unit.DigimonRepository.Add(digimon);
                 await _unit.Commit();
 
-                SkillDTO skillDTO = digimonDTO.Skill;
+                DigimonSkillDTO skillDTO = digimonDTO.Skill;
                 DigimonSkill skill = new(skillDTO.Name, skillDTO.Description, skillDTO.Attribute, skillDTO.CoolDown, skillDTO.DSConsumed,
-                skillDTO.NecessarySkillPoint, skillDTO.AnimationTime, digimon.Id, buff.Id);
+                skillDTO.NecessarySkillPoint, skillDTO.AnimationTime, skillDTO.ASB, digimon.Id, buff.Id);
                 _unit.DigimonSkillRepository.Add(skill);
                 await _unit.Commit();
 
@@ -278,32 +252,17 @@ namespace Application.Services
                     await _unit.Commit();
                 }
 
-                if (digimonDTO.CanBeRiding)
+                foreach (EntityIdValue item in digimonDTO.Itens)
                 {
-                    foreach (var digimonRidingDTO in digimonDTO.Ridings)
-                    {
-                        var intermediate = new DigimonRidingIntermediate()
-                        {
-                            DigimonId = digimon.Id,
-                            RidingId = digimonRidingDTO.RidingId,
-                            Quantity = digimonRidingDTO.Quantity
-                        };
-                        _unit.DigimonRidingRepository.Add(intermediate);
-                        await _unit.Commit();
-                    }
-                }
-
-                foreach (int evoItemId in digimonDTO.EvolutionItens)
-                {
-                    var intermediate = new DigimonEvolutionItemIntermediate()
+                    var intermediate = new DigimonItemIntermediate()
                     {
                         DigimonId = digimon.Id,
-                        EvolutionItemId = evoItemId
+                        ItemId = item.Id,
+                        Quantity = item.Value
                     };
-                    _unit.DigimonEvolutionItemRepository.Add(intermediate);
+                    _unit.DigimonItemRepository.Add(intermediate);
                     await _unit.Commit();
                 }
-
                 return "Sucesso!";
             }
             catch

@@ -1,6 +1,6 @@
 namespace Application.DTOs.DigimonManagement
 {
-    public class BuffDTO
+    public class DigimonBuffDTO
     {
         public string Name { get; set; }
         public string Description { get; set; }

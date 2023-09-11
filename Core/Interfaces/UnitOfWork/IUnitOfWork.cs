@@ -1,4 +1,5 @@
 using Core.Interfaces.DigimonManagement;
+using Core.Interfaces.ItemManagement;
 using Core.Interfaces.TamerManagement;
 
 namespace Core.Interfaces.UnitOfWork
@@ -8,13 +9,12 @@ namespace Core.Interfaces.UnitOfWork
         IDigimonRepository DigimonRepository { get; }
         IDigimonSkillRepository DigimonSkillRepository { get; }
         IDigimonSkillBuffRepository DigimonSkillBuffRepository { get; }
-        IEvolutionItemRepository EvolutionItemRepository { get; }
-        IDigimonEvolutionItemRepository DigimonEvolutionItemRepository { get; }
         IFamilyRepository FamilyRepository { get; }
-        IRidingRepository RidingRepository { get; }
-
         IDigimonFamilyRepository DigimonFamilyRepository { get; }
-        IDigimonRidingRepository DigimonRidingRepository { get; }
+        IDigimonItemRepository DigimonItemRepository { get; }
+
+        IItemRepository ItemRepository { get; }
+        IItemTypeRepository ItemTypeRepository { get; }
 
         ITamerRepository TamerRepository { get; }
         ITamerSkillRepository TamerSkillRepository { get; }

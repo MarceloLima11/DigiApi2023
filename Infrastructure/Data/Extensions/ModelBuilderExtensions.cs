@@ -1,9 +1,11 @@
 using Core.Enums;
+using Core.Entities.Item;
 using Core.Entities.Tamer;
 using Core.Entities.Digimon;
 using Core.Entities.Tamer.Buff;
 using Core.Entities.Digimon.Buff;
 using Core.Entities.Intermediate;
+using Core.Entities.Item.Category;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,12 +23,11 @@ namespace Infrastructure.Data.Extensions
             DigimonSkillBuffSeed(builder.Entity<DigimonSkillBuff>());
             DigimonSeed(builder.Entity<Digimon>());
             DigimonSkillSeed(builder.Entity<DigimonSkill>());
-            RidingSeed(builder.Entity<Riding>());
-            DigimonRidingSeed(builder.Entity<DigimonRidingIntermediate>());
-            EvolutionItemSeed(builder.Entity<EvolutionItem>());
             DigimonFamilySeed(builder.Entity<DigimonFamilyIntermediate>());
-            DigimonEvolutionItemSeed(builder.Entity<DigimonEvolutionItemIntermediate>());
 
+            ItemTypeSeed(builder.Entity<ItemType>());
+            ItemSeed(builder.Entity<Item>());
+            DigimonItemSeed(builder.Entity<DigimonItemIntermediate>());
         }
 
         private static void TamerSkillBuffSeed(EntityTypeBuilder<TamerSkillBuff> builder)
@@ -68,7 +69,7 @@ namespace Infrastructure.Data.Extensions
 
         private static void DigimonSkillSeed(EntityTypeBuilder<DigimonSkill> builder)
         {
-            DigimonSkill ds1 = new(1, "Fire Rocket", "Surrounds itself in fire and then charge towards its opponent.\n Target randomly gets additional fire damage.", ElementalAttribute.Fire, 4, 58, 2, 2.5f, 1, 1);
+            DigimonSkill ds1 = new(1, "Fire Rocket", "Surrounds itself in fire and then charge towards its opponent.\n Target randomly gets additional fire damage.", ElementalAttribute.Fire, 4, 58, 2, 2.5f, false, 1, 1);
 
             builder.HasData(ds1);
         }
@@ -88,40 +89,29 @@ namespace Infrastructure.Data.Extensions
             builder.HasData(dfi1, dfi2);
         }
 
-        private static void RidingSeed(EntityTypeBuilder<Riding> builder)
+        private static void ItemTypeSeed(EntityTypeBuilder<ItemType> builder)
         {
-            Riding r1 = new(1, "ModeSelector", "TESTEEEEEEE");
-            builder.HasData(r1);
+            ItemType it1 = new(1, "Digivolução", "Montaria");
+            ItemType it2 = new(2, "Digivolução", "Evolução");
+
+            builder.HasData(it1, it2);
         }
 
-        private static void DigimonRidingSeed(EntityTypeBuilder<DigimonRidingIntermediate> builder)
+        private static void ItemSeed(EntityTypeBuilder<Item> builder)
         {
-            DigimonRidingIntermediate dri1 = new()
-            {
-                DigimonId = 1,
-                RidingId = 1,
-                Quantity = 5
-            };
+            Item i1 = new(1, "Modo Seletor", "Prolongue a evolução do modo montaria", 1);
+            Item i2 = new(2, "Evoluter", "Forçar a expansão do slot de evolução do Digimon", 2);
+            Item i3 = new(3, "Digi-Egg of Courage", "teste", 2);
 
-            builder.HasData(dri1);
+            builder.HasData(i1, i2);
         }
 
-        private static void EvolutionItemSeed(EntityTypeBuilder<EvolutionItem> builder)
+        private static void DigimonItemSeed(EntityTypeBuilder<DigimonItemIntermediate> builder)
         {
-            EvolutionItem ei1 = new(1, "Digi-Egg of Courage", 1);
+            DigimonItemIntermediate dii1 = new() { DigimonId = 1, ItemId = 1, Quantity = 1 };
+            DigimonItemIntermediate dii2 = new() { DigimonId = 1, ItemId = 2, Quantity = 3 };
 
-            builder.HasData(ei1);
-        }
-
-        private static void DigimonEvolutionItemSeed(EntityTypeBuilder<DigimonEvolutionItemIntermediate> builder)
-        {
-            DigimonEvolutionItemIntermediate dei1 = new()
-            {
-                DigimonId = 1,
-                EvolutionItemId = 1
-            };
-
-            builder.HasData(dei1);
+            builder.HasData(dii1, dii2);
         }
     }
 }

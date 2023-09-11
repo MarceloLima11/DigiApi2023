@@ -1,7 +1,7 @@
-﻿using Core.Common;
-using Core.Entities.Intermediate;
-using Core.Enums;
+﻿using Core.Enums;
+using Core.Common;
 using Core.Validations;
+using Core.Entities.Intermediate;
 
 namespace Core.Entities.Digimon
 {
@@ -34,8 +34,7 @@ namespace Core.Entities.Digimon
         public ICollection<Digimon> Evolutions { get; set; }
         public ICollection<DigimonFamilyIntermediate> Families { get; set; }
         public ICollection<DigimonSkill> Skills { get; set; }
-        public ICollection<DigimonRidingIntermediate> Ridings { get; set; }
-        public ICollection<DigimonEvolutionItemIntermediate> EvolutionItens { get; set; }
+        public ICollection<DigimonItemIntermediate> Itens { get; set; }
 
         private void ValidateDigimon(string name, string description, int hp, int ds, int de, int at, float attackSpeed,
         string ct, int ht, string ev, Form form, DigimonAttribute attribute, ElementalAttribute elementalAttribute, bool canBeRiding)

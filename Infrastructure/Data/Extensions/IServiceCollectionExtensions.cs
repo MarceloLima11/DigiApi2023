@@ -30,7 +30,7 @@ namespace Infrastructure.Data.Extensions
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("ServerConnection");
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -52,9 +52,7 @@ namespace Infrastructure.Data.Extensions
             services.AddTransient<IDigimonRepository, DigimonRepository>();
             services.AddTransient<IDigimonSkillRepository, DigimonSkillRepository>();
             services.AddTransient<IDigimonSkillBuffRepository, DigimonSkillBuffRepository>();
-            services.AddTransient<IDigimonRidingRepository, DigimonRidingRepository>();
             services.AddTransient<IFamilyRepository, FamilyRepository>();
-            services.AddTransient<IRidingRepository, RidingRepository>();
         }
     }
 }

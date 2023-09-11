@@ -2,7 +2,7 @@ using Core.Enums;
 
 namespace Application.DTOs.DigimonManagement
 {
-    public class SkillDTO
+    public class DigimonSkillDTO
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -11,6 +11,7 @@ namespace Application.DTOs.DigimonManagement
         public int DSConsumed { get; set; }
         public int NecessarySkillPoint { get; set; }
         public float AnimationTime { get; set; }
-        public BuffDTO? Buff { get; set; }
+        public bool ASB { get; set; }
+        public DigimonBuffDTO? Buff { get; set; }
     }
 }

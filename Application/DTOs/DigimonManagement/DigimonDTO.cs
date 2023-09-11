@@ -18,9 +18,8 @@ namespace Application.DTOs.DigimonManagement
         public Form Form { get; set; }
         public DigimonAttribute Attribute { get; set; }
         public ElementalAttribute ElementalAttribute { get; set; }
-        public List<RidingDTO> Ridings { get; set; }
-        public SkillDTO Skill { get; set; }
+        public DigimonSkillDTO Skill { get; set; }
         public List<FamilyDTO> Families { get; set; }
-        public List<EvolutionItemDTO> EvolutionItens { get; set; }
+        public List<ItemDTO> Itens { get; set; }
     }
 }

@@ -6,12 +6,12 @@ using Infrastructure.Data.Repositories.Base;
 
 namespace Infrastructure.Data.Repositories.DigimonManagement
 {
-    public class DigimonEvolutionItemRepository : RepositoryBase<DigimonEvolutionItemIntermediate>, IDigimonEvolutionItemRepository
+    public class DigimonItemRepository : RepositoryBase<DigimonItemIntermediate>, IDigimonItemRepository
     {
-        public DigimonEvolutionItemRepository(ApplicationDbContext _context) : base(_context)
+        public DigimonItemRepository(ApplicationDbContext _context) : base(_context)
         { }
 
-        public async Task<IEnumerable<DigimonEvolutionItemIntermediate>> GetDigimonEvolutionItemIntermediatesByDigimon(int id)
+        public async Task<IEnumerable<DigimonItemIntermediate>> GetDigimonItemIntermediatesByDigimon(int id)
         {
             return await _dbSet.Where(x => x.DigimonId == id).ToListAsync();
         }

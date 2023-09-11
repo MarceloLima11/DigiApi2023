@@ -18,6 +18,7 @@ namespace Application.Extensions
 
             services.AddTransient<ITamerService, TamerService>();
             services.AddTransient<IDigimonService, DigimonService>();
+            services.AddTransient<IItemService, ItemService>();
         }
     }
 }
