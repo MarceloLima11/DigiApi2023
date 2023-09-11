@@ -1,7 +1,7 @@
-using Core.Common;
-using Core.Entities.Digimon.Buff;
 using Core.Enums;
+using Core.Common;
 using Core.Validations;
+using Core.Entities.Digimon.Buff;
 
 namespace Core.Entities.Digimon
 {
@@ -9,17 +9,17 @@ namespace Core.Entities.Digimon
     {
         public DigimonSkill() { }
 
-        public DigimonSkill(int id, string name, string description, ElementalAttribute attribute, int cd, int dsConsumed, int necessarySkillPoint, float animationTime, int digimonId, int digimonSkillBuffId)
+        public DigimonSkill(int id, string name, string description, ElementalAttribute attribute, int cd, int dsConsumed, int necessarySkillPoint, float animationTime, bool asb, int digimonId, int digimonSkillBuffId)
         {
             DomainException.When(id < 0, "Valor de id inválido.");
             Id = id;
 
-            ValidateDigimonSkill(name, description, attribute, cd, dsConsumed, necessarySkillPoint, animationTime, digimonId, digimonSkillBuffId);
+            ValidateDigimonSkill(name, description, attribute, cd, dsConsumed, necessarySkillPoint, animationTime, asb, digimonId, digimonSkillBuffId);
         }
 
-        public DigimonSkill(string name, string description, ElementalAttribute attribute, int cd, int dsConsumed, int necessarySkillPoint, float animationTime, int digimonId, int digimonSkillBuffId)
+        public DigimonSkill(string name, string description, ElementalAttribute attribute, int cd, int dsConsumed, int necessarySkillPoint, float animationTime, bool asb, int digimonId, int digimonSkillBuffId)
         {
-            ValidateDigimonSkill(name, description, attribute, cd, dsConsumed, necessarySkillPoint, animationTime, digimonId, digimonSkillBuffId);
+            ValidateDigimonSkill(name, description, attribute, cd, dsConsumed, necessarySkillPoint, animationTime, asb, digimonId, digimonSkillBuffId);
         }
 
         public ElementalAttribute Attribute { get; set; }
@@ -27,6 +27,7 @@ namespace Core.Entities.Digimon
         public int DSConsumed { get; set; }
         public int NecessarySkillPoint { get; set; }
         public float AnimationTime { get; set; }
+        public bool ASB { get; set; }
 
         public int DigimonId { get; set; }
         public Digimon Digimon { get; set; }
@@ -35,7 +36,7 @@ namespace Core.Entities.Digimon
         public DigimonSkillBuff DigimonSkillBuff { get; set; }
 
         public void ValidateDigimonSkill(string name, string description, ElementalAttribute attribute, int cd,
-         int dsConsumed, int necessarySkillPoint, float animationTime, int digimonId, int digimonSkillBuffId)
+         int dsConsumed, int necessarySkillPoint, float animationTime, bool asb, int digimonId, int digimonSkillBuffId)
         {
             DomainException.When(String.IsNullOrEmpty(name), "Nome inválido.");
 
@@ -59,6 +60,7 @@ namespace Core.Entities.Digimon
             Description = description;
             AnimationTime = animationTime;
             NecessarySkillPoint = necessarySkillPoint;
+            ASB = asb;
 
             if (digimonSkillBuffId is 0)
                 DigimonSkillBuffId = null;
