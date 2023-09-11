@@ -33,6 +33,7 @@ namespace Infrastructure.Data.Context
 
         // Auth
         public DbSet<AuthorizedDevelopers> AuthorizedDevelopers => Set<AuthorizedDevelopers>();
+        public DbSet<User> User => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

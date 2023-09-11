@@ -1,11 +1,14 @@
 using System.Text;
+using Core.Interfaces.Auth;
 using System.Security.Claims;
 using Application.Interfaces;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using Core.Interfaces.Auth;
 using Microsoft.Extensions.DependencyInjection;
+using Application.DTOs.User;
+
+
 
 namespace Application.Services.Auth
 {
@@ -13,11 +16,9 @@ namespace Application.Services.Auth
     {
         private readonly string _secretKey;
         private readonly IServiceProvider _serviceProvider;
-        //private readonly IAuthenticateUser _authUser;
 
         public AuthService(IServiceProvider serviceProvider)
         {
-            //_authUser = authUser;
             _serviceProvider = serviceProvider;
             _secretKey = GenereateSecret();
         }
@@ -68,7 +69,12 @@ namespace Application.Services.Auth
             }
         }
 
-        public string GenereateSecret()
+        public async Task<string> Register(UserRegistrationDTO user)
+        {
+            string hash = CrreateHash
+        }
+
+        private string GenereateSecret()
         {
             byte[] randomBytes = new byte[32];
             using (var rng = new RNGCryptoServiceProvider())
