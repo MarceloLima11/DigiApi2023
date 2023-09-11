@@ -69,7 +69,7 @@ namespace Infrastructure.Data.Extensions
 
         private static void DigimonSkillSeed(EntityTypeBuilder<DigimonSkill> builder)
         {
-            DigimonSkill ds1 = new(1, "Fire Rocket", "Surrounds itself in fire and then charge towards its opponent.\n Target randomly gets additional fire damage.", ElementalAttribute.Fire, 4, 58, 2, 2.5f, 1, 1);
+            DigimonSkill ds1 = new(1, "Fire Rocket", "Surrounds itself in fire and then charge towards its opponent.\n Target randomly gets additional fire damage.", ElementalAttribute.Fire, 4, 58, 2, 2.5f, false, 1, 1);
 
             builder.HasData(ds1);
         }

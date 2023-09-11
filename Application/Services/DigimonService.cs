@@ -1,13 +1,13 @@
 using Core.Enums;
+using Core.Entities.Item;
 using Core.Entities.Digimon;
 using Application.Interfaces;
+using Application.DTOs.Shared;
 using Core.Entities.Digimon.Buff;
 using Core.Interfaces.UnitOfWork;
 using Core.Entities.Intermediate;
-using Application.DTOs.DigimonManagement;
-using Core.Entities.Item;
 using Core.Entities.Item.Category;
-using Application.DTOs.Shared;
+using Application.DTOs.DigimonManagement;
 
 namespace Application.Services
 {
@@ -142,6 +142,7 @@ namespace Application.Services
                     Name = skill.Name,
                     Description = skill.Description,
                     AnimationTime = skill.AnimationTime,
+                    ASB = skill.ASB,
                     Attribute = skill.Attribute,
                     CoolDown = skill.CoolDown,
                     DSConsumed = skill.DSConsumed,
@@ -236,7 +237,7 @@ namespace Application.Services
 
                 DigimonSkillDTO skillDTO = digimonDTO.Skill;
                 DigimonSkill skill = new(skillDTO.Name, skillDTO.Description, skillDTO.Attribute, skillDTO.CoolDown, skillDTO.DSConsumed,
-                skillDTO.NecessarySkillPoint, skillDTO.AnimationTime, digimon.Id, buff.Id);
+                skillDTO.NecessarySkillPoint, skillDTO.AnimationTime, skillDTO.ASB, digimon.Id, buff.Id);
                 _unit.DigimonSkillRepository.Add(skill);
                 await _unit.Commit();
 

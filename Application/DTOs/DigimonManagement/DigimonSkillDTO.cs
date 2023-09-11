@@ -11,6 +11,7 @@ namespace Application.DTOs.DigimonManagement
         public int DSConsumed { get; set; }
         public int NecessarySkillPoint { get; set; }
         public float AnimationTime { get; set; }
+        public bool ASB { get; set; }
         public DigimonBuffDTO? Buff { get; set; }
     }
 }
