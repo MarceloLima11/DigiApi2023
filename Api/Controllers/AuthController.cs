@@ -31,7 +31,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegistrationDTO user)
         {
             try
