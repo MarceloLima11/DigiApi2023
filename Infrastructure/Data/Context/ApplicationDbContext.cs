@@ -32,7 +32,6 @@ namespace Infrastructure.Data.Context
         public DbSet<DigimonItemIntermediate> DigimonItemIntermediate => Set<DigimonItemIntermediate>();
 
         // Auth
-        public DbSet<AuthorizedDevelopers> AuthorizedDevelopers => Set<AuthorizedDevelopers>();
         public DbSet<User> User => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder builder)

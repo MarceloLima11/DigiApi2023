@@ -15,6 +15,7 @@ namespace Application.Extensions
         private static void AddServices(this IServiceCollection services)
         {
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddTransient<IRegisterService, RegisterService>();
 
             services.AddTransient<ITamerService, TamerService>();
             services.AddTransient<IDigimonService, DigimonService>();

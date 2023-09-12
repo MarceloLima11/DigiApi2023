@@ -6,6 +6,8 @@ using Infrastructure.Data.Repositories.ItemManagement;
 using Infrastructure.Data.Repositories.TamerManagement;
 using Infrastructure.Data.Repositories.DigimonManagement;
 using Core.Interfaces.ItemManagement;
+using Core.Interfaces.Auth;
+using Infrastructure.Data.Repositories.AuthManagement;
 
 namespace Infrastructure.Data.Repositories.UnitOfWork
 {
@@ -24,12 +26,12 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private ItemRepository itemRepository;
         private ItemTypeRepository itemTypeRepository;
         private IDigimonItemRepository digimonItemRepository;
+        private IUserRepository userRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
         }
-
 
         public ITamerRepository TamerRepository
         {
@@ -127,6 +129,15 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (digimonItemRepository == null) return new DigimonItemRepository(context);
                 return digimonItemRepository;
+            }
+        }
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                if (userRepository == null) return new UserRepository(context);
+                return userRepository;
             }
         }
 

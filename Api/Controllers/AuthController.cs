@@ -9,17 +9,20 @@ namespace Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly IRegisterService _registerService;
+
+        public AuthController(IAuthService authService, IRegisterService registerService)
         {
             _authService = authService;
+            _registerService = registerService;
         }
 
-        [HttpGet("{nickname}")]
-        public IActionResult GetToken(string nickname)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserDTO user)
         {
             try
             {
-                var result = _authService.GenerateToken(nickname);
+                var result = await _authService.GenerateToken(user);
                 return Ok(result);
             }
             catch (Exception err)
@@ -33,7 +36,7 @@ namespace Api.Controllers
         {
             try
             {
-                var result = await _authService.Register();
+                var result = await _registerService.Register(user);
                 return Ok(result);
             }
             catch (Exception err)

@@ -1,17 +1,10 @@
+using System.Text.RegularExpressions;
 using Core.Validations;
 
 namespace Core.Entities.Auth
 {
     public class User
     {
-        public User(Guid id, string username, string email, string passwordHash)
-        {
-            DomainException.When(id is null, "Id de usúario inválido.");
-
-            Id = id;
-            ValidateUser(username, email, passwordHash);
-        }
-
         public User(string username, string email, string passwordHash)
         { ValidateUser(username, email, passwordHash); }
 
@@ -22,9 +15,9 @@ namespace Core.Entities.Auth
 
         private void ValidateUser(string username, string email, string passwordHash)
         {
-            DomainException.When(username < 3, "Nome de usuário inválido. Minímo de 3 caracteres.")
+            DomainException.When(username.Length < 3, "Nome de usuário inválido. Minímo de 3 caracteres.");
 
-            DomainException.When(username > 15, "Nome de usuário inválido. Máximo de 15 caracteres.");
+            DomainException.When(username.Length > 15, "Nome de usuário inválido. Máximo de 15 caracteres.");
 
             DomainException.When(ValidateEmail(email), "Email inválido.");
 
@@ -33,7 +26,7 @@ namespace Core.Entities.Auth
             PasswordHash = passwordHash;
         }
 
-        private void bool ValidateEmail(string email)
+        private bool ValidateEmail(string email)
         {
             if (string.IsNullOrEmpty(email))
                 return false;

@@ -1,22 +1,13 @@
-using Core.Interfaces.Auth;
-
-
-using Infrastructure.Data.Auth;
 using Core.Interfaces.UnitOfWork;
 using Infrastructure.Data.Context;
-
 using Microsoft.EntityFrameworkCore;
-
-
 using Core.Interfaces.TamerManagement;
-
 using Core.Interfaces.DigimonManagement;
 using Microsoft.Extensions.Configuration;
-
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Data.Repositories.UnitOfWork;
-using Infrastructure.Data.Repositories.DigimonManagement;
 using Infrastructure.Data.Repositories.TamerManagement;
+using Infrastructure.Data.Repositories.DigimonManagement;
 
 namespace Infrastructure.Data.Extensions
 {
@@ -43,7 +34,6 @@ namespace Infrastructure.Data.Extensions
         public static void AddRepository(this IServiceCollection services)
         {
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<IAuthenticateUser, AuthenticateUser>();
 
             services.AddTransient<ITamerRepository, TamerRepository>();
             services.AddTransient<ITamerSkillRepository, TamerSkillRepository>();
