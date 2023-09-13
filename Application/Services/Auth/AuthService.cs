@@ -31,7 +31,7 @@ namespace Application.Services.Auth
             User user = await unit.UserRepository.GetUser(userDTO.Username);
 
             if (user == null || !VerifyPassword(userDTO.Password, user.PasswordHash))
-                throw new UnauthorizedAccessException("Usuário não autorizado.");
+                throw new UnauthorizedAccessException("Usuário não cadastrado.");
 
             var key = Encoding.ASCII.GetBytes(_secretKey);
             var tokenHandler = new JwtSecurityTokenHandler();

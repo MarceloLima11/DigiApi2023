@@ -3,6 +3,7 @@ using Core.Entities.Auth;
 using Application.DTOs.User;
 using Application.Interfaces;
 using Core.Interfaces.UnitOfWork;
+using System.Security.Cryptography;
 using Konscious.Security.Cryptography;
 
 namespace Application.Services.Auth
@@ -18,7 +19,8 @@ namespace Application.Services.Auth
         {
             try
             {
-                string hash = CreateHash(userDTO.Password);
+                byte[] salt = GenerateSalt(16);
+                string hash = CreateHash(userDTO.Password, salt);
                 User user = new(userDTO.Username, userDTO.Email, hash);
 
                 _unit.UserRepository.Add(user);
@@ -30,13 +32,24 @@ namespace Application.Services.Auth
             { throw; }
         }
 
-        private string CreateHash(string password)
+        private string CreateHash(string password, byte[] salt)
         {
             using var hasher = new Argon2id(Encoding.UTF8.GetBytes(password));
-            byte[] hashBytes = hasher.GetBytes(32);
-            string teste = Convert.ToBase64String(hashBytes);
+            hasher.Salt = salt;
+            hasher.MemorySize = 65536;
+            hasher.DegreeOfParallelism = 4;
+            hasher.Iterations = 4;
 
-            return teste;
+            byte[] hashBytes = hasher.GetBytes(32);
+            return Convert.ToBase64String(hashBytes);
+        }
+
+        public byte[] GenerateSalt(int size)
+        {
+            using var rng = new RNGCryptoServiceProvider();
+            byte[] salt = new byte[size];
+            rng.GetBytes(salt);
+            return salt;
         }
     }
 }
