@@ -1,14 +1,14 @@
 using System.Text;
+using Utilities.Helpers;
 using Core.Entities.Auth;
 using Application.DTOs.User;
 using System.Security.Claims;
 using Application.Interfaces;
+using Core.Interfaces.UnitOfWork;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using Konscious.Security.Cryptography;
 using Microsoft.Extensions.DependencyInjection;
-using Core.Interfaces.UnitOfWork;
 
 namespace Application.Services.Auth
 {
@@ -30,8 +30,15 @@ namespace Application.Services.Auth
 
             User user = await unit.UserRepository.GetUser(userDTO.Username);
 
-            if (user == null || !VerifyPassword(userDTO.Password, user.PasswordHash))
+
+            if (user == null)
                 throw new UnauthorizedAccessException("Usuário não cadastrado.");
+            else
+            {
+                string[] saltedHash = user.PasswordHash.Split(':');
+                if (!SecurityUtility.VerifyPassword(userDTO.Password, saltedHash[0], saltedHash[1]))
+                    throw new UnauthorizedAccessException("Senha inválida.");
+            }
 
             var key = Encoding.ASCII.GetBytes(_secretKey);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -69,18 +76,7 @@ namespace Application.Services.Auth
                 return true;
             }
             catch
-            {
-                return false;
-            }
-        }
-
-        public bool VerifyPassword(string password, string hash)
-        {
-            byte[] hashBytes = Convert.FromBase64String(hash);
-            using var hasher = new Argon2id(Encoding.UTF8.GetBytes(password));
-            byte[] computedHashBytes = hasher.GetBytes(hashBytes.Length);
-
-            return hashBytes.SequenceEqual(computedHashBytes);
+            { return false; }
         }
 
         private string GenereateSecret()

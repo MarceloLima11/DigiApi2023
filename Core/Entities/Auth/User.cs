@@ -19,7 +19,7 @@ namespace Core.Entities.Auth
 
             DomainException.When(username.Length > 15, "Nome de usuário inválido. Máximo de 15 caracteres.");
 
-            DomainException.When(ValidateEmail(email), "Email inválido.");
+            DomainException.When(!ValidateEmail(email), "Email inválido.");
 
             Username = username;
             Email = email;
@@ -31,7 +31,7 @@ namespace Core.Entities.Auth
             if (string.IsNullOrEmpty(email))
                 return false;
 
-            string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            const string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             return Regex.IsMatch(email, pattern);
         }
     }

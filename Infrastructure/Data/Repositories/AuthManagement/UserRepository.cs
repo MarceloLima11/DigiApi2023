@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Core.Entities.Auth;
 using Core.Interfaces.Auth;
 using Infrastructure.Data.Context;
@@ -14,6 +15,11 @@ namespace Infrastructure.Data.Repositories.AuthManagement
         public async Task<User> GetUser(string username)
         {
             return await _dbSet.FirstOrDefaultAsync(x => x.Username == username);
+        }
+
+        public async Task<bool> UserVerify(Expression<Func<User, bool>> predicate)
+        {
+            return await _dbSet.AnyAsync(predicate);
         }
     }
 }
