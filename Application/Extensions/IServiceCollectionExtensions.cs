@@ -2,6 +2,7 @@ using Application.Services;
 using Application.Interfaces;
 using Application.Services.Auth;
 using Microsoft.Extensions.DependencyInjection;
+using Application.Services.Email;
 
 namespace Application.Extensions
 {
@@ -16,6 +17,8 @@ namespace Application.Extensions
         {
             services.AddSingleton<IAuthService, AuthService>();
             services.AddTransient<IRegisterService, RegisterService>();
+
+            services.AddScoped<IEmailService, EmailService>();
 
             services.AddTransient<ITamerService, TamerService>();
             services.AddTransient<IDigimonService, DigimonService>();
