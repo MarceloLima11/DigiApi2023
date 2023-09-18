@@ -28,11 +28,20 @@ namespace Core.Entities.Auth
 
         private bool ValidateEmail(string email)
         {
-            if (string.IsNullOrEmpty(email))
-                return false;
+            if (string.IsNullOrEmpty(email)) return false;
 
             const string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             return Regex.IsMatch(email, pattern);
+        }
+
+        public void ValidatePassword(string password)
+        {
+            DomainException.When(password.Length < 8, "Senha inválida. Tamnho menor que o mínimo permitido.");
+
+            DomainException.When(password.Length > 20, "Senha inválida. Tamanho maior que o permitido.");
+
+            bool senhaValida = !Regex.IsMatch(password, @"^(?=.*[a-zA-Z])(?=.*[0-9]).+$");
+            DomainException.When(senhaValida, "Formato de senha inválido.");
         }
     }
 }

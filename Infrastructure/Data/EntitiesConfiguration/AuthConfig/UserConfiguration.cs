@@ -8,6 +8,7 @@ namespace Infrastructure.Data.EntitiesConfiguration.AuthConfig
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("User"); // fix late
             builder.HasKey(x => x.Id).HasName("id_user");
             builder.Property(x => x.Username).HasColumnName("username");
             builder.Property(x => x.Email).HasColumnName("email");

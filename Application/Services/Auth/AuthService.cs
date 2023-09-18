@@ -30,7 +30,6 @@ namespace Application.Services.Auth
 
             User user = await unit.UserRepository.GetUser(userDTO.Username);
 
-
             if (user == null)
                 throw new UnauthorizedAccessException("Usuário não cadastrado.");
             else

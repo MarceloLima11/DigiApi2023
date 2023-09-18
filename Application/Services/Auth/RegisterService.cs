@@ -19,9 +19,12 @@ namespace Application.Services.Auth
             {
                 await AlreadyExist(userDTO.Username, userDTO.Email);
 
+                User user = new(userDTO.Username, userDTO.Email, userDTO.Password);
+                user.ValidatePassword(userDTO.Password);
+
                 byte[] salt = SecurityUtility.GenerateSalt();
                 string hash = SecurityUtility.CreateHash(userDTO.Password, salt);
-                User user = new(userDTO.Username, userDTO.Email, hash);
+                user.PasswordHash = hash;
 
                 _unit.UserRepository.Add(user);
                 await _unit.Commit();
