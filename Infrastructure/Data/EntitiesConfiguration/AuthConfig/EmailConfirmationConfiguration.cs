@@ -9,7 +9,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.AuthConfig
         public void Configure(EntityTypeBuilder<EmailConfirmation> builder)
         {
             builder.ToTable("email_confirmation");
-            builder.HasKey(x => x.Id).HasName("id");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(x => x.Confirmed).HasColumnName("confirmed").HasDefaultValue(false);
             //builder.Property(x => x.ExpirationDate).HasColumnName("expiration_date");

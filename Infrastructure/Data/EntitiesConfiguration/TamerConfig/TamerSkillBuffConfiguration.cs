@@ -9,7 +9,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.TamerConfig
         public void Configure(EntityTypeBuilder<TamerSkillBuff> builder)
         {
             builder.ToTable("tamer_skill_buff");
-            builder.HasKey(opt => opt.Id).HasName("id_tsb");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(x => x.Name).HasColumnName("name");
             builder.Property(x => x.FirstBuffAttribute).HasColumnName("first_attribute");

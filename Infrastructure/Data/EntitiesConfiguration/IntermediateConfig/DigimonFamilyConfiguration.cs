@@ -10,6 +10,7 @@ namespace Infrastructure.Data.EntitiesConfiguration.IntermediateConfig
         {
             builder.ToTable("digimon_family");
             builder.HasKey(df => new { df.DigimonId, df.FamilyId });
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.HasOne(x => x.Digimon).WithMany(x => x.Families).HasForeignKey(x => x.DigimonId);
             builder.HasOne(x => x.Family).WithMany(x => x.Digimons).HasForeignKey(x => x.FamilyId);

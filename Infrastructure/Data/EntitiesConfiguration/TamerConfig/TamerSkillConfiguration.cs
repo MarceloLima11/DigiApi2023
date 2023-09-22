@@ -9,7 +9,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.TamerConfig
         public void Configure(EntityTypeBuilder<TamerSkill> builder)
         {
             builder.ToTable("tamer_skill");
-            builder.HasKey(opt => opt.Id).HasName("id_ts");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(x => x.Name).HasColumnName("name");
             builder.Property(x => x.Description).HasColumnName("description");

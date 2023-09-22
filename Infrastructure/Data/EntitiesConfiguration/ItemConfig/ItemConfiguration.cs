@@ -9,7 +9,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.ItemConfig
         public void Configure(EntityTypeBuilder<Item> builder)
         {
             builder.ToTable("item");
-            builder.HasKey(x => x.Id).HasName("id_item");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(x => x.Name).HasColumnName("name");
             builder.Property(x => x.Description).HasColumnName("description");
