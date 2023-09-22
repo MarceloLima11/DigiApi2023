@@ -1,8 +1,8 @@
 using Application.Services;
 using Application.Interfaces;
 using Application.Services.Auth;
-using Microsoft.Extensions.DependencyInjection;
 using Application.Services.Email;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions
 {
@@ -15,10 +15,10 @@ namespace Application.Extensions
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.AddSingleton<IAuthService, AuthService>();
-            services.AddTransient<IRegisterService, RegisterService>();
+            services.AddSingleton<IJwtService, JwtService>();
+            services.AddTransient<IUserService, UserService>();
 
-            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ISendEmailService, SendEmailService>();
 
             services.AddTransient<ITamerService, TamerService>();
             services.AddTransient<IDigimonService, DigimonService>();

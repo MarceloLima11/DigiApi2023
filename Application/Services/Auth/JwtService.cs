@@ -1,44 +1,26 @@
 using System.Text;
-using Utilities.Helpers;
 using Core.Entities.Auth;
-using Application.DTOs.User;
 using System.Security.Claims;
 using Application.Interfaces;
-using Core.Interfaces.UnitOfWork;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Services.Auth
 {
-    public class AuthService : IAuthService
+    public class JwtService : IJwtService
     {
         private readonly string _secretKey;
         private readonly IServiceProvider _serviceProvider;
 
-        public AuthService(IServiceProvider serviceProvider)
+        public JwtService(IServiceProvider serviceProvider)
         {
             _secretKey = GenereateSecret();
             _serviceProvider = serviceProvider;
         }
 
-        public async Task<string> GenerateToken(UserDTO userDTO)
+        public string GenerateToken(Guid id)
         {
-            using var scope = _serviceProvider.CreateScope();
-            var unit = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-
-            User user = await unit.UserRepository.GetUser(userDTO.Username);
-
-            if (user == null)
-                throw new UnauthorizedAccessException("Usuário não cadastrado.");
-            else
-            {
-                string[] saltedHash = user.PasswordHash.Split(':');
-                if (!SecurityUtility.VerifyPassword(userDTO.Password, saltedHash[0], saltedHash[1]))
-                    throw new UnauthorizedAccessException("Senha inválida.");
-            }
-
             var key = Encoding.ASCII.GetBytes(_secretKey);
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -46,9 +28,29 @@ namespace Application.Services.Auth
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new(ClaimTypes.NameIdentifier, user.Id.ToString())
+                    new(ClaimTypes.NameIdentifier, id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        public string GenerateEmailConfirmationToken(string username, string email)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_secretKey);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new(ClaimTypes.Name, username),
+                    new(ClaimTypes.Email, email)
+                }),
+                Expires = DateTime.UtcNow.AddHours(48),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

@@ -12,6 +12,7 @@ namespace Core.Entities.Auth
         public string Username { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
+        public EmailConfirmation EmailConfirmation { get; set; }
 
         private void ValidateUser(string username, string email, string passwordHash)
         {

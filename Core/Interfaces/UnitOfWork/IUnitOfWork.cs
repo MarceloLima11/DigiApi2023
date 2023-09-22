@@ -22,6 +22,7 @@ namespace Core.Interfaces.UnitOfWork
         ITamerSkillBuffRepository TamerSkillBuffRepository { get; }
 
         IUserRepository UserRepository { get; }
+        IEmailConfirmationRepository EmailConfirmationRepository { get; }
 
         Task Commit();
     }

@@ -8,13 +8,14 @@ namespace Api.Controllers
     [Route("auth")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
-        private readonly IRegisterService _registerService;
+        private readonly ISendEmailService _emailService;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService, IRegisterService registerService)
+        public AuthController(IUserService userService,
+        ISendEmailService emailService)
         {
-            _authService = authService;
-            _registerService = registerService;
+            _emailService = emailService;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -22,7 +23,7 @@ namespace Api.Controllers
         {
             try
             {
-                var result = await _authService.GenerateToken(user);
+                var result = await _userService.Login(user);
                 return Ok(result);
             }
             catch (Exception err)
@@ -36,8 +37,22 @@ namespace Api.Controllers
         {
             try
             {
-                var result = await _registerService.Register(user);
+                var result = await _userService.Register(user);
                 return Ok(result);
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
+
+        [HttpPost("email/confirm")]
+        public async Task<IActionResult> SendConfirmationEmail()
+        {
+            try
+            {
+                await _emailService.Confirmation("", "", "");
+                return Ok("Email enviado com sucesso.");
             }
             catch (Exception err)
             {

@@ -9,7 +9,7 @@ using Infrastructure.Data.Repositories.UnitOfWork;
 using Infrastructure.Data.Repositories.TamerManagement;
 using Infrastructure.Data.Repositories.DigimonManagement;
 
-namespace Infrastructure.Data.Extensions
+namespace Infrastructure.Extensions
 {
     public static class IServiceCollectionExtensions
     {

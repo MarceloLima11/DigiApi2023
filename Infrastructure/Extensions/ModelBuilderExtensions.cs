@@ -9,7 +9,7 @@ using Core.Entities.Item.Category;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Data.Extensions
+namespace Infrastructure.Extensions
 {
     public static class ModelBuilderExtensions
     {

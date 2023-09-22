@@ -27,6 +27,7 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private ItemTypeRepository itemTypeRepository;
         private IDigimonItemRepository digimonItemRepository;
         private IUserRepository userRepository;
+        private IEmailConfirmationRepository emailConfirmationRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -138,6 +139,15 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (userRepository == null) return new UserRepository(context);
                 return userRepository;
+            }
+        }
+
+        public IEmailConfirmationRepository EmailConfirmationRepository
+        {
+            get
+            {
+                if (emailConfirmationRepository == null) return new EmailConfirmationRepository(context);
+                return emailConfirmationRepository;
             }
         }
 
