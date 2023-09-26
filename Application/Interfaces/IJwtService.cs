@@ -4,6 +4,6 @@ namespace Application.Interfaces
     {
         bool ValidateToken(string token);
         string GenerateToken(Guid id);
-        string GenerateEmailConfirmationToken(string username, string email);
+        string GenerateEmailConfirmationToken(int length = 6);
     }
 }

@@ -1,3 +1,4 @@
+using Api.Attributes;
 using Application.DTOs.User;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -46,13 +47,28 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost("email/confirm")]
-        public async Task<IActionResult> SendConfirmationEmail()
+        [HttpPost("email/send-confirm")]
+        [AuthorizeDeveloper]
+        public async Task<IActionResult> SendConfirmationEmail([FromBody] string email)
         {
             try
             {
-                await _emailService.Confirmation("", "", "");
+                await _emailService.Confirmation(email);
                 return Ok("Email enviado com sucesso.");
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
+
+        [HttpGet("user/confirm-email")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string token)
+        {
+            try
+            {
+                var result = await _userService.ConfirmEmail(email, token);
+                return Ok("AA");
             }
             catch (Exception err)
             {

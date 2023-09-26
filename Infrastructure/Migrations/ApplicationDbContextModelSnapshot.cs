@@ -26,7 +26,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -36,14 +37,19 @@ namespace Infrastructure.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("confirmed");
 
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expiration");
+
                     b.Property<string>("Token")
-                        .HasColumnType("text");
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)")
+                        .HasColumnName("token");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -56,6 +62,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("Email")
@@ -70,8 +77,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("username");
 
-                    b.HasKey("Id")
-                        .HasName("id_user");
+                    b.HasKey("Id");
 
                     b.ToTable("user", (string)null);
                 });
@@ -80,7 +86,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -96,8 +103,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("pk_digimonskilluff_id");
+                    b.HasKey("Id");
 
                     b.ToTable("digimon_skill_buff", (string)null);
 
@@ -115,7 +121,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -175,8 +182,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id_digimon");
+                    b.HasKey("Id");
 
                     b.ToTable("digimon", (string)null);
 
@@ -205,7 +211,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -247,8 +254,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("necessary_skill_point");
 
-                    b.HasKey("Id")
-                        .HasName("id_ds");
+                    b.HasKey("Id");
 
                     b.HasIndex("DigimonId");
 
@@ -278,7 +284,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -293,8 +300,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id_family");
+                    b.HasKey("Id");
 
                     b.ToTable("family", (string)null);
 
@@ -379,7 +385,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -391,8 +398,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.ToTable("item_type", (string)null);
 
@@ -415,7 +421,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -430,8 +437,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id_item");
+                    b.HasKey("Id");
 
                     b.HasIndex("ItemTypeId");
 
@@ -458,7 +464,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -474,8 +481,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("seccond_attribute");
 
-                    b.HasKey("Id")
-                        .HasName("id_tsb");
+                    b.HasKey("Id");
 
                     b.ToTable("tamer_skill_buff", (string)null);
 
@@ -493,7 +499,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -512,8 +519,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("level");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("DigimonId")
                         .IsUnique();
@@ -525,7 +531,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -556,8 +563,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("TamerSkillId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id")
-                        .HasName("id_tamer");
+                    b.HasKey("Id");
 
                     b.HasIndex("TamerSkillId")
                         .IsUnique();
@@ -582,7 +588,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -601,8 +608,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("TamerSkillBuffId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id")
-                        .HasName("id_ts");
+                    b.HasKey("Id");
 
                     b.HasIndex("TamerSkillBuffId");
 

@@ -31,7 +31,7 @@ namespace Utilities.Helpers
 
         public static byte[] GenerateSalt()
         {
-            using var rng = new RNGCryptoServiceProvider();
+            using var rng = RandomNumberGenerator.Create();
             byte[] salt = new byte[DefaultSaltSize];
             rng.GetBytes(salt);
             return salt;

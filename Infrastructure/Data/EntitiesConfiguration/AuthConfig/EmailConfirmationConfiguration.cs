@@ -13,7 +13,8 @@ namespace Infrastructure.Data.EntitiesConfiguration.AuthConfig
             builder.Property(x => x.Id).HasColumnName("id");
 
             builder.Property(x => x.Confirmed).HasColumnName("confirmed").HasDefaultValue(false);
-            //builder.Property(x => x.ExpirationDate).HasColumnName("expiration_date");
+            builder.Property(x => x.Token).HasColumnName("token").HasMaxLength(6);
+            builder.Property(x => x.Expiration).HasColumnName("expiration"); builder.Property(x => x.Expiration).HasConversion(x => x.ToUniversalTime(), x => DateTime.SpecifyKind(x, DateTimeKind.Utc));
 
             builder.HasOne(x => x.User).WithOne(x => x.EmailConfirmation)
                 .HasForeignKey<EmailConfirmation>(x => x.UserId).IsRequired();

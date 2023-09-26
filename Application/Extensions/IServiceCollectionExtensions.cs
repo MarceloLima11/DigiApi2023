@@ -1,7 +1,6 @@
 using Application.Services;
 using Application.Interfaces;
 using Application.Services.Auth;
-using Application.Services.Email;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions

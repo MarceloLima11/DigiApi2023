@@ -17,6 +17,11 @@ namespace Infrastructure.Data.Repositories.AuthManagement
             return await _dbSet.FirstOrDefaultAsync(x => x.Username == username);
         }
 
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return await _dbSet.FirstOrDefaultAsync(x => x.Email == email);
+        }
+
         public async Task<bool> UserVerify(Expression<Func<User, bool>> predicate)
         {
             return await _dbSet.AnyAsync(predicate);

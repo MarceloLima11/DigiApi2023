@@ -1,5 +1,4 @@
 using System.Text;
-using Core.Entities.Auth;
 using System.Security.Claims;
 using Application.Interfaces;
 using System.Security.Cryptography;
@@ -38,24 +37,19 @@ namespace Application.Services.Auth
             return tokenHandler.WriteToken(token);
         }
 
-        public string GenerateEmailConfirmationToken(string username, string email)
+        public string GenerateEmailConfirmationToken(int length)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_secretKey);
+            const string alphaNumeric = "abcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var token = new StringBuilder(length);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
+            for (int i = 0; i < length; i++)
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new(ClaimTypes.Name, username),
-                    new(ClaimTypes.Email, email)
-                }),
-                Expires = DateTime.UtcNow.AddHours(48),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+                int index = random.Next(alphaNumeric.Length);
+                token.Append(alphaNumeric[index]);
+            }
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return token.ToString();
         }
 
         public bool ValidateToken(string token)
@@ -83,7 +77,7 @@ namespace Application.Services.Auth
         private string GenereateSecret()
         {
             byte[] randomBytes = new byte[32];
-            using (var rng = new RNGCryptoServiceProvider())
+            using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomBytes);
             }

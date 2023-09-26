@@ -6,6 +6,7 @@ namespace Core.Entities.Auth
     {
         public int Id { get; set; }
         public string Token { get; set; }
+        public DateTime Expiration { get; set; }
         public bool Confirmed { get; set; }
 
         public Guid UserId { get; set; }
@@ -14,10 +15,11 @@ namespace Core.Entities.Auth
         public EmailConfirmation(string token, Guid userId)
         {
             DomainException.When(userId == null, "Id do usuário nulo.");
-            DomainException.When(String.IsNullOrEmpty(token), "Id do usuário nulo.");
+            DomainException.When(String.IsNullOrEmpty(token) || token.Length > 6, "Token inválido.");
 
             Token = token;
             UserId = userId;
+            Expiration = DateTime.UtcNow.AddHours(2);
         }
     }
 }

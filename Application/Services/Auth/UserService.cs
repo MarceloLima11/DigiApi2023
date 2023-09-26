@@ -3,6 +3,7 @@ using Core.Entities.Auth;
 using Application.DTOs.User;
 using Application.Interfaces;
 using Core.Interfaces.UnitOfWork;
+using SendGrid.Helpers.Errors.Model;
 
 namespace Application.Services.Auth
 {
@@ -49,13 +50,26 @@ namespace Application.Services.Auth
                 _unit.UserRepository.Add(user);
                 await _unit.Commit();
 
-                string confirmEmailToken = _jwtService.GenerateEmailConfirmationToken(
-                    user.Username, user.Email);
+                string confirmEmailToken = _jwtService.GenerateEmailConfirmationToken();
                 var emailConfirmationData = new EmailConfirmation(confirmEmailToken, user.Id);
                 _unit.EmailConfirmationRepository.Add(emailConfirmationData);
                 await _unit.Commit();
 
                 return "Usuário registrado com sucesso!";
+            }
+            catch
+            { throw; }
+        }
+
+        public async Task<string> ConfirmEmail(string email, string token)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
+                    throw new BadRequestException("Parâmetros inválidos.");
+
+                User user = await _unit.UserRepository.GetUserByEmail(email);
+                return "Continue...";
             }
             catch
             { throw; }
