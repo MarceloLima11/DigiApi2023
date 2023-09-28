@@ -68,7 +68,7 @@ namespace Api.Controllers
             try
             {
                 var result = await _userService.ConfirmEmail(email, token);
-                return Ok("AA");
+                return Ok(result);
             }
             catch (Exception err)
             {

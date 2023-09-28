@@ -4,6 +4,8 @@ using Application.DTOs.User;
 using Application.Interfaces;
 using Core.Interfaces.UnitOfWork;
 using SendGrid.Helpers.Errors.Model;
+using Microsoft.IdentityModel.Tokens;
+using Application.Common.Exceptions;
 
 namespace Application.Services.Auth
 {
@@ -65,11 +67,28 @@ namespace Application.Services.Auth
         {
             try
             {
-                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
-                    throw new BadRequestException("Parâmetros inválidos.");
+                if (string.IsNullOrEmpty(email)) throw new BadRequestException("Email inválido.");
+                if (token.Length != 6) throw new BadRequestException("Código inválido.");
 
-                User user = await _unit.UserRepository.GetUserByEmail(email);
-                return "Continue...";
+                User user = await _unit.UserRepository.GetUserByEmail(email)
+                    ?? throw new NotFoundException("Usuário não cadastrado!");
+
+                var emailConfirmation = await _unit.EmailConfirmationRepository.GetEmailConfirmationByUser(user.Id);
+                if (emailConfirmation.Confirmed) return "Usuário já verificado.";
+
+                if (DateTime.UtcNow > emailConfirmation.Expiration)
+                    throw new TokenExpiredException(emailConfirmation.Expiration.ToLocalTime());
+
+                if (!emailConfirmation.Token.Equals(token))
+                    throw new SecurityTokenValidationException("Código inválido");
+
+
+
+                emailConfirmation.Confirmed = true;
+                _unit.EmailConfirmationRepository.Update(emailConfirmation);
+                await _unit.Commit();
+
+                return "Email confirmado com sucesso!";
             }
             catch
             { throw; }
@@ -80,8 +99,8 @@ namespace Application.Services.Auth
             bool usernameVerify = await _unit.UserRepository.UserVerify(x => x.Username == username);
             bool emailVerify = await _unit.UserRepository.UserVerify(x => x.Email == email);
 
-            if (usernameVerify) throw new Exception("Username já existe.");
-            if (emailVerify) throw new Exception("Email já cadastrado.");
+            if (usernameVerify) throw new NotFoundException("Username já existe.");
+            if (emailVerify) throw new NotFoundException("Email já cadastrado.");
         }
     }
 }
