@@ -53,8 +53,8 @@ namespace Api.Controllers
         {
             try
             {
-                await _emailService.Confirmation(email);
-                return Ok("Email enviado com sucesso.");
+                var result = await _emailService.SendConfirmationEmail(email);
+                return Ok(result);
             }
             catch (Exception err)
             {
@@ -75,5 +75,8 @@ namespace Api.Controllers
                 return BadRequest(err.Message);
             }
         }
+
+        // [HttpPut("user/reset-password")]
+        // public async Task<IActionResult> ResetPassword([FromQuery])
     }
 }

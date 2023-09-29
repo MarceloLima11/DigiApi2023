@@ -76,12 +76,11 @@ namespace Application.Services.Auth
                 var emailConfirmation = await _unit.EmailConfirmationRepository.GetEmailConfirmationByUser(user.Id);
                 if (emailConfirmation.Confirmed) return "Usuário já verificado.";
 
-                if (DateTime.UtcNow > emailConfirmation.Expiration)
+                if (emailConfirmation.Expiration < DateTime.UtcNow)
                     throw new TokenExpiredException(emailConfirmation.Expiration.ToLocalTime());
 
                 if (!emailConfirmation.Token.Equals(token))
                     throw new SecurityTokenValidationException("Código inválido");
-
 
 
                 emailConfirmation.Confirmed = true;

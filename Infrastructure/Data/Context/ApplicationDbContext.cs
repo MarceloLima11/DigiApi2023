@@ -37,6 +37,7 @@ namespace Infrastructure.Data.Context
         // Auth
         public DbSet<User> User => Set<User>();
         public DbSet<EmailConfirmation> EmailConfirmation => Set<EmailConfirmation>();
+        public DbSet<PasswordReset> PasswordReset => Set<PasswordReset>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
