@@ -11,6 +11,7 @@ namespace Application.Services.Auth
     {
         private readonly string _secretKey;
         private readonly IServiceProvider _serviceProvider;
+        private const string _alphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
         public JwtService(IServiceProvider serviceProvider)
         {
@@ -37,16 +38,15 @@ namespace Application.Services.Auth
             return tokenHandler.WriteToken(token);
         }
 
-        public string GenerateEmailConfirmationToken(int length)
+        public string GenerateEmailConfirmationToken(int length) // change nome, Generate alphanumeric token?
         {
-            const string alphaNumeric = "abcdefghijklmnopqrstuvwxyz0123456789";
             var random = new Random();
             var token = new StringBuilder(length);
 
             for (int i = 0; i < length; i++)
             {
-                int index = random.Next(alphaNumeric.Length);
-                token.Append(alphaNumeric[index]);
+                int index = random.Next(_alphaNumeric.Length);
+                token.Append(_alphaNumeric[index]);
             }
 
             return token.ToString();

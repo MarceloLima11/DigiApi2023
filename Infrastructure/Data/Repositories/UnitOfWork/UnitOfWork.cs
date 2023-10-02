@@ -28,6 +28,7 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private IDigimonItemRepository digimonItemRepository;
         private IUserRepository userRepository;
         private IEmailConfirmationRepository emailConfirmationRepository;
+        private IPasswordResetRepository passwordResetRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -148,6 +149,15 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (emailConfirmationRepository == null) return new EmailConfirmationRepository(context);
                 return emailConfirmationRepository;
+            }
+        }
+
+        public IPasswordResetRepository PasswordResetRepository
+        {
+            get
+            {
+                if (passwordResetRepository == null) return new PasswordResetRepository(context);
+                return passwordResetRepository;
             }
         }
 

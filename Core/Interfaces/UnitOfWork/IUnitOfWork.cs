@@ -23,6 +23,7 @@ namespace Core.Interfaces.UnitOfWork
 
         IUserRepository UserRepository { get; }
         IEmailConfirmationRepository EmailConfirmationRepository { get; }
+        IPasswordResetRepository PasswordResetRepository { get; }
 
         Task Commit();
     }

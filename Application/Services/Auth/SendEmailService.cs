@@ -68,7 +68,26 @@ namespace Application.Services.Auth
                 User user = await _unit.UserRepository.GetUserByEmail(email)
                     ?? throw new NotFoundException("Usuário não cadastrado.");
 
-                // var passwordReset
+                var passwordReset = await _unit.PasswordResetRepository.GetByUserId(user.Id);
+
+                if (passwordReset.Expiration < DateTime.UtcNow)
+                {
+                    _unit.PasswordResetRepository.Delete(passwordReset);
+                    await _unit.Commit();
+                }
+
+                if (passwordReset == null)
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    IJwtService jwtService = scope.ServiceProvider.GetRequiredService<IJwtService>();
+
+                    string token = jwtService.GenerateEmailConfirmationToken();
+                    passwordReset = new PasswordReset(token, user.Id);
+                    _unit.PasswordResetRepository.Add(passwordReset);
+                    await _unit.Commit();
+                }
+
+
 
                 return "continue...";
             }

@@ -76,7 +76,17 @@ namespace Api.Controllers
             }
         }
 
-        // [HttpPut("user/reset-password")]
-        // public async Task<IActionResult> ResetPassword([FromQuery])
+        [HttpPut("user/reset-password")]
+        public async Task<IActionResult> ResetPassword([FromQuery] string email, [FromQuery] string token)
+        {
+            try
+            {
+                return Ok("Continue...");
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
     }
 }
