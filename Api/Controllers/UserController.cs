@@ -1,4 +1,3 @@
-using Api.Attributes;
 using Application.DTOs.User;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,18 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("auth")]
-    public class AuthController : ControllerBase
+    [Route("user")]
+    public class UserController : ControllerBase
     {
-        private readonly ISendEmailService _emailService;
         private readonly IUserService _userService;
-
-        public AuthController(IUserService userService,
-        ISendEmailService emailService)
-        {
-            _emailService = emailService;
-            _userService = userService;
-        }
+        public UserController(IUserService userService)
+        { _userService = userService; }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserDTO user)
@@ -47,22 +40,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost("email/send-confirm")]
-        [AuthorizeDeveloper]
-        public async Task<IActionResult> SendConfirmationEmail([FromBody] string email)
-        {
-            try
-            {
-                var result = await _emailService.SendConfirmationEmail(email);
-                return Ok(result);
-            }
-            catch (Exception err)
-            {
-                return BadRequest(err.Message);
-            }
-        }
-
-        [HttpGet("user/confirm-email")]
+        [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string token)
         {
             try
@@ -76,17 +54,18 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("user/reset-password")]
-        public async Task<IActionResult> ResetPassword([FromQuery] string email, [FromQuery] string token)
-        {
-            try
-            {
-                return Ok("Continue...");
-            }
-            catch (Exception err)
-            {
-                return BadRequest(err.Message);
-            }
-        }
+        // [HttpPut("reset-password")]
+        // public async Task<IActionResult> ResetPassword([FromQuery] string email, [FromQuery] string token)
+        // {
+        //     try
+        //     {
+        //         var result = await _userService.
+        //         return Ok();
+        //     }
+        //     catch (Exception err)
+        //     {
+        //         return BadRequest(err.Message);
+        //     }
+        // }
     }
 }

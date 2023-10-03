@@ -1,10 +1,10 @@
-using Application.Interfaces;
-using Core.Entities.Auth;
-using Core.Interfaces.UnitOfWork;
-using Microsoft.Extensions.DependencyInjection;
 using SendGrid;
-using SendGrid.Helpers.Errors.Model;
+using Core.Entities.Auth;
 using SendGrid.Helpers.Mail;
+using Application.Interfaces;
+using Core.Interfaces.UnitOfWork;
+using SendGrid.Helpers.Errors.Model;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Services.Auth
 {
@@ -12,7 +12,7 @@ namespace Application.Services.Auth
     {
         private readonly IUnitOfWork _unit;
         private readonly IServiceProvider _serviceProvider;
-        private const string defaultLink = "https://digiapi2023-u7m5-dev.fl0.io/auth/user/confirm-email";
+        private const string defaultLink = "https://digiapi2023-u7m5-dev.fl0.io/auth/user";
 
         public SendEmailService(IUnitOfWork unit, IServiceProvider serviceProvider)
         {
@@ -24,11 +24,6 @@ namespace Application.Services.Auth
         {
             try
             {
-                var apiKey = "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";
-                var client = new SendGridClient(apiKey);
-                var from = new EmailAddress("lokeje9431@ipniel.com", "DigiService");
-                var to = new EmailAddress(email, "Tamer");
-
                 var user = await _unit.UserRepository.GetUserByEmail(email);
                 var emailConfirmation = await _unit
                     .EmailConfirmationRepository.GetEmailConfirmationByUser(user.Id);
@@ -43,17 +38,11 @@ namespace Application.Services.Auth
                     _unit.EmailConfirmationRepository.Update(emailConfirmation);
                 }
 
-                string confirmationLink = $"{defaultLink}?email={email}&token={emailConfirmation.Token}";
+                string confirmationLink = $"{defaultLink}/confirm-email?email={email}&token={emailConfirmation.Token}";
                 string htmlContent = $"<p><a href='{confirmationLink}'>LINK AQUI !!!</a></p>";
 
-                var dynamicTemplateData = new
-                {
-                    Confirmation_Link = htmlContent
-                };
-
-                var msg = MailHelper.CreateSingleTemplateEmail(from, to, "d-47ae1d37cf694cfb93f6d4ba31955b00", dynamicTemplateData);
-                var response = await client.SendEmailAsync(msg);
-                return response.IsSuccessStatusCode ? "Email enviado com sucesso!" : throw new Exception("Ocorreu um erro ao enviar o email, tente novamente.");
+                var data = new { Confirmation_Link = htmlContent };
+                return await SendEmail(email, data);
             }
             catch
             { throw; }
@@ -87,9 +76,28 @@ namespace Application.Services.Auth
                     await _unit.Commit();
                 }
 
+                string confirmationLink = $"{defaultLink}/reset-password?email={email}&token={passwordReset.Token}";
+                string htmlContent = $"<p><a href='{confirmationLink}'>LINK AQUI !!!</a></p>";
 
+                var data = new { Confirmation_Link = htmlContent };
+                return await SendEmail(email, data);
+            }
+            catch
+            { throw; }
+        }
 
-                return "continue...";
+        private async Task<string> SendEmail(string toEmail, dynamic data)
+        {
+            try
+            {
+                var apiKey = "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";
+                var client = new SendGridClient(apiKey);
+                var from = new EmailAddress("lokeje9431@ipniel.com", "DigiService");
+                var to = new EmailAddress(toEmail, "Tamer");
+
+                var msg = MailHelper.CreateSingleTemplateEmail(from, to, "d-47ae1d37cf694cfb93f6d4ba31955b00", data);
+                var response = await client.SendEmailAsync(msg);
+                return response.IsSuccessStatusCode ? "Email enviado com sucesso!" : throw new Exception("Ocorreu um erro ao enviar o email, tente novamente.");
             }
             catch
             { throw; }
