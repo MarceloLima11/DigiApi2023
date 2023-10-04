@@ -93,6 +93,47 @@ namespace Application.Services.Auth
             { throw; }
         }
 
+        public async Task<string> ValidateToken(string email, string token)
+        {
+            try
+            {
+                User user = await _unit.UserRepository.GetUserByEmail(email)
+                    ?? throw new UnauthorizedAccessException("Usuário não encontrado");
+
+                var passwordResetData = await _unit.PasswordResetRepository.GetByUserId(user.Id)
+                    ?? throw new BadRequestException("Token inválido");
+
+                if (!passwordResetData.Token.Equals(token))
+                    throw new BadRequestException(message: "Token inválido"); // Criar except custom pra isso
+
+                if (passwordResetData.Expiration < DateTime.UtcNow) // mover essa validação para utils
+                    throw new TokenExpiredException(passwordResetData.Expiration);
+
+                return "Success!";
+            }
+            catch
+            { throw; }
+        }
+
+        public async Task<string> ResetPassword(string email, string password)
+        {
+            try
+            {
+                User user = await _unit.UserRepository.GetUserByEmail(email);
+                user.ValidatePassword(password);
+
+                byte[] salt = SecurityUtility.GenerateSalt();
+                string hash = SecurityUtility.CreateHash(password, salt);
+                user.PasswordHash = hash;
+                _unit.UserRepository.Update(user);
+                await _unit.Commit();
+
+                return "Senha atualizada com sucesso!";
+            }
+            catch
+            { throw; }
+        }
+
         private async Task AlreadyExist(string username, string email)
         {
             bool usernameVerify = await _unit.UserRepository.UserVerify(x => x.Username == username);

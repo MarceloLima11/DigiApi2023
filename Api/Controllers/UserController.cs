@@ -54,18 +54,32 @@ namespace Api.Controllers
             }
         }
 
-        // [HttpPut("reset-password")]
-        // public async Task<IActionResult> ResetPassword([FromQuery] string email, [FromQuery] string token)
-        // {
-        //     try
-        //     {
-        //         var result = await _userService.
-        //         return Ok();
-        //     }
-        //     catch (Exception err)
-        //     {
-        //         return BadRequest(err.Message);
-        //     }
-        // }
+        [HttpGet("validate-token")]
+        public async Task<IActionResult> ValidateToken([FromQuery] string email, [FromQuery] string token)
+        {
+            try
+            {
+                var result = await _userService.ValidateToken(email, token);
+                return Ok(result);
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
+        // ^v Fazer desses dois uma única rota, verificando antes o token e depois recebendo a senha na mesma func
+        [HttpPut("reset-password")]
+        public async Task<IActionResult> ResetPassword(string email, string token)
+        {
+            try
+            {
+                var result = await _userService.ResetPassword(email, token);
+                return Ok(result);
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
     }
 }
