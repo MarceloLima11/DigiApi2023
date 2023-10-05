@@ -16,6 +16,10 @@ namespace Infrastructure.Data.EntitiesConfiguration.AuthConfig
             builder.Property(x => x.Expiration).HasColumnName("expiration");
             builder.Property(x => x.Expiration).HasConversion(x => x.ToUniversalTime(), x => DateTime.SpecifyKind(x, DateTimeKind.Utc));
             builder.Property(x => x.UserId).HasColumnName("user_id");
+
+
+            builder.HasOne<User>().WithOne()
+               .HasForeignKey<PasswordReset>(x => x.UserId).IsRequired();
         }
     }
 }
