@@ -6,6 +6,7 @@ using Core.Interfaces.UnitOfWork;
 using SendGrid.Helpers.Errors.Model;
 using Microsoft.IdentityModel.Tokens;
 using Application.Common.Exceptions;
+using Application.DTOs.User.Request;
 
 namespace Application.Services.Auth
 {
@@ -93,37 +94,26 @@ namespace Application.Services.Auth
             { throw; }
         }
 
-        public async Task<string> ValidateToken(string email, string token)
+        public async Task<string> ResetPassword(ResetPasswordDTO resetPasswordDTO)
         {
             try
             {
-                User user = await _unit.UserRepository.GetUserByEmail(email)
+                User user = await _unit.UserRepository.GetUserByEmail(resetPasswordDTO.Email)
                     ?? throw new UnauthorizedAccessException("Usuário não encontrado");
 
                 var passwordResetData = await _unit.PasswordResetRepository.GetByUserId(user.Id)
                     ?? throw new BadRequestException("Token inválido");
 
-                if (!passwordResetData.Token.Equals(token))
+                if (!passwordResetData.Token.Equals(resetPasswordDTO.Token))
                     throw new BadRequestException(message: "Token inválido"); // Criar except custom pra isso
 
                 if (passwordResetData.Expiration < DateTime.UtcNow) // mover essa validação para utils
                     throw new TokenExpiredException(passwordResetData.Expiration);
 
-                return "Success!";
-            }
-            catch
-            { throw; }
-        }
-
-        public async Task<string> ResetPassword(string email, string password)
-        {
-            try
-            {
-                User user = await _unit.UserRepository.GetUserByEmail(email);
-                user.ValidatePassword(password);
+                user.ValidatePassword(resetPasswordDTO.Password);
 
                 byte[] salt = SecurityUtility.GenerateSalt();
-                string hash = SecurityUtility.CreateHash(password, salt);
+                string hash = SecurityUtility.CreateHash(resetPasswordDTO.Password, salt);
                 user.PasswordHash = hash;
                 _unit.UserRepository.Update(user);
                 await _unit.Commit();

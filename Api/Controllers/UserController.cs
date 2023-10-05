@@ -1,4 +1,5 @@
 using Application.DTOs.User;
+using Application.DTOs.User.Request;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,26 +55,12 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("validate-token")]
-        public async Task<IActionResult> ValidateToken([FromQuery] string email, [FromQuery] string token)
-        {
-            try
-            {
-                var result = await _userService.ValidateToken(email, token);
-                return Ok(result);
-            }
-            catch (Exception err)
-            {
-                return BadRequest(err.Message);
-            }
-        }
-        // ^v Fazer desses dois uma única rota, verificando antes o token e depois recebendo a senha na mesma func
         [HttpPut("reset-password")]
-        public async Task<IActionResult> ResetPassword(string email, string token)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordDTO)
         {
             try
             {
-                var result = await _userService.ResetPassword(email, token);
+                var result = await _userService.ResetPassword(resetPasswordDTO);
                 return Ok(result);
             }
             catch (Exception err)
