@@ -20,6 +20,7 @@ namespace Application.Extensions
             services.AddScoped<ISendEmailService, SendEmailService>();
 
             services.AddTransient<ITamerService, TamerService>();
+            services.AddTransient<ITitleService, TitleService>();
             services.AddTransient<IDigimonService, DigimonService>();
             services.AddTransient<IItemService, ItemService>();
         }

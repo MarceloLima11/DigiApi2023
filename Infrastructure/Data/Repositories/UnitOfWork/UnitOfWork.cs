@@ -1,13 +1,13 @@
+using Core.Interfaces.Auth;
 using Core.Interfaces.UnitOfWork;
 using Infrastructure.Data.Context;
+using Core.Interfaces.ItemManagement;
 using Core.Interfaces.TamerManagement;
 using Core.Interfaces.DigimonManagement;
+using Infrastructure.Data.Repositories.AuthManagement;
 using Infrastructure.Data.Repositories.ItemManagement;
 using Infrastructure.Data.Repositories.TamerManagement;
 using Infrastructure.Data.Repositories.DigimonManagement;
-using Core.Interfaces.ItemManagement;
-using Core.Interfaces.Auth;
-using Infrastructure.Data.Repositories.AuthManagement;
 
 namespace Infrastructure.Data.Repositories.UnitOfWork
 {
@@ -29,6 +29,7 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private IUserRepository userRepository;
         private IEmailConfirmationRepository emailConfirmationRepository;
         private IPasswordResetRepository passwordResetRepository;
+        private ITitleRepository titleRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -59,6 +60,15 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (tamerSkillBuffRepository == null) return new TamerSkillBuffRepository(context);
                 return tamerSkillBuffRepository;
+            }
+        }
+
+        public ITitleRepository TitleRepository
+        {
+            get
+            {
+                if (titleRepository == null) return new TitleRepository(context);
+                return titleRepository;
             }
         }
 
