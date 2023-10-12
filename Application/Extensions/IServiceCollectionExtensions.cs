@@ -23,6 +23,7 @@ namespace Application.Extensions
             services.AddTransient<ITitleService, TitleService>();
             services.AddTransient<IDigimonService, DigimonService>();
             services.AddTransient<IItemService, ItemService>();
+            services.AddTransient<ISealService, SealService>();
         }
     }
 }
