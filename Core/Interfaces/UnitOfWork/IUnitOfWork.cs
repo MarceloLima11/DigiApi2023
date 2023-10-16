@@ -20,6 +20,7 @@ namespace Core.Interfaces.UnitOfWork
         ITamerRepository TamerRepository { get; }
         ITamerSkillRepository TamerSkillRepository { get; }
         ITamerSkillBuffRepository TamerSkillBuffRepository { get; }
+        ISealRepository SealRepository { get; }
         ITitleRepository TitleRepository { get; }
 
         IUserRepository UserRepository { get; }

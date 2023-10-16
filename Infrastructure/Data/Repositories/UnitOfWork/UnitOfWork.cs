@@ -30,6 +30,7 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private IEmailConfirmationRepository emailConfirmationRepository;
         private IPasswordResetRepository passwordResetRepository;
         private ITitleRepository titleRepository;
+        private ISealRepository sealRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -60,6 +61,15 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (tamerSkillBuffRepository == null) return new TamerSkillBuffRepository(context);
                 return tamerSkillBuffRepository;
+            }
+        }
+
+        public ISealRepository SealRepository
+        {
+            get
+            {
+                if (SealRepository == null) return new SealRepository(context);
+                return sealRepository;
             }
         }
 

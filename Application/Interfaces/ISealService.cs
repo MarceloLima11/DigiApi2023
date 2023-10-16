@@ -1,5 +1,9 @@
+using Application.DTOs.TamerManagement;
+
 namespace Application.Interfaces
 {
-    public class ISealService
-    { }
+    public interface ISealService
+    {
+        Task<IEnumerable<SealDTO>> GetSeals();
+    }
 }

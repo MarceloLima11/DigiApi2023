@@ -35,7 +35,8 @@ namespace Api.Controllers
         {
             try
             {
-                var result = await _unit
+                var result = await _titleService.CreateTitle(titleDTO);
+                return Ok(result);
             }
             catch (Exception err)
             {
