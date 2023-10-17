@@ -6,7 +6,8 @@ using Core.Entities.Item;
 using Core.Entities.Item.Category;
 using Core.Entities.Tamer;
 using Core.Entities.Tamer.Buff;
-using Infrastructure.Data.Extensions;
+using Core.Entities.Tamer.Seal;
+using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Context
@@ -23,6 +24,8 @@ namespace Infrastructure.Data.Context
         public DbSet<Item> Item => Set<Item>();
         public DbSet<ItemType> ItemType => Set<ItemType>();
 
+
+        public DbSet<Seal> Seal => Set<Seal>();
         public DbSet<Tamer> Tamer => Set<Tamer>();
         public DbSet<TamerSkill> TamerSkill => Set<TamerSkill>();
         public DbSet<TamerSkillBuff> TamerSkillBuff => Set<TamerSkillBuff>();
@@ -32,7 +35,9 @@ namespace Infrastructure.Data.Context
         public DbSet<DigimonItemIntermediate> DigimonItemIntermediate => Set<DigimonItemIntermediate>();
 
         // Auth
-        public DbSet<AuthorizedDevelopers> AuthorizedDevelopers => Set<AuthorizedDevelopers>();
+        public DbSet<User> User => Set<User>();
+        public DbSet<EmailConfirmation> EmailConfirmation => Set<EmailConfirmation>();
+        public DbSet<PasswordReset> PasswordReset => Set<PasswordReset>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

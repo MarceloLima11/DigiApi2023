@@ -22,28 +22,101 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Core.Entities.Auth.AuthorizedDevelopers", b =>
+            modelBuilder.Entity("Core.Entities.Auth.EmailConfirmation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("NickName")
-                        .HasColumnType("text")
-                        .HasColumnName("developer_nickname");
+                    b.Property<bool>("Confirmed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("confirmed");
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expiration");
+
+                    b.Property<string>("Token")
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)")
+                        .HasColumnName("token");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("authorized_developers", (string)null);
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("email_confirmation", (string)null);
+                });
+
+            modelBuilder.Entity("Core.Entities.Auth.PasswordReset", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expiration");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("text")
+                        .HasColumnName("token");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("password_reset", (string)null);
+                });
+
+            modelBuilder.Entity("Core.Entities.Auth.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text")
+                        .HasColumnName("password");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("text")
+                        .HasColumnName("username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Digimon.Buff.DigimonSkillBuff", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -59,8 +132,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("pk_digimonskilluff_id");
+                    b.HasKey("Id");
 
                     b.ToTable("digimon_skill_buff", (string)null);
 
@@ -78,7 +150,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -138,8 +211,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id_digimon");
+                    b.HasKey("Id");
 
                     b.ToTable("digimon", (string)null);
 
@@ -168,7 +240,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -210,8 +283,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("necessary_skill_point");
 
-                    b.HasKey("Id")
-                        .HasName("id_ds");
+                    b.HasKey("Id");
 
                     b.HasIndex("DigimonId");
 
@@ -241,7 +313,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -256,8 +329,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id_family");
+                    b.HasKey("Id");
 
                     b.ToTable("family", (string)null);
 
@@ -342,7 +414,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -354,8 +427,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id");
+                    b.HasKey("Id");
 
                     b.ToTable("item_type", (string)null);
 
@@ -378,7 +450,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -393,8 +466,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("id_item");
+                    b.HasKey("Id");
 
                     b.HasIndex("ItemTypeId");
 
@@ -421,7 +493,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -437,8 +510,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("seccond_attribute");
 
-                    b.HasKey("Id")
-                        .HasName("id_tsb");
+                    b.HasKey("Id");
 
                     b.ToTable("tamer_skill_buff", (string)null);
 
@@ -452,11 +524,44 @@ namespace Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Entities.Tamer.Seal.Seal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Abilitie")
+                        .HasColumnType("text")
+                        .HasColumnName("abilitie");
+
+                    b.Property<string>("Buff")
+                        .HasColumnType("text")
+                        .HasColumnName("buff");
+
+                    b.Property<int>("DigimonId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("integer")
+                        .HasColumnName("level");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DigimonId")
+                        .IsUnique();
+
+                    b.ToTable("seal", (string)null);
+                });
+
             modelBuilder.Entity("Core.Entities.Tamer.Tamer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -487,8 +592,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("TamerSkillId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id")
-                        .HasName("id_tamer");
+                    b.HasKey("Id");
 
                     b.HasIndex("TamerSkillId")
                         .IsUnique();
@@ -513,7 +617,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -532,8 +637,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("TamerSkillBuffId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id")
-                        .HasName("id_ts");
+                    b.HasKey("Id");
 
                     b.HasIndex("TamerSkillBuffId");
 
@@ -563,6 +667,26 @@ namespace Infrastructure.Migrations
                     b.HasIndex("EvolutionsId");
 
                     b.ToTable("digimon_evolution", (string)null);
+                });
+
+            modelBuilder.Entity("Core.Entities.Auth.EmailConfirmation", b =>
+                {
+                    b.HasOne("Core.Entities.Auth.User", "User")
+                        .WithOne("EmailConfirmation")
+                        .HasForeignKey("Core.Entities.Auth.EmailConfirmation", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Entities.Auth.PasswordReset", b =>
+                {
+                    b.HasOne("Core.Entities.Auth.User", null)
+                        .WithOne()
+                        .HasForeignKey("Core.Entities.Auth.PasswordReset", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Entities.Digimon.DigimonSkill", b =>
@@ -633,6 +757,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("ItemType");
                 });
 
+            modelBuilder.Entity("Core.Entities.Tamer.Seal.Seal", b =>
+                {
+                    b.HasOne("Core.Entities.Digimon.Digimon", "Digimon")
+                        .WithOne()
+                        .HasForeignKey("Core.Entities.Tamer.Seal.Seal", "DigimonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Digimon");
+                });
+
             modelBuilder.Entity("Core.Entities.Tamer.Tamer", b =>
                 {
                     b.HasOne("Core.Entities.Tamer.TamerSkill", "TamerSkill")
@@ -669,6 +804,11 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("EvolutionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.Auth.User", b =>
+                {
+                    b.Navigation("EmailConfirmation");
                 });
 
             modelBuilder.Entity("Core.Entities.Digimon.Digimon", b =>

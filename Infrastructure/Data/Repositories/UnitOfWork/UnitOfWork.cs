@@ -1,11 +1,13 @@
+using Core.Interfaces.Auth;
 using Core.Interfaces.UnitOfWork;
 using Infrastructure.Data.Context;
+using Core.Interfaces.ItemManagement;
 using Core.Interfaces.TamerManagement;
 using Core.Interfaces.DigimonManagement;
+using Infrastructure.Data.Repositories.AuthManagement;
 using Infrastructure.Data.Repositories.ItemManagement;
 using Infrastructure.Data.Repositories.TamerManagement;
 using Infrastructure.Data.Repositories.DigimonManagement;
-using Core.Interfaces.ItemManagement;
 
 namespace Infrastructure.Data.Repositories.UnitOfWork
 {
@@ -24,12 +26,16 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
         private ItemRepository itemRepository;
         private ItemTypeRepository itemTypeRepository;
         private IDigimonItemRepository digimonItemRepository;
+        private IUserRepository userRepository;
+        private IEmailConfirmationRepository emailConfirmationRepository;
+        private IPasswordResetRepository passwordResetRepository;
+        private ITitleRepository titleRepository;
+        private ISealRepository sealRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
         }
-
 
         public ITamerRepository TamerRepository
         {
@@ -55,6 +61,24 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (tamerSkillBuffRepository == null) return new TamerSkillBuffRepository(context);
                 return tamerSkillBuffRepository;
+            }
+        }
+
+        public ISealRepository SealRepository
+        {
+            get
+            {
+                if (SealRepository == null) return new SealRepository(context);
+                return sealRepository;
+            }
+        }
+
+        public ITitleRepository TitleRepository
+        {
+            get
+            {
+                if (titleRepository == null) return new TitleRepository(context);
+                return titleRepository;
             }
         }
 
@@ -127,6 +151,33 @@ namespace Infrastructure.Data.Repositories.UnitOfWork
             {
                 if (digimonItemRepository == null) return new DigimonItemRepository(context);
                 return digimonItemRepository;
+            }
+        }
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                if (userRepository == null) return new UserRepository(context);
+                return userRepository;
+            }
+        }
+
+        public IEmailConfirmationRepository EmailConfirmationRepository
+        {
+            get
+            {
+                if (emailConfirmationRepository == null) return new EmailConfirmationRepository(context);
+                return emailConfirmationRepository;
+            }
+        }
+
+        public IPasswordResetRepository PasswordResetRepository
+        {
+            get
+            {
+                if (passwordResetRepository == null) return new PasswordResetRepository(context);
+                return passwordResetRepository;
             }
         }
 
