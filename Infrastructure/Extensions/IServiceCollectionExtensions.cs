@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Data.Repositories.UnitOfWork;
 using Infrastructure.Data.Repositories.TamerManagement;
 using Infrastructure.Data.Repositories.DigimonManagement;
+using Core.Entities.Tamer.Title;
 
 namespace Infrastructure.Extensions
 {
@@ -43,6 +44,8 @@ namespace Infrastructure.Extensions
             services.AddTransient<IDigimonSkillRepository, DigimonSkillRepository>();
             services.AddTransient<IDigimonSkillBuffRepository, DigimonSkillBuffRepository>();
             services.AddTransient<IFamilyRepository, FamilyRepository>();
+            services.AddTransient<ITitleRepository, TitleRepository>();
+            services.AddTransient<ISealRepository, SealRepository>();
         }
     }
 }

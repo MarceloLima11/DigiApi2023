@@ -13,6 +13,7 @@ namespace Application.Services.Auth
         private readonly IUnitOfWork _unit;
         private readonly IServiceProvider _serviceProvider;
         private const string defaultLink = "https://digiapi2023-u7m5-dev.fl0.io/auth/user";
+        private string _apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
 
         public SendEmailService(IUnitOfWork unit, IServiceProvider serviceProvider)
         {
@@ -90,8 +91,7 @@ namespace Application.Services.Auth
         {
             try
             {
-                var apiKey = "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";
-                var client = new SendGridClient(apiKey);
+                var client = new SendGridClient(_apiKey);
                 var from = new EmailAddress("lokeje9431@ipniel.com", "DigiService");
                 var to = new EmailAddress(toEmail, "Tamer");
 
