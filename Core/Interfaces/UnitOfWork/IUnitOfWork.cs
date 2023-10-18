@@ -1,3 +1,4 @@
+using Core.Interfaces.Auth;
 using Core.Interfaces.DigimonManagement;
 using Core.Interfaces.ItemManagement;
 using Core.Interfaces.TamerManagement;
@@ -19,6 +20,13 @@ namespace Core.Interfaces.UnitOfWork
         ITamerRepository TamerRepository { get; }
         ITamerSkillRepository TamerSkillRepository { get; }
         ITamerSkillBuffRepository TamerSkillBuffRepository { get; }
+        ISealRepository SealRepository { get; }
+        ITitleRepository TitleRepository { get; }
+
+        IUserRepository UserRepository { get; }
+        IEmailConfirmationRepository EmailConfirmationRepository { get; }
+        IPasswordResetRepository PasswordResetRepository { get; }
+
         Task Commit();
     }
 }

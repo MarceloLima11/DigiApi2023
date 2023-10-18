@@ -9,7 +9,7 @@ namespace Api.Attributes
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var authService = context.HttpContext.RequestServices.GetRequiredService<IAuthService>();
+            var jwtService = context.HttpContext.RequestServices.GetRequiredService<IJwtService>();
             var authorizationHeader = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
 
             if (authorizationHeader == null || !authorizationHeader.StartsWith("Bearer "))
@@ -19,7 +19,7 @@ namespace Api.Attributes
             }
 
             var token = authorizationHeader[7..];
-            if (!authService.ValidateToken(token))
+            if (!jwtService.ValidateToken(token))
                 context.Result = new UnauthorizedResult();
         }
     }

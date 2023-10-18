@@ -14,11 +14,16 @@ namespace Application.Extensions
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IJwtService, JwtService>();
+            services.AddTransient<IUserService, UserService>();
+
+            services.AddScoped<ISendEmailService, SendEmailService>();
 
             services.AddTransient<ITamerService, TamerService>();
+            services.AddTransient<ITitleService, TitleService>();
             services.AddTransient<IDigimonService, DigimonService>();
             services.AddTransient<IItemService, ItemService>();
+            services.AddTransient<ISealService, SealService>();
         }
     }
 }
