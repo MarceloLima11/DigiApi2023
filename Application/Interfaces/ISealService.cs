@@ -5,5 +5,6 @@ namespace Application.Interfaces
     public interface ISealService
     {
         Task<IEnumerable<SealDTO>> GetSeals();
+        Task<string> CreateSeal(SealDTO sealDTO);
     }
 }

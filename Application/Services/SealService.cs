@@ -29,5 +29,19 @@ namespace Application.Services
             catch
             { throw; }
         }
+
+        public async Task<string> CreateSeal(SealDTO sealDTO)
+        {
+            try
+            {
+                Seal seal = new(sealDTO.Level, sealDTO.Abilitie, sealDTO.Buff, sealDTO.DigimonId);
+                _unit.SealRepository.Add(seal);
+                await _unit.Commit();
+
+                return "Sucesso!";
+            }
+            catch
+            { throw; }
+        }
     }
 }
