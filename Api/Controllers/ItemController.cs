@@ -15,7 +15,7 @@ namespace Api.Controllers
         { _itemService = itemService; }
 
         [HttpPost]
-        [AuthorizeDeveloper]
+        [TokenValidation]
         public async Task<IActionResult> CreateItem([FromBody] CreateItemDTO itemDTO)
         {
             try

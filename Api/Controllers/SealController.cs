@@ -29,7 +29,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [AuthorizeDeveloper]
+        [TokenValidation]
         public async Task<IActionResult> CreateSeal([FromBody] SealDTO sealDTO)
         {
             try

@@ -43,7 +43,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [AuthorizeDeveloper]
+        [TokenValidation]
         public async Task<IActionResult> CreateDigimon([FromBody] CreateDigimonDTO digimonDTO)
         {
             try

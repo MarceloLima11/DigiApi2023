@@ -12,8 +12,8 @@ namespace Application.Services.Auth
     {
         private readonly IUnitOfWork _unit;
         private readonly IServiceProvider _serviceProvider;
-        private const string defaultLink = "https://digiapi2023-u7m5-dev.fl0.io/auth/user";
-        private string _apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+        private const string _defaultLink = "https://digiapi2023-u7m5-dev.fl0.io/auth/user";
+        private readonly string _apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
 
         public SendEmailService(IUnitOfWork unit, IServiceProvider serviceProvider)
         {
@@ -39,7 +39,7 @@ namespace Application.Services.Auth
                     _unit.EmailConfirmationRepository.Update(emailConfirmation);
                 }
 
-                string confirmationLink = $"{defaultLink}/confirm-email?email={email}&token={emailConfirmation.Token}";
+                string confirmationLink = $"{_defaultLink}/confirm-email?email={email}&token={emailConfirmation.Token}";
                 string htmlContent = $"<p><a href='{confirmationLink}'>LINK AQUI !!!</a></p>";
 
                 var data = new { Confirmation_Link = htmlContent };
@@ -77,7 +77,7 @@ namespace Application.Services.Auth
                     await _unit.Commit();
                 }
 
-                string confirmationLink = $"{defaultLink}/reset-password?email={email}&token={passwordReset.Token}";
+                string confirmationLink = $"{_defaultLink}/reset-password?email={email}&token={passwordReset.Token}";
                 string htmlContent = $"<p><a href='{confirmationLink}'>LINK AQUI !!!</a></p>";
 
                 var data = new { Confirmation_Link = htmlContent };

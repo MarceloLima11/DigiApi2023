@@ -15,7 +15,7 @@ namespace Api.Controllers
         { _emailService = emailService; }
 
         [HttpPost("send-confirm")]
-        [AuthorizeDeveloper]
+        [TokenValidation]
         public async Task<IActionResult> SendConfirmationEmail([FromBody] string email)
         {
             try

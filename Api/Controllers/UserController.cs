@@ -41,7 +41,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("confirm-email")]
+        [HttpPut("confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string token)
         {
             try

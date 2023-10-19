@@ -30,7 +30,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [AuthorizeDeveloper]
+        [TokenValidation]
         public async Task<ActionResult> CreateTitle([FromBody] TitleDTO titleDTO)
         {
             try
