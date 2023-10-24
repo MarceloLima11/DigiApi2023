@@ -10,13 +10,11 @@ namespace Application.Services.Auth
     public class JwtService : IJwtService
     {
         private readonly string _secretKey;
-        private readonly IServiceProvider _serviceProvider;
         private const string _alphaNumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
         public JwtService(IServiceProvider serviceProvider)
         {
             _secretKey = GenereateSecret();
-            _serviceProvider = serviceProvider;
         }
 
         public string GenerateToken(Guid id)

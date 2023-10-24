@@ -69,7 +69,7 @@ namespace Application.Services.Auth
             try
             {
                 if (string.IsNullOrEmpty(email)) throw new BadRequestException("Email inválido.");
-                if (token.Length != 6) throw new BadRequestException("Código inválido.");
+                if (token.Length != 6) throw new InvalidTokenException();
 
                 User user = await _unit.UserRepository.GetUserByEmail(email)
                     ?? throw new NotFoundException("Usuário não cadastrado!");
@@ -102,10 +102,10 @@ namespace Application.Services.Auth
                     ?? throw new UnauthorizedAccessException("Usuário não encontrado");
 
                 var passwordResetData = await _unit.PasswordResetRepository.GetByUserId(user.Id)
-                    ?? throw new BadRequestException("Token inválido");
+                    ?? throw new InvalidTokenException();
 
                 if (!passwordResetData.Token.Equals(resetPasswordDTO.Token))
-                    throw new BadRequestException(message: "Token inválido"); // Criar except custom pra isso
+                    throw new InvalidTokenException();
 
                 if (passwordResetData.Expiration < DateTime.UtcNow) // mover essa validação para utils
                     throw new TokenExpiredException(passwordResetData.Expiration);
